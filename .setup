@@ -23,15 +23,15 @@ destdir: /home/david/public_html/davidlog
 # base url to the wiki
 url: http://dasz.at/~david/
 # url to the ikiwiki.cgi
-#cgiurl: http://zion.dasz/~david/davidlog/ikiwiki.cgi
+cgiurl: ''
 # filename of cgi wrapper to generate
-#cgi_wrapper: /home/david/public_html/davidlog/ikiwiki.cgi
+cgi_wrapper: ''
 # mode for cgi_wrapper (can safely be made suid)
-#cgi_wrappermode: 06755
+cgi_wrappermode: 06755
 # number of seconds to delay CGI requests when overloaded
-#cgi_overload_delay: ''
+cgi_overload_delay: ''
 # message to display when overloaded (may contain html)
-#cgi_overload_message: ''
+cgi_overload_message: ''
 # enable optimization of only refreshing committed changes?
 only_committed_changes: 0
 # rcs backend to use
@@ -54,7 +54,7 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: 1
+#syslog: 1
 # create output files named page/index.html?
 usedirs: 1
 # use '!'-prefixed preprocessor directives?
@@ -128,9 +128,9 @@ git_wrapper: /home/david/davidlog.git/hooks/post-update
 # gitweb url to show a diff ([[file]], [[sha1_to]], [[sha1_from]], [[sha1_commit]], and [[sha1_parent]] substituted)
 #diffurl: http://git.example.com/gitweb.cgi?p=wiki.git;a=blobdiff;f=[[file]];h=[[sha1_to]];hp=[[sha1_from]];hb=[[sha1_commit]];hpb=[[sha1_parent]]
 # where to pull and push changes (set to empty string to disable)
-#gitorigin_branch: origin
+gitorigin_branch: origin
 # branch that the wiki is stored in
-#gitmaster_branch: master
+gitmaster_branch: master
 
 # htmlscrubber plugin
 # PageSpec specifying pages not to scrub
@@ -146,7 +146,7 @@ atom: 1
 # allow atom feeds to be used?
 #allowatom: 0
 # urls to ping (using XML-RPC) on feed update
-#pingurl: http://rpc.technorati.com/rpc/ping
+pingurl: []
 
 ######################################################################
 # auth plugins
@@ -257,17 +257,17 @@ locked_pages: '* and !postcomment(*)'
 # PageSpec of pages where comments are allowed
 comments_pagespec: posts/* and !*/Discussion
 # PageSpec of pages where posting new comments is not allowed
-#comments_closed_pagespec: blog/controversial or blog/flamewar
+comments_closed_pagespec: ''
 # Base name for comments, e.g. "comment_" for pages like "sandbox/comment_12"
-#comments_pagename: ''
+comments_pagename: comment_
 # Interpret directives in comments?
 #comments_allowdirectives: 0
 # Allow anonymous commenters to set an author name?
 #comments_allowauthor: 0
 # commit comments to the VCS
-#comments_commit: 1
+comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
-#comments_allowformats: mdwn txt
+comments_allowformats: ''
 
 # getsource plugin
 # Mime type for returned source.
@@ -300,7 +300,7 @@ comments_pagespec: posts/* and !*/Discussion
 # list of additional setup field keys to treat as unsafe
 #websetup_unsafe: []
 # show unsafe settings, read-only, in web interface?
-#websetup_show_unsafe: 1
+websetup_show_unsafe: 1
 
 ######################################################################
 # widget plugins
@@ -380,9 +380,9 @@ archive_pagespec: page(posts/*) and !*/Discussion
 
 # recentchanges plugin
 # name of the recentchanges page
-#recentchangespage: recentchanges
+recentchangespage: recentchanges
 # number of changes to track
-#recentchangesnum: 100
+recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
@@ -398,4 +398,4 @@ tagbase: tags
 # autocreate new tag pages?
 #tag_autocreate: 1
 # commit autocreated tag pages
-#tag_autocreate_commit: 1
+tag_autocreate_commit: 1
