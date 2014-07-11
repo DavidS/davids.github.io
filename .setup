@@ -42,6 +42,7 @@ add_plugins:
 - calendar
 - sidebar
 - trail
+- rsync
 # plugins to disable
 disable_plugins:
 - htmlscrubber
@@ -384,7 +385,7 @@ recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
-#rsync_command: rsync -qa --delete . user@host:/path/to/docroot/
+rsync_command: rsync -qa --delete . david@hosting.edv-bus.at:/srv/davids/www/black.co.at/club/log
 
 # sidebar plugin
 # show sidebar page on all pages?
