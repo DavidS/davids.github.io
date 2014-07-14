@@ -12,6 +12,7 @@ rest of the system.
 The install itself went surprisingly smooth: using the current CentOS 6.5
 template, only the URLs and ISOs had to be changed. The final result is
 currently [pending an upstream merge](https://github.com/jedi4ever/veewee/pull/963).
+*Update:* merged.
 
 The next step is
 [pulling](https://github.com/puppetlabs/puppet-vagrant-boxes/pull/42) that
