@@ -134,4 +134,5 @@ result.
 
 TODO:
 
+ * Improve testing regime, when understanding rails better
  * l10n, when actually adding nice views
