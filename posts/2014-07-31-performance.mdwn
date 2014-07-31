@@ -9,7 +9,7 @@ Here're my numbers:
 
 ### Before
 
-* raw, default settins
+* raw, default settings
 
     Version  1.96       ------Sequential Output------ --Sequential Input- --Random-
     Concurrency   1     -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
