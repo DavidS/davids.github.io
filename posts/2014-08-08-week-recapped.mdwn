@@ -17,5 +17,8 @@ short summary.
     between databases, and when starting the upgrade from the commandline, no
     feedback is given. When this is aborted (due to ignorance) the update
     cannot be restarted (easily) since it unconditionally tries to drop tables.
-
+  * Finally, I've put in some hours for the [Humanitarian Openstreetmap Team's
+    Activation around the Ebola outbreak in
+    Africa](http://www.hotosm.org/updates/2014-08-05_reactivation_of_hot_for_the_ebola_epidemic_second_update).
+    You can help too!
 
