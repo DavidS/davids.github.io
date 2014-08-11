@@ -4,6 +4,8 @@
 [[!inline pages=sidebar raw=yes]]
 """]]
 
+My daily development log. Read at your own risk! Please send comments to [me](mailto:david@dasz.at).
+
 [[!inline pages="page(./posts/*) and !*/Discussion" show="10"
 actions=yes rootpage="posts"]]
 
