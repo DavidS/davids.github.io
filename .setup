@@ -21,7 +21,7 @@ srcdir: /home/david/davidlog
 # where to build the wiki
 destdir: /home/david/public_html/davidlog
 # base url to the wiki
-url: http://dasz.at/~david/
+url: http://club.black.co.at/log
 # url to the ikiwiki.cgi
 cgiurl: ''
 # filename of cgi wrapper to generate
