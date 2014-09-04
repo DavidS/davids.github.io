@@ -103,6 +103,14 @@ theory.
 So, off to the registrar and submit those records!
 
 
+# Finishing touches
+
+So after deploying the inline-signing to my test zone, nagios noticed that my
+serial numbers were off between my master and my slave NS. It turns out, that
+bind does increment the serial number when doing the signing dance. Which is
+only proper, given that the serial number should be incremented every time
+something changes in the zone. I'll need to keep that in mind when doing manual
+updates.
 
 
 
