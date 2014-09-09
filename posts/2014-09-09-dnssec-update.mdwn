@@ -22,8 +22,9 @@ records. Truth be told, hetzner does not support DNSSEC *AT ALL*:
 > Mit freundlichen Grüßen / Best Regards
 
 Which roughly translates to "DNSSEC is truly a useful feature, but much too
-complex, so stop bothering us about it and check out our newletter, where we
+complex, so stop bothering us about it and check out our newsletter, where we
 will inform the sheeple when they can again feed from our hand."
 
 Which translates precisely to "Ok, then I'm gonna find me a different DNS
-registrar, because even when I go directly to nic.at, I'll be better off security-wise."
+registrar, because even when I go directly to nic.at, I'll be better off
+security- and feature-wise."
