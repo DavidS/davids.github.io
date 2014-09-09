@@ -6,20 +6,20 @@ records. Truth be told, hetzner does not support DNSSEC *AT ALL*:
 
 > Sehr geehrte Damen und Herren,
 > 
-> vielen Dank f¸r Ihr Interesse an DNSSEC. Wir halten DNSSEC f¸r ein
-> n¸tzliches Feature um das Sicherheitsniveau im DNS-Bereich zu erhˆhen.
+> vielen Dank f√ºr Ihr Interesse an DNSSEC. Wir halten DNSSEC f√ºr ein
+> n√ºtzliches Feature um das Sicherheitsniveau im DNS-Bereich zu erh√∂hen.
 > 
 > Die Implementierung von DNSSEC erfordert allerdings weitreichende
 > Anpassungen und Erweiterungen an mehreren Systemen. So muss von unseren
-> Administrationsoberfl‰chen ¸ber die Schnittstellen zu den jeweiligen
+> Administrationsoberfl√§chen √ºber die Schnittstellen zu den jeweiligen
 > Domain-Vergabestellen bis hin zu unseren Nameservern DNSSEC integriert
 > werden.
 > 
-> Leider kˆnnen wir Ihnen daher DNSSEC zum aktuellen Zeitpunkt nicht
+> Leider k√∂nnen wir Ihnen daher DNSSEC zum aktuellen Zeitpunkt nicht
 > anbieten. Sobald es zu diesem Thema Neuigkeiten gibt, werden wir Sie
-> ¸ber unseren Newsletter informieren.
+> √ºber unseren Newsletter informieren.
 > 
-> Mit freundlichen Gr¸ﬂen / Best Regards
+> Mit freundlichen Gr√º√üen / Best Regards
 
 Which roughly translates to "DNSSEC is truly a useful feature, but much too
 complex, so stop bothering us about it and check out our newletter, where we
