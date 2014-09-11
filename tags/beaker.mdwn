@@ -1,0 +1,4 @@
+[[!meta title="pages tagged beaker"]]
+
+[[!inline pages="tagged(beaker)" actions="no" archive="yes"
+feedshow=10]]
