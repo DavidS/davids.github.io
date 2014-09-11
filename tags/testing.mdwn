@@ -1,0 +1,4 @@
+[[!meta title="pages tagged testing"]]
+
+[[!inline pages="tagged(testing)" actions="no" archive="yes"
+feedshow=10]]
