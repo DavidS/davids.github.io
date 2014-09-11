@@ -43,6 +43,7 @@ add_plugins:
 - sidebar
 - trail
 - rsync
+- tag
 # plugins to disable
 disable_plugins:
 - htmlscrubber
