@@ -1,0 +1,4 @@
+[[!meta title="pages tagged centos7"]]
+
+[[!inline pages="tagged(centos7)" actions="no" archive="yes"
+feedshow=10]]
