@@ -6,4 +6,4 @@
 
 * Good article by Scott Hanselman how [Busy-ness in the Tibetan tradition is considered the most extreme form of laziness](http://www.hanselman.com/blog/PersonalProductivityBusinessVsBusynessVsLaziness.aspx).  Read it as a reality check for your day-to-day planning.
 
-[[!taglink puppet productivity]]
+[[!tag puppet productivity]]

@@ -84,4 +84,4 @@ My foreman is configured to run in passenger in apache using the puppet
 certificate and key directly from `$ssldir`. Restarting the apache loaded the
 new CA PEM file just fine. After this `node.rb` worked again.
 
-[[!taglink puppet foreman puppetdb ssl security]]
+[[!tag puppet foreman puppetdb ssl security]]

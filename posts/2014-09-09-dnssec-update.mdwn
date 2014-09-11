@@ -29,4 +29,4 @@ Which translates precisely to "Ok, then I'm gonna find me a different DNS
 registrar, because even when I go directly to nic.at, I'll be better off
 security- and feature-wise."
 
-[[!taglink hosting dnssec security]]
+[[!tag hosting dnssec security]]

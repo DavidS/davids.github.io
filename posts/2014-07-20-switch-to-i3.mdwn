@@ -15,4 +15,4 @@ without having to click the clicks.
 
 On the downside, ssh key unlocking still needs some work.
 
-[[!taglink linux productivity i3 osm]]
+[[!tag linux productivity i3 osm]]

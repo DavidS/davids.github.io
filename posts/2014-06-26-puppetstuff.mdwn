@@ -9,4 +9,4 @@ After several failures with Foreman's noVNC JS client (which is really awesome) 
 
 That actually worked for me. On down, infinite to go.
 
-[[!taglink puppet foreman]]
+[[!tag puppet foreman]]

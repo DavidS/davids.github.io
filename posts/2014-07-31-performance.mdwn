@@ -49,4 +49,4 @@ Obviously, there's still room for improvement - by migrating off qcow2 - but at
 least raw throughput has already improved and will hopefully already lead to
 improved responsiveness of the VM.
 
-[[!taglink hosting kvm performance]]
+[[!tag hosting kvm performance]]

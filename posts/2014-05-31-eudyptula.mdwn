@@ -5,4 +5,4 @@ now moving on to the second.
 
 Side note: the current linux.git download weighs in at 749 MiB. That might not fit on a CDROM anymore.
 
-[[!taglink linux programming eudyptula]]
+[[!tag linux programming eudyptula]]

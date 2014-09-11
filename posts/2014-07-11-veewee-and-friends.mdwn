@@ -28,4 +28,4 @@ thread](https://groups.google.com/forum/#!topic/puppet-dev/7sgPBwxOhfE) with a
 rather lengthy post on actually implementing a safe evaluator and making the
 puppet4 language radically flexible.
 
-[[!taglink puppet veewee testing centos7]]
+[[!tag puppet veewee testing centos7]]

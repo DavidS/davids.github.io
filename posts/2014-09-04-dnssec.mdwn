@@ -112,4 +112,4 @@ only proper, given that the serial number should be incremented every time
 something changes in the zone. I'll need to keep that in mind when doing manual
 updates.
 
-[[!taglink hosting dnssec security]]
+[[!tag hosting dnssec security]]

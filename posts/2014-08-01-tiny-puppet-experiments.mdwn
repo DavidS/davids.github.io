@@ -78,4 +78,4 @@ realistic view on the feasibility of converting the module to a tp core.
 
 PS: Now Playing: [New Electro & House 2013 Chart Mix](https://www.youtube.com/watch?v=Q2SIoikPsBM&list=PLXnEiZMPaaLwvGvSZpc8ACea7vXD51ksC)
 
-[[!taglink puppet programming]]
+[[!tag puppet programming]]

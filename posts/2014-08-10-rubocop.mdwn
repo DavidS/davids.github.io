@@ -19,4 +19,4 @@ small now, that I consider inlining them again. That will probably become more
 pertinent as soon as save/update need to do more than send the model to the
 database. Again, something that needs more experience with actual use cases.
 
-[[!taglink ruby testing programming]]
+[[!tag ruby testing programming]]

@@ -27,4 +27,4 @@ All in all I can recommend the book heartily both to the novice - as a starting
 point to plan the usage of puppet - as well as to the hardened veteran - to
 ascertain the professional toolbox is complete.
 
-[[!taglink puppet]]
+[[!tag puppet]]
