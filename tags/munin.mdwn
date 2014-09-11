@@ -1,0 +1,4 @@
+[[!meta title="pages tagged munin"]]
+
+[[!inline pages="tagged(munin)" actions="no" archive="yes"
+feedshow=10]]
