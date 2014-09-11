@@ -1,0 +1,4 @@
+[[!meta title="pages tagged puppet"]]
+
+[[!inline pages="tagged(puppet)" actions="no" archive="yes"
+feedshow=10]]
