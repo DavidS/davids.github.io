@@ -1,0 +1,4 @@
+[[!meta title="pages tagged eudyptula"]]
+
+[[!inline pages="tagged(eudyptula)" actions="no" archive="yes"
+feedshow=10]]
