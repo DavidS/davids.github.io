@@ -1,0 +1,4 @@
+[[!meta title="pages tagged osm"]]
+
+[[!inline pages="tagged(osm)" actions="no" archive="yes"
+feedshow=10]]
