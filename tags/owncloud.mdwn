@@ -1,0 +1,4 @@
+[[!meta title="pages tagged owncloud"]]
+
+[[!inline pages="tagged(owncloud)" actions="no" archive="yes"
+feedshow=10]]
