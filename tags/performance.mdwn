@@ -1,0 +1,4 @@
+[[!meta title="pages tagged performance"]]
+
+[[!inline pages="tagged(performance)" actions="no" archive="yes"
+feedshow=10]]
