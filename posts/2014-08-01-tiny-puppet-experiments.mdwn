@@ -76,8 +76,6 @@ realistic view on the feasibility of converting the module to a tp core.
     looks like a bug to me. Perhaps the original author wanted to avoid
     creating the datadir when the default location was used?
 
-
-
-
 PS: Now Playing: [New Electro & House 2013 Chart Mix](https://www.youtube.com/watch?v=Q2SIoikPsBM&list=PLXnEiZMPaaLwvGvSZpc8ACea7vXD51ksC)
 
+[[!taglink puppet programming]]

@@ -48,3 +48,4 @@ Some notes about writing tests with beaker:
 
 <a href="https://github.com/DavidS/dasz-configuration/commit/271ecd01f3f9b9951fd746eff0c2d3a7ebdaaa56">github</a>
 
+[[!taglink puppet testing beaker]]

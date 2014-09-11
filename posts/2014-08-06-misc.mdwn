@@ -19,3 +19,4 @@ modding. Mission accomplished!
 [[!img old_stand.jpg size="200x" alt="old stand"]]
 [[!img new_stand.jpg size="200x" alt="new stand"]]
 
+[[!taglink productivity diy]]

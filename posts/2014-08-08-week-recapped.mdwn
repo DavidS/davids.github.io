@@ -22,3 +22,4 @@ short summary.
     Africa](http://www.hotosm.org/updates/2014-08-05_reactivation_of_hot_for_the_ebola_epidemic_second_update).
     You can help too!
 
+[[!taglink puppet ops osm hosting owncloud]]

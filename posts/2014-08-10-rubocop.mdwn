@@ -18,3 +18,5 @@ concern. So now codeclimate is happy again. The actual default responses are so
 small now, that I consider inlining them again. That will probably become more
 pertinent as soon as save/update need to do more than send the model to the
 database. Again, something that needs more experience with actual use cases.
+
+[[!taglink ruby testing programming]]

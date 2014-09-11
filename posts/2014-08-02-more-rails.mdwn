@@ -81,6 +81,4 @@ a quite primitive post-back solution. As long as the responsiveness is good, it
 works Good Enough for now.
 
 
-
-
-
+[[!taglink ruby rails programming]]

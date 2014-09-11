@@ -27,3 +27,5 @@ While the vagrant boxes were test-building, I've also chipped in on the
 thread](https://groups.google.com/forum/#!topic/puppet-dev/7sgPBwxOhfE) with a
 rather lengthy post on actually implementing a safe evaluator and making the
 puppet4 language radically flexible.
+
+[[!taglink puppet veewee testing centos7]]
