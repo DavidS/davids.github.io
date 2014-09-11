@@ -1,0 +1,5 @@
+# Conference Ahoi!
+
+Finally, I've managed to sign up to a conference again. I'll be going to [DevOpsDays Ghent](http://devopsdays.org/events/2014-belgium/) on 27th and 28th of October. I'm already excited to see you all there!
+
+[[!tag puppet conference]]
