@@ -66,3 +66,4 @@ Here're a few highlights.
     Why can't I have an automatically up-to-date SCM snapshot of all
     development versions in experimental (or a new suite)?
 
+[[!tag debian video review]]
