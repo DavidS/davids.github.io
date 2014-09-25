@@ -21,3 +21,4 @@ The rest of stuff is already consisely wrapped up in the posts above, so I
 won't duplicate that. I'll revisit this once the complete videos are rolling
 in.
 
+[[!tag puppet]]
