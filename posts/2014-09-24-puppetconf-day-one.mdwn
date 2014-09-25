@@ -14,7 +14,8 @@ PuppetConf has started and the news are rolling in. A Summary.
   * "Puppet Approved": a term mentioned in [Puppet Lab's notes about day
     one](http://puppetlabs.com/blog/puppetconf-2014-day-1-tips-treats-and-tweets),
     which applies to modules that are regularily tested by PL and follow
-    certain standards.
+    certain standards. More details can be found at the [puppet
+    forge](https://forge.puppetlabs.com/approved).
 
 The rest of stuff is already consisely wrapped up in the posts above, so I
 won't duplicate that. I'll revisit this once the complete videos are rolling
