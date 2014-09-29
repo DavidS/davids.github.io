@@ -1,0 +1,26 @@
+[[!meta title="Managing gem dependencies"]]
+
+Following a struggle of getting (the right combination of) ruby gems to
+install, I've checked out solutions to gem dependency management tonight. A
+common thing seems to be [gemnasium](https://gemnasium.com) which is running a
+check on the Gemfile (and presumably the gemspec too) to report on the
+up-to-dateness of the dependencies.
+
+The free version seems to offer tracking of unlimited public projects. I've
+configured it for [hrdb](https://gemnasium.com/DavidS/hrdb) and I immediately
+found a warning for a security issue in one of the not-yet-updated
+dependencies. A `bundle update`,
+[commit](https://github.com/DavidS/hrdb/commit/4bfbab5429d6be08f53f651fa318dbae0c06004a),
+push, and a refresh of the report later, this problem is fixed too.
+
+# docker
+
+In other news, I've had an in-depth look at docker in a realistic use case and
+am quite impressed by the smoothness of the experience and the low latency
+features. For example, rebuilding images after small changes to the Dockerfile
+does not require redoing commands from an unchanged prefix of the Dockerfile.
+That is, if the Dockerfile starts with installing 100 packages, and later you
+need to add a few more (to the "same" image), adding the additional packages in
+a separate RUN command will cause docker to automatically reuse intermediate
+images from the last build to reduce the time to finish.
+
