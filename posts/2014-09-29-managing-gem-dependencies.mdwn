@@ -13,6 +13,23 @@ dependencies. A `bundle update`,
 [commit](https://github.com/DavidS/hrdb/commit/4bfbab5429d6be08f53f651fa318dbae0c06004a),
 push, and a refresh of the report later, this problem is fixed too.
 
+# coveralls
+
+Meanwhile I've tested [coveralls](https://coveralls.io/) instead of code
+climate's code coverage service. Usage is exactly the same (modulo actual
+letters typed):
+
+  * Add gem
+  * Add include and call to `spec_helper.rb`
+
+coveralls is slightly slower than code climate (5 min 4 sec vs. 4 min 54 sec).
+
+coveralls definitely has more details and a nicer style sheet on its page,
+while on code climate, the coverage display is integrated into the problem
+displayer which makes it easier to correlate these checks.
+
+I'll stay with code climate for now.
+
 # docker
 
 In other news, I've had an in-depth look at docker in a realistic use case and
