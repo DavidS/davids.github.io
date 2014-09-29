@@ -24,3 +24,4 @@ need to add a few more (to the "same" image), adding the additional packages in
 a separate RUN command will cause docker to automatically reuse intermediate
 images from the last build to reduce the time to finish.
 
+[[!tag ruby programming testing security docker]]
