@@ -1,0 +1,11 @@
+[[!meta title="Getting comfortable..."]]
+
+Used a slow afternoon to get the next [example42](https://github.com/example42)
+to [pass](https://github.com/example42/puppet-apt/pull/44) its tests again.
+Also rebased my [sundry of
+changes](https://github.com/DavidS/puppet-apt/commits/to-push) from last year
+on top of the upstream development since then. I'll drip in the commits later
+one by one to avoid a too confused git history.
+
+[[!tag puppet testing]]
+
