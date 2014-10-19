@@ -1,0 +1,4 @@
+[[!meta title="pages tagged salt"]]
+
+[[!inline pages="tagged(salt)" actions="no" archive="yes"
+feedshow=10]]
