@@ -29,9 +29,9 @@ systems. Here's my summary.
     from the managed systems. 
   * Homogeneous Systems: Both documents focus on the homogeneous system
     use-case. Surely both do have the possibility to react to differences of
-    the underlying system via facts and conditionals, but both do not emphasize
-    it as much as puppet's modules, where multi-distro, multi-version support
-    is common.
+    the underlying system via facts and conditionals, but are light on the
+    topic of actually implementing this. Given this is my first reading, I
+    might just have missed it.
  
 ## Ansible
 
