@@ -15,7 +15,7 @@ taking and transcribing are my own.
 
 > Success is listening to feedback.
 
-> People focus <del>too much<del> only on result, not on the way to get there.
+> People focus <del>too much</del> only on result, not on the way to get there.
 > -- @bridgetkromhout
 
 > DevOps means giving a shit about your job enough to want to want to learn all the parts and not only your little world.
@@ -47,7 +47,7 @@ I'll not repeat what he said about pie charts. Except that they literally **indu
 > Design for failure.
 > -- @bltroutwine
 
-> "What are your doing to get more women to the conference?" *[There were, perhaps five women in Gent]*
+> "What are your doing to get more women to the conference?" *[There were, perhaps, five women in Gent]*
 > > "I recently saw a presentation [on women participating in tech]"
 > > -- someone not listening
 
