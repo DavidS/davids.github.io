@@ -4,10 +4,13 @@
 [[!inline pages=sidebar raw=yes]]
 """]]
 
-My daily development log. Read at your own risk! Please send comments to [me](mailto:david@dasz.at).
+My development log. Read at your own risk! Please send comments to me [by mail](mailto:david@dasz.at) or [@dev\_el\_ops](https://twitter.com/dev_el_ops).
 
-[[!inline pages="page(./posts/*) and !*/Discussion" show="10"
-actions=yes rootpage="posts"]]
+* [xing](https://www.xing.com/profile/David_Schmitt5)
+* [linked.in](https://www.linkedin.com/in/davidschmitt)
+* [twitter](https://twitter.com/dev_el_ops)
+
+[[!inline pages="page(./posts/*) and !*/Discussion" show="10" actions=yes rootpage="posts"]]
 
 
 This blog is powered by [ikiwiki](http://ikiwiki.info).
