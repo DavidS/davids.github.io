@@ -10,7 +10,11 @@ My development log. Read at your own risk! Please send comments to me [by mail](
 * [linked.in](https://www.linkedin.com/in/davidschmitt)
 * [twitter](https://twitter.com/dev_el_ops)
 
+# Latest Blog Posts
+
 [[!inline pages="page(./posts/*) and !*/Discussion" show="10" actions=yes rootpage="posts"]]
+
+# Notes
 
 [[!inline pages="page(./notes/*) and !*/Discussion" archive=yes show="0"]]
 
