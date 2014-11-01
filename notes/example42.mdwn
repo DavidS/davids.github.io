@@ -10,5 +10,9 @@
 
 ## Modules
 
-* [apt](https://github.com/example42/puppet-apt): [![Build Status](https://travis-ci.org/example42/puppet-apt.png?branch=master)](https://travis-ci.org/example42/puppet-apt)
+<table>
+<th><td>Module</td><td>Example42</td></th>
+<tr><td>[apache](https://github.com/example42/puppet-apache)</td><td>[![Build Status](https://travis-ci.org/example42/puppet-apache.png?branch=master)](https://travis-ci.org/example42/puppet-apache)</td></tr>
+<tr><td>[apt](https://github.com/example42/puppet-apt)</td><td>[![Build Status](https://travis-ci.org/example42/puppet-apt.png?branch=master)](https://travis-ci.org/example42/puppet-apt)</td></tr>
+</table>
 
