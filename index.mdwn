@@ -12,5 +12,6 @@ My development log. Read at your own risk! Please send comments to me [by mail](
 
 [[!inline pages="page(./posts/*) and !*/Discussion" show="10" actions=yes rootpage="posts"]]
 
+[[!inline pages="page(./notes/*) and !*/Discussion" archive=yes show="0"]]
 
 This blog is powered by [ikiwiki](http://ikiwiki.info).

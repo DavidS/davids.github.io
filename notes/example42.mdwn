@@ -1,0 +1,14 @@
+[[!meta title="Some example42 notes"]]
+
+## Goals
+
+- Fix rpsec tests and Travis integration. 
+- Review and work out the bugs and PRs queue 
+- Guarantee support for more recent versions of the most important OS or not currently supported OS 
+- Preserve backwards compatibility 
+- Keep the general design patterns and style of Example42 modules
+
+## Modules
+
+* [apt](https://github.com/example42/puppet-apt): [![Build Status](https://travis-ci.org/example42/puppet-apt.png?branch=master)](https://travis-ci.org/example42/puppet-apt)
+
