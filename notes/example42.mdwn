@@ -36,3 +36,7 @@ Module|Example42|DavidS
 [tp](https://github.com/example42/puppet-tp)|[![Build Status](https://travis-ci.org/example42/puppet-tp.png?branch=master)](https://travis-ci.org/example42/puppet-tp)|[![Build Status](https://travis-ci.org/DavidS/puppet-tp.png?branch=master)](https://travis-ci.org/DavidS/puppet-tp)
 """]]
 
+* 2014-11-03:
+** 42: 4p, 16f, 2x
+** DS: 5p, 6f, 2e, 9u
+
