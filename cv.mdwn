@@ -1,0 +1,72 @@
+[[!meta title="CV"]]
+
+# Ausbildung / Education
+
+* 2007  Dipl.-Ing. der Technischen Informatik an der TU Wien /
+  Master of Engineering at the Technical University of Vienna
+
+* 1998  Bundesheer / Army Service
+
+* 1997  Matura (Mathematik, Englisch, Deutsch, Informatik) BRG8 Albertgasse 
+  
+
+# Projects
+
+* 2014-present  Puppetmaster
+  Jumio Software Development GmbH
+  Puppet, collectd, opentsdb, python, mongodb 
+
+* 2008-present  Puppetmaster
+  Boehringer-Ingelheim RCV GmbH; Puppet, RHEL5, RHEL6,
+  Scientific Linux 6, PostgreSQL, The Foreman, PuppetDB,
+  ruby, libvirt/KVM, apache, tomcat, SGE/OGS, ganglia,
+  icinga, kickstart, MediaWiki, Chiliproject, gitlab
+
+  > Erhard Wais, System Manager, Boehringer-Ingelheim
+  >
+  > David unterstützt uns flexibel und innovativ bei der Verbesserung und
+  > Beschleunigung interner Abläufe. Die entwickelten Lösungen ersparen
+  > unseren Mitarbeitern täglich Zeit.
+
+* 2007-2013  Softwaredevelopment, UX, DB
+  [dasz.at OG](http://dasz.at); Founder, C#, MSSQL, PostgreSQL, NHibernate,
+  jenkins, NUnit, WPF, WCF, Autofac, FogBugz, Windows Server, Mono
+
+* 2006    Applikationdeveloper
+  ERES NET Consulting – Immobilien.NET GmbH;
+  C#, ASP.NET, MSSQL
+
+  > Josef Pfleger
+  >
+  > Using his invaluable skill set and experience, David quickly became
+  > an indispensable team member and gave the project a real boost. His
+  > extraordinary expertise and competence makes him an outstanding
+  > colleague with whom it was a pleasure to work.
+
+* 2005    Internship: Merbershipmanager
+  FCG; PHP, postgresql, data recovery
+
+* 2001-present  Web/Mail/DNS [Hosting](https://github.com/DavidS/dasz-configuration/tree/master/modules/hosting)
+  [edv-bus.at](http://www.edv-bus.at/); Debian, apache, nginx, exim, bind,
+  puppet, systemd, SSL, openvpn, libvirt/KVM, linux-vserver, mysql, postgresql,
+  php, ruby
+
+* 2001-2010  Sysadmin, Development
+  ZID der Universität für Angewandte Kunst;
+  Debian, apache, exim3, exim4, Cisco, Puppet, Asterisk, nagios, munin,
+  openldap, postgresql, openvpn, backup, samba, RHEVM, Hardware, ruby,
+  [puppet-networkdevice](https://github.com/uniak/puppet-networkdevice)
+
+* 2000  Internship: Developer
+    ace GmbH; Java, C++, Microsoft
+
+* 1999  Implementierung einer Kunden- und Produktverwaltung
+    für einen Kabel-ISP / Implement customer and product management for a cable ISP
+    HEIRU; PHP, mysql, perl, Debian
+
+* 1999  Internship: Developer
+    Coco Software; Java, XML
+
+* 1996-2001 First-Level Support for students in the PC pools
+  at the Technical University of Vienna
+    Windows, Linux, Internet
