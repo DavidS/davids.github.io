@@ -1,5 +1,5 @@
 [[!meta title="CV"]]
-[[!img david.png align=right]]
+[[!img david.png align=right size="120x120"]]
 
 # Projects
 
