@@ -1,15 +1,5 @@
 [[!meta title="CV"]]
 
-# Ausbildung / Education
-
-* 2007  **Dipl.-Ing.** der *Technischen Informatik an der TU Wien* /
-  **Master of Engineering** at the *Technical University of Vienna*
-
-* 1998  Bundesheer / Army Service
-
-* 1997  Matura (Mathematik, Englisch, Deutsch, Informatik) BRG8 Albertgasse 
-  
-
 # Projects
 
 * 2014-present  **Puppetmaster**;
@@ -70,3 +60,13 @@
 * 1996-2001 **First-Level Support for students in the PC pools**;
     *Technical University of Vienna*;
     Windows, Linux, Internet
+
+# Ausbildung / Education
+
+* 2007  **Dipl.-Ing.** der *Technischen Informatik an der TU Wien* /
+  **Master of Engineering** at the *Technical University of Vienna*
+
+* 1998  Bundesheer / Army Service
+
+* 1997  Matura (Mathematik, Englisch, Deutsch, Informatik) BRG8 Albertgasse 
+
