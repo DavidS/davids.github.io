@@ -1,4 +1,5 @@
 [[!meta title="CV"]]
+[[!img david.png align=right]]
 
 # Projects
 
