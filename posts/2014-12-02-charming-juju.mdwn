@@ -49,4 +49,4 @@ Phew!
 
 
 
-[[!tag ubuntu juju]]
+[[!tag ubuntu juju vagrant virtualbox]]
