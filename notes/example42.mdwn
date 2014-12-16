@@ -10,6 +10,8 @@
 
 ## Modules
 
+**Update:** See also [Alessandros list on github](https://github.com/example42/puppet-tp/blob/master/bin/example42modules.txt)
+
 [[!table data="""
 Module|Example42|DavidS
 [apache](https://github.com/example42/puppet-apache)|[![Build Status](https://travis-ci.org/example42/puppet-apache.png?branch=master)](https://travis-ci.org/example42/puppet-apache)|[![Build Status](https://travis-ci.org/DavidS/puppet-apache.png?branch=master)](https://travis-ci.org/DavidS/puppet-apache)
