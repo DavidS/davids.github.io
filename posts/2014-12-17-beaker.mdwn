@@ -5,7 +5,7 @@ Meetup](http://www.meetup.com/Vienna-System-Architects-Meetup/) [December
 Edition](http://www.meetup.com/Vienna-System-Architects-Meetup/events/218412622/)
 about holistic systems testing with Beaker.
 
-Here're thelinks to the tools I'll be talking about:
+Here're the tools and repos I'll be talking about:
 
 * [Beaker](https://github.com/puppetlabs/beaker)
 * [serverspec](http://serverspec.org/resource_types.html)
