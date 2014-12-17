@@ -1,0 +1,18 @@
+[[!meta title="Beaker"]]
+
+Tonight I'll be talking at the [Vienna System Architects
+Meetup](http://www.meetup.com/Vienna-System-Architects-Meetup/) [December
+Edition](http://www.meetup.com/Vienna-System-Architects-Meetup/events/218412622/)
+about holistic systems testing with Beaker.
+
+Here're thelinks to the tools I'll be talking about:
+
+* [Beaker](https://github.com/puppetlabs/beaker)
+* [serverspec](http://serverspec.org/resource_types.html)
+  * [Tutorial](http://vincent.bernat.im/en/blog/2014-serverspec-test-infrastructure.html)
+* [RSpec matchers](https://www.relishapp.com/rspec/rspec-expectations/v/3-1/docs/built-in-matchers)
+* [Example code](https://github.com/DavidS/puppet-apache/commits/updated-specs)
+* [puppetlabs/modulesync](https://github.com/puppetlabs/modulesync)
+
+[[!tag beaker puppet]]
+
