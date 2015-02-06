@@ -52,7 +52,7 @@ biggest customer in this prod environment makes things easier.
     +  environment = future
     +  environmentpath = /srv/puppet/environments
 
-
+Commands:
 
     puppet master --no-daemonize --verbose --config=/etc/puppet/future.conf
     puppet agent --test --config=/etc/puppet/future.conf --noop
@@ -118,7 +118,7 @@ stricter interpretation will cause mismatches.
 To actually prepare for a safe and regression-free migration, I've also
 upgraded travis files to actually test against the future parser.
 
-OOr, at least, tried to. The module I was working on proved to be of the older
+Or, at least, tried to. The module I was working on proved to be of the older
 sort and testing [@garethr](https://twitter.com/garethr)'s
 [puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton)
 [didn't really work
