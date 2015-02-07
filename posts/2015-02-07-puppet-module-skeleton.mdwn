@@ -27,4 +27,4 @@ all [my modules](https://github.com/DavidS).
 I'm making good progress and will update you as soon as I've got something
 proper to show.
 
-[[!tag untagged]]
+[[!tag puppet]]
