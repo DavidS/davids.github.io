@@ -10,7 +10,7 @@
 # name of the wiki
 wikiname: david.log
 # contact email for wiki
-adminemail: david@dasz.at
+adminemail: david@black.co.at
 # users who are wiki admins
 adminuser:
 - david
