@@ -17,13 +17,15 @@ adminuser:
 # users who are banned from the wiki
 banned_users: []
 # where the source of the wiki is located
-srcdir: /srv/davids/home/david/davidlog
+srcdir: .
 # where to build the wiki
-destdir: /srv/davids/www/black.co.at/club/log
+destdir: /home/david/tmp/wiki
 # base url to the wiki
 url: http://club.black.co.at/log
 # url to the ikiwiki.cgi
 cgiurl: ''
+# do not adjust cgiurl if CGI is accessed via different URL
+reverse_proxy: 0
 # filename of cgi wrapper to generate
 cgi_wrapper: ''
 # mode for cgi_wrapper (can safely be made suid)
@@ -48,6 +50,8 @@ add_plugins:
 disable_plugins:
 - htmlscrubber
 - rsync
+- comments
+- comments
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
@@ -66,7 +70,7 @@ indexpages: 0
 discussion: 0
 # name of Discussion pages
 discussionpage: Discussion
-# generate HTML5?
+# use elements new in HTML5 like <section>?
 html5: 0
 # only send cookies over SSL connections?
 sslcookie: 0
@@ -88,12 +92,14 @@ hardlink: 0
 #umask: public
 # group for wrappers to run in
 #wrappergroup: ikiwiki
-# extra library and plugin directory
-libdir: /srv/davids/home/david/.ikiwiki
+# extra library and plugin directories
+libdirs: []
+# extra library and plugin directory (searched after libdirs)
+libdir: /home/david/.ikiwiki
 # environment variables
 ENV: {}
 # time zone name
-#timezone: US/Eastern
+timezone: :/etc/localtime
 # regexp of normally excluded files to include
 #include: ^\.htaccess$
 # regexp of files that should be skipped
@@ -104,18 +110,23 @@ wiki_file_chars: -[:alnum:]+/.:_
 allow_symlinks_before_srcdir: 1
 # cookie control
 cookiejar:
-  file: /srv/davids/home/david/.ikiwiki/cookies
+  file: /home/david/.ikiwiki/cookies
 # set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds
-#useragent: Wget/1.13.4 (linux-gnu)
+useragent: ikiwiki/3.20160121
+# theme has a responsive layout? (mobile-optimized)
+responsive_layout: 1
+# try harder to produce deterministic output
+deterministic: 0
 
 ######################################################################
 # core plugins
-#   (editpage, git, htmlscrubber, inline, link, meta, parentlinks)
+#   (editpage, git, htmlscrubber, inline, link, meta, parentlinks,
+#    templatebody)
 ######################################################################
 
 # git plugin
 # git hook to generate
-git_wrapper: /srv/davids/git/davidlog.git/hooks/post-update
+#git_wrapper: /git/wiki.git/hooks/post-update
 # shell command for git_wrapper to run, in the background
 #git_wrapper_background_command: git push github
 # mode for git_wrapper (can safely be made suid)
@@ -151,7 +162,7 @@ pingurl: []
 
 ######################################################################
 # auth plugins
-#   (anonok, blogspam, httpauth, lockedit, moderatedcomments,
+#   (anonok, blogspam, emailauth, httpauth, lockedit, moderatedcomments,
 #    opendiscussion, openid, passwordauth, signinedit)
 ######################################################################
 
@@ -164,8 +175,12 @@ pingurl: []
 blogspam_pagespec: postcomment(*)
 # options to send to blogspam server
 #blogspam_options: blacklist=1.2.3.4,blacklist=8.7.6.5,max-links=10
-# blogspam server XML-RPC url
+# blogspam server JSON url
 #blogspam_server: ''
+
+# emailauth plugin
+# email address to send emailauth mails as (default: adminemail)
+#emailauth_sender: ''
 
 # httpauth plugin
 # url to redirect to when authentication is needed
@@ -239,7 +254,7 @@ locked_pages: '* and !postcomment(*)'
 # underlay plugin
 # extra underlay directories to add
 #add_underlays:
-#- /srv/davids/home/david/wiki.underlay
+#- /home/david/wiki.underlay
 
 ######################################################################
 # web plugins
@@ -314,9 +329,13 @@ websetup_show_unsafe: 1
 
 # calendar plugin
 # base of the archives hierarchy
-#archivebase: archives
-# PageSpec of pages to include in the archives; used by ikiwiki-calendar command
+archivebase: archives
+# PageSpec of pages to include in the archives, if option `calendar_autocreate` is true.
 archive_pagespec: page(posts/*) and !*/Discussion
+# autocreate new calendar pages?
+calendar_autocreate: 1
+# if set, when building calendar pages, also build pages of year and month when no pages were published (building empty calendars).
+calendar_fill_gaps: 1
 
 # listdirectives plugin
 # directory in srcdir that contains directive descriptions
@@ -347,8 +366,8 @@ archive_pagespec: page(posts/*) and !*/Discussion
 ######################################################################
 # other plugins
 #   (aggregate, autoindex, brokenlinks, camelcase, ddate, embed, favicon,
-#    filecheck, flattr, goodstuff, htmlbalance, localstyle, notifyemail,
-#    pagetemplate, pingee, pinger, prettydate, recentchanges,
+#    filecheck, flattr, goodstuff, htmlbalance, localstyle, loginselector,
+#    notifyemail, pagetemplate, pingee, pinger, prettydate, recentchanges,
 #    recentchangesdiff, relativedate, rsync, sidebar, smiley,
 #    sortnaturally, tag, testpagespec, trail, transient)
 ######################################################################
@@ -387,7 +406,7 @@ recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
-rsync_command: rsync -qa --delete . david@hosting.edv-bus.at:/srv/davids/www/black.co.at/club/log
+#rsync_command: rsync -qa --delete . user@host:/path/to/docroot/
 
 # sidebar plugin
 # show sidebar page on all pages?

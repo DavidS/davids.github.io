@@ -4,7 +4,7 @@
 [[!inline pages=sidebar raw=yes]]
 """]]
 
-My development log. Read at your own risk! Please send comments to me [by mail](mailto:david@dasz.at) or [@dev\_el\_ops](https://twitter.com/dev_el_ops).
+My development log. Read at your own risk! Please send comments to me [by mail](mailto:david@black.co.at) or [@dev\_el\_ops](https://twitter.com/dev_el_ops).
 
 [[!table data="""
 Profiles | Code

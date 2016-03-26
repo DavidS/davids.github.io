@@ -1,6 +1,8 @@
-[[!meta title="Bootstrapping a Module"]]
+[[!meta title="Re-Bootstrapping a Module"]]
 
-In an effort to refresh my hosting solution, I started looking at refreshing some of the modules I built back then. One thing I need to bring forward, for example is [The Olde Exiscan Module|https://github.com/DavidS/puppet-exiscan]. Here's a log of what I did to refresh it to current standards, using [retrospec-puppet|https://github.com/nwops/puppet-retrospec].
+> Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.
+
+In an effort to refresh my hosting solution, I started looking at refreshing some of the modules I built back then. One thing I need to bring forward, for example is [The Olde Exiscan Module](https://github.com/DavidS/puppet-exiscan). Here's a log of what I did towards refreshing it to current standards, using [retrospec-puppet](https://github.com/nwops/puppet-retrospec).
 
 # Install restrospec-puppet
 
@@ -91,7 +93,7 @@ Attempt to assign a value to unknown setting :parser
 david@zion:~/git/davids-exiscan$
 ```
 
-Some [quick code removal later|https://github.com/DavidS/puppet-retrospec/tree/remove-future-option] this problem is also fixed:
+Some [quick code removal later](https://github.com/DavidS/puppet-retrospec/tree/remove-future-option) this problem is also fixed:
 
 ```
 Using puppet-retrospec 0.12.0 from file:///home/david/git/puppet-retrospec (at future@a250574)
@@ -143,7 +145,7 @@ Generating tests now didn't fail anymore, but also didn't generate any tests. In
 
 Having no luck with the future branch, I rolled back to the released puppet-retrospec gem and retried everything on a ruby (2.2) that was able to run puppet 3.7, the vendored version. Thankfully Debian provides ruby2.2 and ruby2.2-dev packages, so that was quite "painless".
 
-Corey also hinted at yet [unreleased code that will fix|https://github.com/nwops/puppet-retrospec/pull/55#issuecomment-201893898] these pains.
+Corey also hinted at yet [unreleased code that will fix](https://github.com/nwops/puppet-retrospec/pull/55#issuecomment-201893898) these pains.
 
 Did I say "painless" ? ruby2.2 ALSO cannot run puppet 3.7
 
@@ -155,7 +157,7 @@ Instead I ripped out the vendored safe_yaml gem that is causing the ruby2.3 issu
 
 After more testing, it turned out that just adding safe_yaml to the Gemfile, or installing Debian's ruby-safe-yaml are enough to keep puppet from loading its broken vendored version.
 
-At last the tests are running and are *finally* complaining about something that is wrong with the actual module itself: it can't find the `exim` module. A expected error as it is a dependency I did not migrate into the new metadata.json as it was replaced upstream with a [tp|https://github.com/example42/puppet-tp] plugin.
+At last the tests are running and are *finally* complaining about something that is wrong with the actual module itself: it can't find the `exim` module. A expected error as it is a dependency I did not migrate into the new metadata.json as it was replaced upstream with a [tp](https://github.com/example42/puppet-tp) plugin.
 
 
 But that will be a story for another day.

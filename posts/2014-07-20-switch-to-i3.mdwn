@@ -10,7 +10,7 @@ manually (or used an extension the last few weeks in GNOME). Only much less
 hassle, because i3 does it automatically. And is much more flexible than the
 bugger extension I used in GNOME.
 
-Also, now I have a simple plcae to start my commonly running programs on login
+Also, now I have a simple place to start my commonly running programs on login
 without having to click the clicks.
 
 On the downside, ssh key unlocking still needs some work.
