@@ -163,4 +163,4 @@ At last the tests are running and are *finally* complaining about something that
 But that will be a story for another day.
 
 
-[[!tag puppet testing beaker]]
+[[!tag puppet testing retrospec]]
