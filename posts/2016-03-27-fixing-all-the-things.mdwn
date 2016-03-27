@@ -272,4 +272,4 @@ Another small improvement to the templates, [adding the default compile test](ht
 
 So finally the spec tests for the main class pass. The `*_db_spec` were generated empty, so I need to have a look at them too. Puppet-lint is also complaining massively about my last-year style. And finally, all of these efforts are for naught, if the module doesn't actually configure exim properly, which needs to be validated on a running system. Luckily, tomorrow is another day off!
 
-[[!tag puppet testing beaker]]
+[[!tag puppet testing retrospec exim]]
