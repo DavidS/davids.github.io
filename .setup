@@ -1,10 +1,10 @@
 # IkiWiki::Setup::Yaml - YAML formatted setup file
 #
 # Setup file for ikiwiki.
-# 
+#
 # Passing this to ikiwiki --setup will make ikiwiki generate
 # wrappers and build the wiki.
-# 
+#
 # Remember to re-run ikiwiki --setup any time you edit this file.
 #
 # name of the wiki
@@ -44,7 +44,6 @@ add_plugins:
 - calendar
 - sidebar
 - trail
-- rsync
 - tag
 # plugins to disable
 disable_plugins:
@@ -52,6 +51,8 @@ disable_plugins:
 - rsync
 - comments
 - comments
+- git
+- rsync
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
