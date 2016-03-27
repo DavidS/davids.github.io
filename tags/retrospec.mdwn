@@ -1,0 +1,4 @@
+[[!meta title="pages tagged retrospec"]]
+
+[[!inline pages="tagged(retrospec)" actions="no" archive="yes"
+feedshow=10]]
