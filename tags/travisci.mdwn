@@ -1,0 +1,4 @@
+[[!meta title="pages tagged travisci"]]
+
+[[!inline pages="tagged(travisci)" actions="no" archive="yes"
+feedshow=10]]
