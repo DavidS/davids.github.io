@@ -1,0 +1,4 @@
+[[!meta title="pages tagged fullstack"]]
+
+[[!inline pages="tagged(fullstack)" actions="no" archive="yes"
+feedshow=10]]
