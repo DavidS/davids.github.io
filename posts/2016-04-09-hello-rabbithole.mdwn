@@ -155,4 +155,8 @@ real	3m14.596s
 * I should rename this blog to "Do not ask how the sausages are made."
 * Nesting virtualisation is bad for performance.
 
+## Update
+
+To stave off boredom, I upgraded the vagrant box to Debian "stretch", which is what I'm using on my desktop too. This has the kernel version 4.4.0-1 and suddenly the beaker tests run in 3m27s on hot caches. Not too bad - except for all the hassle.
+
 [[!tag puppet testing retrospec exim travisci beaker docker vagrant fullstack clamav]]
