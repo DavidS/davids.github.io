@@ -1,4 +1,6 @@
-theme: jekyll-theme-time-machine
+# theme: jekyll-theme-time-machine
+# use my hacked up version
+remote_theme: DavidS/time-machine
 show_downloads: false
 baseurl: '/log'
 title: "DavidS' log"
