@@ -5,6 +5,10 @@ show_downloads: false
 # baseurl: '/log'
 title: "DavidS' log"
 author: 'David Schmitt'
+
+plugins:
+  - jekyll-feed
+
 defaults:
   - scope:
       path: ""
