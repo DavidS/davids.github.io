@@ -1,4 +1,0 @@
-[[!meta title="pages tagged foreman"]]
-
-[[!inline pages="tagged(foreman)" actions="no" archive="yes"
-feedshow=10]]

@@ -1,0 +1,13 @@
+theme: jekyll-theme-time-machine
+show_downloads: false
+baseurl: '/log'
+title: "DavidS' log"
+author: 'David Schmitt'
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      # this pattern matches up with previous' ikiwiki URLs for the blog
+      permalink: /posts/:year-:month-:day-:title/index:output_ext

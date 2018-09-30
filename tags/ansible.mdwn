@@ -1,4 +1,0 @@
-[[!meta title="pages tagged ansible"]]
-
-[[!inline pages="tagged(ansible)" actions="no" archive="yes"
-feedshow=10]]

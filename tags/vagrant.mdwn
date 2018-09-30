@@ -1,4 +1,0 @@
-[[!meta title="pages tagged vagrant"]]
-
-[[!inline pages="tagged(vagrant)" actions="no" archive="yes"
-feedshow=10]]

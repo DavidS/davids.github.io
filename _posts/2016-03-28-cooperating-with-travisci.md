@@ -1,0 +1,927 @@
+---
+title: 'Cooperating with Travis CI'
+tags: puppet testing retrospec exim travisci beaker docker
+---
+
+> Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.
+
+This is a continuation of [[yesterday's post|/posts/2016-03-27-fixing-all-the-things.mdwn]], refreshing my [exiscan module](https://github.com/DavidS/puppet-exiscan) using [retrospec-puppet](https://github.com/nwops/puppet-retrospec). Today I'm aiming for getting the `release_checks` running on travis. This should ensure that going forward, the module stays neat and clean.
+
+At [work](https://puppetlabs.com/) we recently released a new version of [puppetlabs_spec_helper](https://github.com/puppetlabs/puppetlabs_spec_helper) that has a new rake task that will run all checks that we want to pass before releasing a module.
+
+# Braindump
+
+The first check is [puppet-lint](http://puppet-lint.com/), but I replaced retrospec's default tests with the ones from Puppet Labs' [modulesync_configs](https://github.com/puppetlabs/modulesync_configs/blob/master/config_defaults.yml#L38-L43):
+
+```
+manifests/greylist_db.pp - WARNING: case statement without a default case on line 11
+manifests/greylist_db.pp - WARNING: double quoted string containing no variables on line 19
+...
+manifests/greylist_db.pp - WARNING: mode should be represented as a 4 digit octal value or symbolic mode on line 33
+manifests/init.pp - WARNING: double quoted string containing no variables on line 11
+...
+manifests/init.pp - WARNING: unquoted resource title on line 36
+manifests/spamassassin.pp - WARNING: double quoted string containing no variables on line 10
+manifests/spamassassin.pp - WARNING: double quoted string containing no variables on line 93
+...
+manifests/spamassassin_db.pp - WARNING: case statement without a default case on line 12
+manifests/spamassassin_db.pp - WARNING: double quoted string containing no variables on line 20
+...
+manifests/spamassassin_db.pp - WARNING: mode should be represented as a 4 digit octal value or symbolic mode on line 34
+```
+
+I skipped duplicate errors, in the above listing, to keep the length down. In the module's current state puppet-lint complained about 64 things. Some string fixing to do. I'll be right back. Also, apparently I missed some file modes, but it turned out that lint is only very particular about what is acceptable for mode values.
+
+Fixing the "case statement without a default case" warning on `greylist_db` reminds me that I desperately need to replace all the validation code with puppet 4 type annotations. Ican't wait to be rid of them!
+
+I also fixed up a few other minor issues with the aesthetics as I worked through the files, like removing unnecessary parenthesis.
+
+Syntax checks and specs worked just fine, thanks to yesterday's labour.
+
+The next thing that fails is
+
+```
+14687107      4 lrwxrwxrwx   1 david    david          56 Mär 26 20:37 ./.git/hooks/pre-commit -> /home/david/.retrospec/repos/puppet-git-hooks/pre-commit
+rake aborted!
+A symlink exists within this directory
+```
+
+This was [fixed by Federico Voges](https://github.com/puppetlabs/puppetlabs_spec_helper/commit/c7acc51e364f1c93b8580baa95476ef3b6185aa8), so I upgrade the puppetlabs_spec_helper reference in the Gemfile to the current master, so I can get rid of the false positive, adjust the .travis.yml file and push everything up to see how it is doing. I adjusted the test matrix to something more sensible, other than the eight cells of outdated versions the default had. Finally I also add the caching instructions and request travis' container infrastructure for less resource usage and quicker answer times.
+
+Of course it failed spectacularly, since I've not yet uploaded my tp fix. Referencing the git branch on github instead, et voila! GREEN!
+
+## Validating the configuration
+
+Now that the module is at least syntactically valid and doesn't blow up at the first touch, I'll try to add some acceptance/validation tests using beaker-rspec. These tests provision a complete setup and try to verify the functionality as deeply as possible. For the exiscan module, this means setting up a host and trying to send a valid mail, a spam, and a virus, and then check that they are correctly filtered. Luckily the retrospec templates have setup beaker tests for us, all ready to go.
+
+Only a few adjustments and we're ready to go:
+
+`spec/acceptance/nodesets/default.yml` needs to be changed to be a debian 8 box:
+
+```
+HOSTS:
+  debian-8-x64:
+    roles:
+      - agent
+      - default
+    platform: debian-8-amd64
+    box: puppetlabs/debian-8.2-64-nocm
+    hypervisor: vagrant
+CONFIG:
+  log_level: debug
+  type: git
+```
+
+All other nodesets can be deleted, as I'm only targeting one distro.
+
+Here is the first "successful" beaker run:
+
+```
+david@zion:~/git/davids-exiscan$ PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no bundle exec rake beaker
+/usr/bin/ruby2.3 -I/home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/lib:/home/david/gems/ruby/2.3.0/gems/rspec-support-3.4.1/lib /home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/exe/rspec spec/acceptance --color
+/home/david/gems/ruby/2.3.0/bundler/gems/beaker-rspec-a617f7bbc3e6/lib/beaker-rspec/helpers/serverspec.rb:43: warning: already initialized constant Module::VALID_OPTIONS_KEYS
+/home/david/gems/ruby/2.3.0/gems/specinfra-2.54.1/lib/specinfra/configuration.rb:4: warning: previous definition of VALID_OPTIONS_KEYS was here
+Hypervisor for debian-8-x64 is vagrant
+Beaker::Hypervisor, found some vagrant boxes to create
+==> debian-8-x64: Forcing shutdown of VM...
+==> debian-8-x64: Destroying VM and associated drives...
+created Vagrantfile for VagrantHost debian-8-x64
+Bringing machine 'debian-8-x64' up with 'virtualbox' provider...
+==> debian-8-x64: Importing base box 'puppetlabs/debian-8.2-64-nocm'...
+Progress: 10%Progress: 20%Progress: 40%Progress: 60%Progress: 70%Progress: 80%Progress: 90%==> debian-8-x64: Matching MAC address for NAT networking...
+==> debian-8-x64: Checking if box 'puppetlabs/debian-8.2-64-nocm' is up to date...
+==> debian-8-x64: A newer version of the box 'puppetlabs/debian-8.2-64-nocm' is available! You currently
+==> debian-8-x64: have version '1.0.0'. The latest is version '1.0.1'. Run
+==> debian-8-x64: `vagrant box update` to update.
+==> debian-8-x64: Setting the name of the VM: defaultyml_debian-8-x64_1459190378202_18534
+==> debian-8-x64: Clearing any previously set network interfaces...
+==> debian-8-x64: Preparing network interfaces based on configuration...
+    debian-8-x64: Adapter 1: nat
+    debian-8-x64: Adapter 2: hostonly
+==> debian-8-x64: Forwarding ports...
+    debian-8-x64: 22 (guest) => 2222 (host) (adapter 1)
+==> debian-8-x64: Running 'pre-boot' VM customizations...
+==> debian-8-x64: Booting VM...
+==> debian-8-x64: Waiting for machine to boot. This may take a few minutes...
+    debian-8-x64: SSH address: 127.0.0.1:2222
+    debian-8-x64: SSH username: vagrant
+    debian-8-x64: SSH auth method: private key
+==> debian-8-x64: Machine booted and ready!
+==> debian-8-x64: Checking for guest additions in VM...
+    debian-8-x64: The guest additions on this VM do not match the installed version of
+    debian-8-x64: VirtualBox! In most cases this is fine, but in rare cases it can
+    debian-8-x64: prevent things such as shared folders from working properly. If you see
+    debian-8-x64: shared folder errors, please make sure the guest additions within the
+    debian-8-x64: virtual machine match the version of VirtualBox you have installed on
+    debian-8-x64: your host and reload your VM.
+    debian-8-x64:
+    debian-8-x64: Guest Additions Version: 4.3.22
+    debian-8-x64: VirtualBox Version: 5.0
+==> debian-8-x64: Setting hostname...
+==> debian-8-x64: Configuring and enabling network interfaces...
+==> debian-8-x64: Mounting shared folders...
+    debian-8-x64: /vagrant => /home/david/git/davids-exiscan/.vagrant/beaker_vagrant_files/default.yml
+configure vagrant boxes (set ssh-config, switch to root user, hack etc/hosts)
+Give root a copy of current user's keys, on debian-8-x64
+
+debian-8-x64 19:40:05$ sudo su -c "cp -r .ssh /root/."
+  Attempting ssh connection to 10.255.181.132, user: vagrant, opts: {:config=>"/tmp/debian-8-x6420160328-18447-cwdn8w"}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  Allocated a PTY on debian-8-x64 for "sudo su -c \"cp -r .ssh /root/.\""
+
+debian-8-x64 executed in 0.14 seconds
+Update /etc/ssh/sshd_config to allow root login
+
+debian-8-x64 19:40:05$ sudo su -c "sed -ri 's/^#?PermitRootLogin no|^#?PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config"
+  Allocated a PTY on debian-8-x64 for "sudo su -c \"sed -ri 's/^#?PermitRootLogin no|^#?PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config\""
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:05$ sudo su -c "service ssh restart"
+  Allocated a PTY on debian-8-x64 for "sudo su -c \"service ssh restart\""
+
+debian-8-x64 executed in 0.04 seconds
+Warning: ssh connection to debian-8-x64 has been terminated
+
+debian-8-x64 19:40:07$ cat /etc/resolv.conf
+  Attempting ssh connection to 10.255.181.132, user: root, opts: {:config=>"/tmp/debian-8-x6420160328-18447-125v0dx"}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  nameserver 10.0.2.3
+
+debian-8-x64 executed in 0.14 seconds
+
+debian-8-x64 19:40:07$ echo '127.0.0.1	localhost localhost.localdomain
+10.255.181.132	debian-8-x64. debian-8-x64
+' >> /etc/hosts
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:07$ dpkg -s curl
+  Package: curl
+  Status: install ok installed
+  Priority: optional
+  Section: web
+  Installed-Size: 325
+  Maintainer: Alessandro Ghedini <ghedo@debian.org>
+  Architecture: amd64
+  Multi-Arch: foreign
+  Version: 7.38.0-4+deb8u2
+  Depends: libc6 (>= 2.17), libcurl3 (= 7.38.0-4+deb8u2), zlib1g (>= 1:1.1.4)
+  Description: command line tool for transferring data with URL syntax
+   curl is a command line tool for transferring data with URL syntax, supporting
+   DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3,
+   POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP.
+   .
+   curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form
+   based upload, proxies, cookies, user+password authentication (Basic, Digest,
+   NTLM, Negotiate, kerberos...), file transfer resume, proxy tunneling and a
+   busload of other useful tricks.
+  Homepage: http://curl.haxx.se
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:07$ dpkg -s ntpdate
+  dpkg-query: package 'ntpdate' is not installed and no information is available
+  Use dpkg --info (= dpkg-deb --info) to examine archive files,
+  and dpkg --contents (= dpkg-deb --contents) to list their contents.
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:07$ apt-get update
+  Get:1 http://security.debian.org jessie/updates InRelease [63.1 kB]
+  Ign http://http.us.debian.org jessie InRelease
+  Get:2 http://security.debian.org jessie/updates/main Sources [122 kB]
+  Get:3 http://http.us.debian.org jessie-updates InRelease [142 kB]
+  Get:4 http://security.debian.org jessie/updates/main amd64 Packages [221 kB]
+  Get:5 http://security.debian.org jessie/updates/main Translation-en [122 kB]
+  Get:6 http://http.us.debian.org jessie Release.gpg [2,373 B]
+  Get:7 http://http.us.debian.org jessie-updates/main Sources [4,092 B]
+  Get:8 http://http.us.debian.org jessie-updates/main amd64 Packages/DiffIndex [1,504 B]
+  Get:9 http://http.us.debian.org jessie-updates/main Translation-en/DiffIndex [736 B]
+  Get:10 http://http.us.debian.org jessie Release [148 kB]
+  Get:11 http://http.us.debian.org jessie-updates/main amd64 2016-03-04-0853.34.pdiff [3,697 B]
+  Get:12 http://http.us.debian.org jessie-updates/main amd64 2016-03-26-2053.48.pdiff [527 B]
+  Get:13 http://http.us.debian.org jessie-updates/main amd64 2016-03-26-2053.48.pdiff [527 B]
+  Get:14 http://http.us.debian.org jessie-updates/main 2016-03-04-0853.34.pdiff [1,371 B]
+  Get:15 http://http.us.debian.org jessie-updates/main 2016-03-04-0853.34.pdiff [1,371 B]
+  Get:16 http://http.us.debian.org jessie/main Sources [7,058 kB]
+  Get:17 http://http.us.debian.org jessie/main amd64 Packages [6,763 kB]
+  Get:18 http://http.us.debian.org jessie/main Translation-en [4,582 kB]
+  Fetched 19.2 MB in 11s (1,614 kB/s)
+  Reading package lists...
+
+debian-8-x64 executed in 11.29 seconds
+
+debian-8-x64 19:40:18$ apt-get install --force-yes  -y ntpdate
+  Reading package lists...
+  Building dependency tree...
+  Reading state information...
+  The following extra packages will be installed:
+    lockfile-progs
+  The following NEW packages will be installed:
+    lockfile-progs ntpdate
+  0 upgraded, 2 newly installed, 0 to remove and 88 not upgraded.
+  Need to get 85.5 kB of archives.
+  After this operation, 306 kB of additional disk space will be used.
+  Get:1 http://http.us.debian.org/debian/ jessie/main ntpdate amd64 1:4.2.6.p5+dfsg-7+deb8u1 [74.5 kB]
+  Get:2 http://http.us.debian.org/debian/ jessie/main lockfile-progs amd64 0.1.17 [11.0 kB]
+  debconf: unable to initialize frontend: Dialog
+  debconf: (TERM is not set, so the dialog frontend is not usable.)
+  debconf: falling back to frontend: Readline
+  debconf: unable to initialize frontend: Readline
+  debconf: (This frontend requires a controlling tty.)
+  debconf: falling back to frontend: Teletype
+  dpkg-preconfigure: unable to re-open stdin:
+  Fetched 85.5 kB in 0s (123 kB/s)
+  Selecting previously unselected package ntpdate.
+  (Reading database ...   (Reading database ... 5%  (Reading database ... 10%  (Reading database ... 15%  (Reading database ... 20%  (Reading database ... 25%  (Reading database ... 30%  (Reading database ... 35%  (Reading database ... 40%  (Reading database ... 45%  (Reading database ... 50%  (Reading database ... 55%  (Reading database ... 60%  (Reading database ... 65%  (Reading database ... 70%  (Reading database ... 75%  (Reading database ... 80%  (Reading database ... 85%  (Reading database ... 90%  (Reading database ... 95%  (Reading database ... 100%  (Reading database ...   46030 files and directories currently installed.)
+  Preparing to unpack .../ntpdate_1%3a4.2.6.p5+dfsg-7+deb8u1_amd64.deb ...
+  Unpacking ntpdate (1:4.2.6.p5+dfsg-7+deb8u1) ...
+  Selecting previously unselected package lockfile-progs.
+  Preparing to unpack .../lockfile-progs_0.1.17_amd64.deb ...
+  Unpacking lockfile-progs (0.1.17) ...
+  Processing triggers for man-db (2.7.0.2-5) ...
+  Setting up ntpdate (1:4.2.6.p5+dfsg-7+deb8u1) ...
+  Setting up lockfile-progs (0.1.17) ...
+
+debian-8-x64 executed in 1.70 seconds
+
+debian-8-x64 19:40:20$ dpkg -s lsb-release
+  Package: lsb-release
+  Status: install ok installed
+  Priority: optional
+  Section: misc
+  Installed-Size: 97
+  Maintainer: Debian LSB Team <debian-lsb@lists.debian.org>
+  Architecture: all
+  Multi-Arch: foreign
+  Source: lsb
+  Version: 4.1+Debian13+nmu1
+  Depends: python (>= 2.7), python (<< 2.8)
+  Recommends: apt
+  Suggests: lsb
+  Description: Linux Standard Base version reporting utility
+   The Linux Standard Base (http://www.linuxbase.org/) is a standard
+   core system that third-party applications written for Linux can
+   depend upon.
+   .
+   The lsb-release command is a simple tool to help identify the Linux
+   distribution being used and its compliance with the Linux Standard Base.
+   LSB conformance will not be reported unless the required metapackages are
+   installed.
+   .
+   While it is intended for use by LSB packages, this command may also
+   be useful for programmatically distinguishing between a pure Debian
+   installation and derived distributions.
+  Homepage: http://www.linuxfoundation.org/collaborate/workgroups/lsb
+
+debian-8-x64 executed in 0.04 seconds
+setting local environment on debian-8-x64
+
+debian-8-x64 19:40:20$ getent passwd root
+  root:x:0:0:root:/root:/bin/bash
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mktemp -dt .XXXXXX
+  /tmp/.3yIuRm
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ chown root:root /tmp/.3yIuRm
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ echo 'PermitUserEnvironment yes' | cat - /etc/ssh/sshd_config > /tmp/.3yIuRm/sshd_config.permit
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mv /tmp/.3yIuRm/sshd_config.permit /etc/ssh/sshd_config
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ service ssh restart
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mkdir -p ~/.ssh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ chmod 0600 ~/.ssh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ touch ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ grep ^PATH=.*\$PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:20$ grep ^PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:20$ echo "PATH=$PATH" >> ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat << EOF > /etc/profile.d/beaker_env.sh
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ echo "/usr/bin"
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ echo "/opt/puppet-git-repos/hiera/bin"
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:21$ grep ^PATH ~/.ssh/environment
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ sed -i -e "s/^PATH=/PATH=\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin:/" ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat << EOF > /etc/profile.d/beaker_env.sh
+export PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ grep ^PATH=.*PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:21$ grep ^PATH ~/.ssh/environment
+  PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ sed -i -e "s/^PATH=/PATH=PATH:/" ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat << EOF > /etc/profile.d/beaker_env.sh
+export PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+Warning: ssh connection to debian-8-x64 has been terminated
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  Attempting ssh connection to 10.255.181.132, user: root, opts: {:config=>"/tmp/debian-8-x6420160328-18447-125v0dx", :user=>"root"}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.13 seconds
+Disabling updates.puppetlabs.com by modifying hosts file to resolve updates to 127.0.0.1 on debian-8-x64
+
+debian-8-x64 19:40:21$ echo '127.0.0.1	updates.puppetlabs.com
+' >> /etc/hosts
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:22$ wget -O /tmp/puppet.deb http://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+  --2016-03-28 11:40:22--  http://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+  Resolving apt.puppetlabs.com (apt.puppetlabs.com)...   192.155.89.90  ,   2600:3c03::f03c:91ff:fedb:6b1d
+  Connecting to apt.puppetlabs.com (apt.puppetlabs.com)|192.155.89.90|:80...   connected.
+  HTTP request sent, awaiting response...   200 OK
+  Length:   7368   (7.2K)   [application/x-debian-package]
+  Saving to: ‘/tmp/puppet.deb’
+
+       0K     .  .  .  .  .  .  .                                                                                           100% 7.93M=0.001s
+
+  2016-03-28 11:40:22 (7.93 MB/s) - ‘/tmp/puppet.deb’ saved [7368/7368]
+
+debian-8-x64 executed in 0.41 seconds
+
+debian-8-x64 19:40:22$ dpkg -i --force-all /tmp/puppet.deb
+  Selecting previously unselected package puppetlabs-release.
+  (Reading database ... 46063 files and directories currently installed.)
+  Preparing to unpack /tmp/puppet.deb ...
+  Unpacking puppetlabs-release (1.0-11) ...
+  Setting up puppetlabs-release (1.0-11) ...
+
+  Configuration file `/etc/apt/trusted.gpg.d/puppetlabs-keyring.gpg', does not exist on system.
+  Installing new config file as you requested.
+
+  Configuration file `/etc/apt/trusted.gpg.d/puppetlabs-nightly-keyring.gpg', does not exist on system.
+  Installing new config file as you requested.
+
+  Configuration file `/etc/apt/sources.list.d/puppetlabs.list', does not exist on system.
+  Installing new config file as you requested.
+
+debian-8-x64 executed in 0.22 seconds
+
+debian-8-x64 19:40:22$ apt-get update
+  Hit http://security.debian.org jessie/updates InRelease
+  Hit http://security.debian.org jessie/updates/main Sources
+  Hit http://security.debian.org jessie/updates/main amd64 Packages
+  Ign http://http.us.debian.org jessie InRelease
+  Ign http://apt.puppetlabs.com jessie InRelease
+  Hit http://security.debian.org jessie/updates/main Translation-en
+  Hit http://http.us.debian.org jessie-updates InRelease
+  Get:1 http://apt.puppetlabs.com jessie Release.gpg [836 B]
+  Hit http://http.us.debian.org jessie Release.gpg
+  Get:2 http://apt.puppetlabs.com jessie Release [24.3 kB]
+  Hit http://http.us.debian.org jessie-updates/main Sources
+  Get:3 http://http.us.debian.org jessie-updates/main amd64 Packages/DiffIndex [1,504 B]
+  Get:4 http://apt.puppetlabs.com jessie/main Sources [685 B]
+  Get:5 http://http.us.debian.org jessie-updates/main Translation-en/DiffIndex [736 B]
+  Get:6 http://apt.puppetlabs.com jessie/dependencies Sources [682 B]
+  Hit http://http.us.debian.org jessie Release
+  Get:7 http://apt.puppetlabs.com jessie/main amd64 Packages [410 B]
+  Hit http://http.us.debian.org jessie/main Sources
+  Get:8 http://apt.puppetlabs.com jessie/dependencies amd64 Packages [413 B]
+  Hit http://http.us.debian.org jessie/main amd64 Packages
+  Hit http://http.us.debian.org jessie/main Translation-en
+  Ign http://apt.puppetlabs.com jessie/dependencies Translation-en_US
+  Ign http://apt.puppetlabs.com jessie/dependencies Translation-en
+  Ign http://apt.puppetlabs.com jessie/main Translation-en_US
+  Ign http://apt.puppetlabs.com jessie/main Translation-en
+  Fetched 29.6 kB in 4s (5,973 B/s)
+  Reading package lists...
+
+debian-8-x64 executed in 5.86 seconds
+
+debian-8-x64 19:40:28$ echo "/usr/bin"
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ echo "/opt/puppet-git-repos/hiera/bin"
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ grep ^PATH=.*PATH ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ apt-get install --force-yes  -y puppet
+  Reading package lists...
+  Building dependency tree...
+  Reading state information...
+  The following extra packages will be installed:
+    augeas-lenses debconf-utils facter hiera javascript-common libaugeas0
+    libjs-jquery libruby2.1 libyaml-0-2 puppet-common ruby ruby-augeas
+    ruby-hiera ruby-json ruby-rgen ruby-safe-yaml ruby-selinux ruby-shadow
+    ruby2.1 rubygems-integration virt-what
+  Suggested packages:
+    augeas-doc mcollective-common apache2 lighttpd httpd augeas-tools puppet-el
+    vim-puppet etckeeper ruby-rrd librrd-ruby ri ruby-dev bundler
+  The following NEW packages will be installed:
+    augeas-lenses debconf-utils facter hiera javascript-common libaugeas0
+    libjs-jquery libruby2.1 libyaml-0-2 puppet puppet-common ruby ruby-augeas
+    ruby-hiera ruby-json ruby-rgen ruby-safe-yaml ruby-selinux ruby-shadow
+    ruby2.1 rubygems-integration virt-what
+  0 upgraded, 22 newly installed, 0 to remove and 88 not upgraded.
+  Need to get 5,758 kB of archives.
+  After this operation, 24.2 MB of additional disk space will be used.
+  Get:1 http://http.us.debian.org/debian/ jessie/main libyaml-0-2 amd64 0.1.6-3 [50.4 kB]
+  Get:2 http://http.us.debian.org/debian/ jessie/main augeas-lenses all 1.2.0-0.2+deb8u1 [335 kB]
+  Get:3 http://http.us.debian.org/debian/ jessie/main debconf-utils all 1.5.56 [57.6 kB]
+  Get:4 http://http.us.debian.org/debian/ jessie/main libruby2.1 amd64 2.1.5-2+deb8u2 [3,278 kB]
+  Get:5 http://http.us.debian.org/debian/ jessie/main rubygems-integration all 1.8 [4,514 B]
+  Get:6 http://http.us.debian.org/debian/ jessie/main ruby2.1 amd64 2.1.5-2+deb8u2 [275 kB]
+  Get:7 http://http.us.debian.org/debian/ jessie/main ruby all 1:2.1.5+deb8u1 [9,620 B]
+  Get:8 http://http.us.debian.org/debian/ jessie/main ruby-json amd64 1.8.1-1+b2 [52.1 kB]
+  Get:9 http://http.us.debian.org/debian/ jessie/main facter all 2.2.0-1 [74.5 kB]
+  Get:10 http://http.us.debian.org/debian/ jessie/main hiera all 1.3.4-1 [18.0 kB]
+  Get:11 http://http.us.debian.org/debian/ jessie/main javascript-common all 11 [6,120 B]
+  Get:12 http://http.us.debian.org/debian/ jessie/main libaugeas0 amd64 1.2.0-0.2+deb8u1 [256 kB]
+  Get:13 http://http.us.debian.org/debian/ jessie/main libjs-jquery all 1.7.2+dfsg-3.2 [97.5 kB]
+  Get:14 http://http.us.debian.org/debian/ jessie/main ruby-augeas amd64 0.5.0-2+b2 [11.2 kB]
+  Get:15 http://http.us.debian.org/debian/ jessie/main ruby-hiera all 1.3.4-1 [2,890 B]
+  Get:16 http://http.us.debian.org/debian/ jessie/main ruby-safe-yaml all 1.0.3-1 [18.4 kB]
+  Get:17 http://http.us.debian.org/debian/ jessie/main ruby-shadow amd64 2.3.4-2 [11.0 kB]
+  Get:18 http://http.us.debian.org/debian/ jessie/main puppet-common all 3.7.2-4 [1,010 kB]
+  Get:19 http://http.us.debian.org/debian/ jessie/main puppet all 3.7.2-4 [25.7 kB]
+  Get:20 http://http.us.debian.org/debian/ jessie/main ruby-rgen all 0.7.0-1 [73.5 kB]
+  Get:21 http://http.us.debian.org/debian/ jessie/main ruby-selinux amd64 2.3-2 [77.0 kB]
+  Get:22 http://http.us.debian.org/debian/ jessie/main virt-what amd64 1.14-1 [12.9 kB]
+  debconf: unable to initialize frontend: Dialog
+  debconf: (TERM is not set, so the dialog frontend is not usable.)
+  debconf: falling back to frontend: Readline
+  debconf: unable to initialize frontend: Readline
+  debconf: (This frontend requires a controlling tty.)
+  debconf: falling back to frontend: Teletype
+  dpkg-preconfigure: unable to re-open stdin:
+  Fetched 5,758 kB in 6s (957 kB/s)
+  Selecting previously unselected package libyaml-0-2:amd64.
+  (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 46070 files and directories currently installed.)
+  Preparing to unpack .../libyaml-0-2_0.1.6-3_amd64.deb ...
+  Unpacking libyaml-0-2:amd64 (0.1.6-3) ...
+  Selecting previously unselected package augeas-lenses.
+  Preparing to unpack .../augeas-lenses_1.2.0-0.2+deb8u1_all.deb ...
+  Unpacking augeas-lenses (1.2.0-0.2+deb8u1) ...
+  Selecting previously unselected package debconf-utils.
+  Preparing to unpack .../debconf-utils_1.5.56_all.deb ...
+  Unpacking debconf-utils (1.5.56) ...
+  Selecting previously unselected package libruby2.1:amd64.
+  Preparing to unpack .../libruby2.1_2.1.5-2+deb8u2_amd64.deb ...
+  Unpacking libruby2.1:amd64 (2.1.5-2+deb8u2) ...
+  Selecting previously unselected package rubygems-integration.
+  Preparing to unpack .../rubygems-integration_1.8_all.deb ...
+  Unpacking rubygems-integration (1.8) ...
+  Selecting previously unselected package ruby2.1.
+  Preparing to unpack .../ruby2.1_2.1.5-2+deb8u2_amd64.deb ...
+  Unpacking ruby2.1 (2.1.5-2+deb8u2) ...
+  Selecting previously unselected package ruby.
+  Preparing to unpack .../ruby_1%3a2.1.5+deb8u1_all.deb ...
+  Unpacking ruby (1:2.1.5+deb8u1) ...
+  Selecting previously unselected package ruby-json.
+  Preparing to unpack .../ruby-json_1.8.1-1+b2_amd64.deb ...
+  Unpacking ruby-json (1.8.1-1+b2) ...
+  Selecting previously unselected package facter.
+  Preparing to unpack .../facter_2.2.0-1_all.deb ...
+  Unpacking facter (2.2.0-1) ...
+  Selecting previously unselected package hiera.
+  Preparing to unpack .../archives/hiera_1.3.4-1_all.deb ...
+  Unpacking hiera (1.3.4-1) ...
+  Selecting previously unselected package javascript-common.
+  Preparing to unpack .../javascript-common_11_all.deb ...
+  Unpacking javascript-common (11) ...
+  Selecting previously unselected package libaugeas0.
+  Preparing to unpack .../libaugeas0_1.2.0-0.2+deb8u1_amd64.deb ...
+  Unpacking libaugeas0 (1.2.0-0.2+deb8u1) ...
+  Selecting previously unselected package libjs-jquery.
+  Preparing to unpack .../libjs-jquery_1.7.2+dfsg-3.2_all.deb ...
+  Unpacking libjs-jquery (1.7.2+dfsg-3.2) ...
+  Selecting previously unselected package ruby-augeas.
+  Preparing to unpack .../ruby-augeas_0.5.0-2+b2_amd64.deb ...
+  Unpacking ruby-augeas (0.5.0-2+b2) ...
+  Selecting previously unselected package ruby-hiera.
+  Preparing to unpack .../ruby-hiera_1.3.4-1_all.deb ...
+  Unpacking ruby-hiera (1.3.4-1) ...
+  Selecting previously unselected package ruby-safe-yaml.
+  Preparing to unpack .../ruby-safe-yaml_1.0.3-1_all.deb ...
+  Unpacking ruby-safe-yaml (1.0.3-1) ...
+  Selecting previously unselected package ruby-shadow.
+  Preparing to unpack .../ruby-shadow_2.3.4-2_amd64.deb ...
+  Unpacking ruby-shadow (2.3.4-2) ...
+  Selecting previously unselected package puppet-common.
+  Preparing to unpack .../puppet-common_3.7.2-4_all.deb ...
+  Unpacking puppet-common (3.7.2-4) ...
+  Selecting previously unselected package puppet.
+  Preparing to unpack .../puppet_3.7.2-4_all.deb ...
+  Unpacking puppet (3.7.2-4) ...
+  Selecting previously unselected package ruby-rgen.
+  Preparing to unpack .../ruby-rgen_0.7.0-1_all.deb ...
+  Unpacking ruby-rgen (0.7.0-1) ...
+  Selecting previously unselected package ruby-selinux.
+  Preparing to unpack .../ruby-selinux_2.3-2_amd64.deb ...
+  Unpacking ruby-selinux (2.3-2) ...
+  Selecting previously unselected package virt-what.
+  Preparing to unpack .../virt-what_1.14-1_amd64.deb ...
+  Unpacking virt-what (1.14-1) ...
+  Processing triggers for man-db (2.7.0.2-5) ...
+  Processing triggers for systemd (215-17+deb8u2) ...
+  Setting up libyaml-0-2:amd64 (0.1.6-3) ...
+  Setting up augeas-lenses (1.2.0-0.2+deb8u1) ...
+  Setting up debconf-utils (1.5.56) ...
+  Setting up libruby2.1:amd64 (2.1.5-2+deb8u2) ...
+  Setting up rubygems-integration (1.8) ...
+  Setting up ruby2.1 (2.1.5-2+deb8u2) ...
+  Setting up ruby (1:2.1.5+deb8u1) ...
+  Setting up ruby-json (1.8.1-1+b2) ...
+  Setting up facter (2.2.0-1) ...
+  Setting up hiera (1.3.4-1) ...
+  Setting up javascript-common (11) ...
+  Setting up libaugeas0 (1.2.0-0.2+deb8u1) ...
+  Setting up libjs-jquery (1.7.2+dfsg-3.2) ...
+  Setting up ruby-augeas (0.5.0-2+b2) ...
+  Setting up ruby-hiera (1.3.4-1) ...
+  Setting up ruby-safe-yaml (1.0.3-1) ...
+  Setting up ruby-shadow (2.3.4-2) ...
+  Setting up puppet-common (3.7.2-4) ...
+  Setting up puppet (3.7.2-4) ...
+  Setting up ruby-rgen (0.7.0-1) ...
+  Setting up ruby-selinux (2.3-2) ...
+  Setting up virt-what (1.14-1) ...
+  Processing triggers for libc-bin (2.19-18+deb8u1) ...
+  Processing triggers for systemd (215-17+deb8u2) ...
+
+debian-8-x64 executed in 9.86 seconds
+
+debian-8-x64 19:40:38$ echo "/usr/bin"
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ echo "/opt/puppet-git-repos/hiera/bin"
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ grep ^PATH=.*PATH ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ mkdir -p /etc/puppet
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ puppet agent --configprint hiera_config
+  /etc/puppet/hiera.yaml
+
+debian-8-x64 executed in 0.64 seconds
+
+debian-8-x64 19:40:39$ echo '' >> /etc/puppet/hiera.yaml
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:39$ mkdir -p /etc/puppet/modules
+
+debian-8-x64 executed in 0.04 seconds
+No examples found.
+
+debian-8-x64 19:40:39$ echo /etc/puppet/modules
+  /etc/puppet/modules
+
+debian-8-x64 executed in 0.04 seconds
+Using scp to transfer /home/david/git/davids-exiscan to /etc/puppet/modules/exiscan
+localhost $ scp /home/david/git/davids-exiscan debian-8-x64:/etc/puppet/modules {:ignore => [".bundle", ".git", ".idea", ".vagrant", ".vendor", "vendor", "acceptance", "bundle", "spec", "tests", "log", ".", ".."]}
+going to ignore (?-mix:((\/|\A)\.bundle(\/|\z))|((\/|\A)\.git(\/|\z))|((\/|\A)\.idea(\/|\z))|((\/|\A)\.vagrant(\/|\z))|((\/|\A)\.vendor(\/|\z))|((\/|\A)vendor(\/|\z))|((\/|\A)acceptance(\/|\z))|((\/|\A)bundle(\/|\z))|((\/|\A)spec(\/|\z))|((\/|\A)tests(\/|\z))|((\/|\A)log(\/|\z))|((\/|\A)\.(\/|\z))|((\/|\A)\.\.(\/|\z)))
+
+debian-8-x64 19:40:49$ rm -rf /etc/puppet/modules/exiscan
+
+debian-8-x64 executed in 0.05 seconds
+
+debian-8-x64 19:40:50$ mv /etc/puppet/modules/davids-exiscan /etc/puppet/modules/exiscan
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:50$ puppet module install puppetlabs-stdlib
+  Notice: Preparing to install into /etc/puppet/modules ...
+  Notice: Downloading from https://forgeapi.puppetlabs.com ...
+  Notice: Installing -- do not interrupt ...
+  /etc/puppet/modules
+  └── puppetlabs-stdlib (v4.11.0)
+
+debian-8-x64 executed in 5.60 seconds
+
+Finished in 16.2 seconds (files took 1 minute 15.57 seconds to load)
+0 examples, 0 failures
+
+david@zion:~/git/davids-exiscan$
+```
+
+
+Once the vagrant hosts have been configured correctly, I can add BEAKER_provision=no and save quite a bit of time by re-using the existing boxes.
+
+
+The first example is the trivial "it needs to apply correctly":
+
+```
+require 'spec_helper_acceptance'
+
+describe 'exiscan' do
+  before(:all) do
+    @manifest = <<-PP
+      class {
+        'exiscan':
+          sa_bayes_sql_dsn      => 'sa_bayes_sql_dsn_value',
+          sa_bayes_sql_username => 'sa_bayes_sql_username_value',
+          greylist_dsn          => 'greylist_dsn',
+          greylist_sql_username => 'greylist_sql_username_value',
+      }
+    PP
+    @result = apply_manifest_on default, @manifest, accepted_exitcodes: [0..255]
+  end
+
+  it 'runs with changes' do
+    expect(@result.exit_code).to eq 2
+  end
+end
+```
+
+in `spec/acceptance/exiscan_spec.rb`. Of course this requires also a proper set of modules installed, since beaker-rspec can't re-use the `.fixtures.yml` from `puppetlabs_spec_helper`. Or, `puppetlabs_spec_helper` doesn't correctly set up fixtures for beaker, or whatever. Again the hacked version of tp rears its ugly head.
+
+```
+# Install this module
+copy_module_to(host, :source => proj_root, :module_name => 'exiscan')
+# List other dependencies here so they are installed on the host
+on host, puppet('module', 'install', 'example42-tinydata')
+# on host, puppet('module', 'install', 'example42-tp')
+install_dev_puppet_module( :source => './spec/fixtures/modules/tp', :module_name => 'tp' )
+on host, puppet('module', 'install', 'puppetlabs-stdlib')
+on host, puppet('module', 'install', 'ripienaar-concat')
+```
+
+I hack-upon-hack and re-use the already installed `./spec/fixtures/modules/tp`. It might be interesting to ask beaker-rspec to just deploy that directory to the master, but then the main symlink becomes a liability. Ugh.
+
+Meanwhile I realize that the retrospec templates are not yet using [beaker-puppet_install_helper](https://github.com/puppetlabs/beaker-puppet_install_helper/), and the installed puppet defaulted to 3.7.something. Ugh.
+
+The helper code looks like this:
+
+```
+require 'beaker/puppet_install_helper'
+run_puppet_install_helper
+```
+
+Much better, but I need to re-provision the nodes.
+
+```
+/home/david/git/davids-exiscan/spec/spec_helper_acceptance.rb:2:in `require': cannot load such file -- beaker-puppet_install_helper (LoadError)
+```
+
+I might want to add the helper to the Gemfile, though...
+
+
+It is alive!
+
+One minor change is needed for the test:
+
+```
+@result = apply_manifest_on default, @manifest, accept_all_exit_codes: true, expect_changes: true
+```
+
+This will enable detailed exit codes and allow the spec to do the testing. This needs to go away anyways, as I won't copy and paste this call all over the tests. For now it is fine, as it is, and runs green.
+
+# Gareth's Greatest Trick
+
+Recently Gareth Rushgrove has hacked up a [patch to run beaker tests in docker on travisci](https://github.com/puppetlabs/puppetlabs-ntp/pull/320). This is the last thing I want to try for today.
+
+I add the entry to the travisci matrix, adjust the nodeset file:
+
+```
+HOSTS:
+  debian-8-x64:
+    roles:
+      - agent
+      - default
+    platform: debian-8-amd64
+    image: debian:8
+    hypervisor: docker
+    docker_preserve_image: true
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'apt-get install -y net-tools wget'
+CONFIG:
+  log_level: debug
+  trace_limit: 200
+```
+
+and run
+
+```
+david@zion:~/git/davids-exiscan$ PUPPET_INSTALL_TYPE=agent BEAKER_set="docker/debian-8" bundle exec rake beaker
+/usr/bin/ruby2.3 -I/home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/lib:/home/david/gems/ruby/2.3.0/gems/rspec-support-3.4.1/lib /home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/exe/rspec spec/acceptance --color
+/home/david/gems/ruby/2.3.0/bundler/gems/beaker-rspec-a617f7bbc3e6/lib/beaker-rspec/helpers/serverspec.rb:43: warning: already initialized constant Module::VALID_OPTIONS_KEYS
+/home/david/gems/ruby/2.3.0/gems/specinfra-2.54.1/lib/specinfra/configuration.rb:4: warning: previous definition of VALID_OPTIONS_KEYS was here
+Hypervisor for debian-8-x64 is docker
+Beaker::Hypervisor, found some docker boxes to create
+get
+/v1.16/version
+{}
+
+Provisioning docker
+provisioning debian-8-x64
+Creating image
+Dockerfile is           FROM debian:8
+            RUN apt-get update
+            RUN apt-get install -y openssh-server openssh-client curl ntpdate lsb-release
+          RUN mkdir -p /var/run/sshd
+          RUN echo root:root | chpasswd
+          RUN sed -ri 's/^#?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+          RUN sed -ri 's/^#?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+RUN apt-get install -y net-tools wget
+          EXPOSE 22
+          CMD ["/sbin/init"]
+post
+/v1.16/build
+{:rm=>true}
+Dockerfile0000640000000000000000000000076712676310361013323 0ustar00wheelwheel00000000000000          FROM debian:8
+            RUN apt-get update
+            RUN apt-get install -y openssh-server openssh-client curl ntpdate lsb-release
+          RUN mkdir -p /var/run/sshd
+          RUN echo root:root | chpasswd
+          RUN sed -ri 's/^#?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+          RUN sed -ri 's/^#?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+RUN apt-get install -y net-tools wget
+          EXPOSE 22
+          CMD ["/sbin/init"]
+
+Creating container from image 52103cc9f308
+post
+/v1.16/containers/create
+{}
+{"Image":"52103cc9f308","Hostname":"debian-8-x64"}
+Starting container 817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128
+post
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/start
+{}
+{"PublishAllPorts":true,"Privileged":true}
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+Using docker server at 0.0.0.0
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+node available as  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@0.0.0.0 -p 32770
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+
+debian-8-x64 21:15:47$ cat /etc/resolv.conf
+  Attempting ssh connection to 0.0.0.0, user: root, opts: {:password=>"root", :port=>"32770", :forward_agent=>false}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  Warning: Try 1 -- Host 0.0.0.0 unreachable: Net::SSH::Disconnect - connection closed by remote host
+  Warning: Trying again in 3 seconds
+  Attempting ssh connection to 0.0.0.0, user: root, opts: {:password=>"root", :port=>"32770", :forward_agent=>false, :user=>"root"}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  # Generated by NetworkManager
+  nameserver 8.8.8.8
+
+debian-8-x64 executed in 3.09 seconds
+[...]
+```
+
+> Side note: every time the docker container boots it opens GNOME's colord dialog. Soooo funny. Not.
+
+
+And, it works! Incredible. Still needs a bit fine-tuning to re-establich Gareth's locale workaround and to install the fixtures, so my tp-hack works, but that's easy enough. [Build #13](https://travis-ci.org/DavidS/puppet-exiscan/builds/119069907) was the lucky one.

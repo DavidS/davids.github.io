@@ -1,4 +1,0 @@
-[[!meta title="pages tagged devops"]]
-
-[[!inline pages="tagged(devops)" actions="no" archive="yes"
-feedshow=10]]

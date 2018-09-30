@@ -1,0 +1,34 @@
+---
+title: 'veewee and friends'
+tags: puppet veewee testing centos7
+---
+
+# veewee and friends
+
+While writing a [CentOS 7](http://seven.centos.org/) template for
+[veewee](https://github.com/jedi4ever/veewee):
+
+    david@zion:~/Projects/veewee$ time rbenv exec bundle exec veewee vbox build 'test' --workdir=/home/david/Projects/veewee
+
+It's fun how rubyists deny the need for (system) package management while
+requiring two layers of sandboxes to execute a command without trashing the
+rest of the system.
+
+The install itself went surprisingly smooth: using the current CentOS 6.5
+template, only the URLs and ISOs had to be changed. The final result is
+currently [pending an upstream merge](https://github.com/jedi4ever/veewee/pull/963).
+*Update:* merged.
+
+The next step is
+[pulling](https://github.com/puppetlabs/puppet-vagrant-boxes/pull/42) that
+template over to Puppet Lab's
+[puppet-vagrant-boxes](https://github.com/puppetlabs/puppet-vagrant-boxes) to
+make the image publically available to those in need.
+
+# puppet language evolution
+
+While the vagrant boxes were test-building, I've also chipped in on the
+[Resource Defaults
+thread](https://groups.google.com/forum/#!topic/puppet-dev/7sgPBwxOhfE) with a
+rather lengthy post on actually implementing a safe evaluator and making the
+puppet4 language radically flexible.

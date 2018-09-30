@@ -1,4 +1,0 @@
-[[!meta title="pages tagged untagged"]]
-
-[[!inline pages="tagged(untagged)" actions="no" archive="yes"
-feedshow=10]]

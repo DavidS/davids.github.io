@@ -1,4 +1,0 @@
-[[!meta title="pages tagged clamav"]]
-
-[[!inline pages="tagged(clamav)" actions="no" archive="yes"
-feedshow=10]]

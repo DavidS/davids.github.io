@@ -1,2 +1,5 @@
 /.ikiwiki
+/_site
 .*.swp
+Gemfile.lock
+.bundle

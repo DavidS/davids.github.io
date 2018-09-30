@@ -1,4 +1,0 @@
-[[!meta title="pages tagged ops"]]
-
-[[!inline pages="tagged(ops)" actions="no" archive="yes"
-feedshow=10]]

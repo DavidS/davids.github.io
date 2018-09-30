@@ -1,8 +1,0 @@
-[[!if test="enabled(calendar)" then="""
-[[!calendar pages="page(./posts/*) and !*/Discussion"]]
-"""]]
-
-[[Archives]]
-
-[[Tags]]:
-[[!pagestats style="list" pages="./tags/*" among="./posts/*"]]
