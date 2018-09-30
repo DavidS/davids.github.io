@@ -1,5 +1,7 @@
 ---
 title: "DavidS' CV"
+description: "A quick overview of the projects I've worked on over the years"
+permalink: '/cv/index.html'
 ---
 
 <div style="float: right">

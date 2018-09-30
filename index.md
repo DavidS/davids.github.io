@@ -3,7 +3,7 @@ My development log. Read at your own risk! Please send comments to me [by mail](
 |--|--|--|
 |other places:|[github](https://github.com/DavidS/)|[stackoverflow](https://careers.stackoverflow.com/david-schmitt)|
 | | [twitter](https://twitter.com/dev_el_ops)| [linked.in](https://www.linkedin.com/in/davidschmitt) |
-| | [CV](cv.html) | |
+| | [CV](cv/) | |
 
 <!-- [xing](https://www.xing.com/profile/David_Schmitt5) -->
 
