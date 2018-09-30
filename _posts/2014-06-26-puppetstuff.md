@@ -1,5 +1,6 @@
 ---
 title: 'Foreman Console Troubleshooting'
+category: puppet
 tags: puppet foreman
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: 'The Foreman, provisioning and more...'
+category: puppet
 tags: puppet foreman
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: 'Migrating to puppet future parser'
+category: puppet
 tags: puppet
 ---
 

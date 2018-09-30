@@ -1,5 +1,6 @@
 ---
 title: 'Re-Bootstrapping a Module'
+category: puppet
 tags: puppet testing retrospec
 ---
 

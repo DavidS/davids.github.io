@@ -1,5 +1,6 @@
 ---
 title: 'Extending Puppet'
+category: puppet
 tags: puppet
 ---
 

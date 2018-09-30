@@ -1,5 +1,6 @@
 ---
 title: 'munin and testing'
+category: puppet
 tags: puppet testing munin
 ---
 

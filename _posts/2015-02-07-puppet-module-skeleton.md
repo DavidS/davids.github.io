@@ -1,5 +1,6 @@
 ---
 title: 'Puppet Module Skeleton'
+category: puppet
 tags: puppet
 ---
 

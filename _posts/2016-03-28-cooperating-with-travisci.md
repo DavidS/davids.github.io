@@ -1,5 +1,6 @@
 ---
 title: 'Cooperating with Travis CI'
+category: puppet
 tags: puppet testing retrospec exim travisci beaker docker
 ---
 

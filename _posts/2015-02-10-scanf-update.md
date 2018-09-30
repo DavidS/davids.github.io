@@ -1,5 +1,6 @@
 ---
 title: 'scanf update'
+category: puppet
 tags: puppet programming
 ---
 

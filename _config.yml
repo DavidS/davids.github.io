@@ -2,12 +2,19 @@
 # use my hacked up version
 remote_theme: DavidS/time-machine
 show_downloads: false
-# baseurl: '/log'
+
+baseurl: '/log'
 title: "DavidS' log"
 author: 'David Schmitt'
 
 plugins:
   - jekyll-feed
+
+feed:
+  collections:
+    posts:
+      categories:
+        - puppet
 
 defaults:
   - scope:

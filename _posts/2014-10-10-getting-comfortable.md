@@ -1,5 +1,6 @@
 ---
 title: 'Getting comfortable...'
+category: puppet
 tags: puppet testing
 ---
 

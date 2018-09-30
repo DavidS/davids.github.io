@@ -1,5 +1,6 @@
 ---
 title: 'Ansible and Salt'
+category: puppet
 tags: puppet devops ansible salt
 ---
 

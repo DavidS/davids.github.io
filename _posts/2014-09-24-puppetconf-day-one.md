@@ -1,5 +1,6 @@
 ---
 title: 'PuppetConf 2014 - Day 1'
+category: puppet
 tags: puppet
 ---
 

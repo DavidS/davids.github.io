@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 My development log. Read at your own risk! Please send comments to me [by mail](mailto:david@black.co.at) or [via Twitter @dev\_el\_ops](https://twitter.com/dev_el_ops).
 
 |--|--|--|

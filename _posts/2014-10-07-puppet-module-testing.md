@@ -1,5 +1,6 @@
 ---
 title: 'Puppet Module Testing'
+category: puppet
 tags: puppet testing
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: 'Puppet Tricks - static resource dispatch'
+category: puppet
 tags: puppet programming devops
 ---
 

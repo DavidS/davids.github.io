@@ -1,5 +1,6 @@
 ---
 title: 'Migrating Puppets'
+category: puppet
 tags: puppet ops
 ---
 

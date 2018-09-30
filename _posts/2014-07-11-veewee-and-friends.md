@@ -1,5 +1,6 @@
 ---
 title: 'veewee and friends'
+category: puppet
 tags: puppet veewee testing centos7
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: 'Tiny Puppet Experiments'
+category: puppet
 tags: puppet programming
 ---
 

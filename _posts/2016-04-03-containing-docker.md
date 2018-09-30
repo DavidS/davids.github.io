@@ -1,5 +1,6 @@
 ---
 title: 'Containing Docker'
+category: puppet
 tags: puppet testing retrospec exim travisci beaker docker vagrant fullstack
 ---
 

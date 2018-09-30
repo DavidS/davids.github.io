@@ -1,5 +1,6 @@
 ---
 title: 'another puppet day'
+category: puppet
 tags: puppet productivity
 ---
 

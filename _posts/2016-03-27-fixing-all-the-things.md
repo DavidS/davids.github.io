@@ -1,5 +1,6 @@
 ---
 title: 'Fixing all the Things'
+category: puppet
 tags: puppet testing retrospec exim
 ---
 

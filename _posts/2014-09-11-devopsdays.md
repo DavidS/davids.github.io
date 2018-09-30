@@ -1,5 +1,6 @@
 ---
 title: 'DevOpsDays'
+category: puppet
 tags: puppet conference
 ---
 
