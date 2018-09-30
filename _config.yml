@@ -2,7 +2,7 @@
 # use my hacked up version
 remote_theme: DavidS/time-machine
 show_downloads: false
-baseurl: '/log'
+# baseurl: '/log'
 title: "DavidS' log"
 author: 'David Schmitt'
 defaults:
