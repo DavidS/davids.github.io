@@ -3,6 +3,7 @@
 remote_theme: DavidS/time-machine
 show_downloads: false
 
+url: 'https://club.black.co.at'
 baseurl: '/log'
 title: "DavidS' log"
 author: 'David Schmitt'
