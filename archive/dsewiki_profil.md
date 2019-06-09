@@ -6,7 +6,7 @@ layout: default
 
 English Version can be found at [MeatBall:DavidSchmitt](http://meatballwiki.org/wiki/DavidSchmitt)
 
-[[Überschrift]Persönliches]
+# Persönliches
 
 * Name: David Schmitt
 * Freiberuflicher Technologie Guru
@@ -59,53 +59,52 @@ Siehe [ihre Homepage](http://www.cheesy.at/).
   * seit ~1995: Beschäftigung mit Linux
   * Frühling 1997: nach acht Jahren BRG-8 (DG, BE): Matura mit Fachbereichsarbeit Informatik (Numerische Simulation klassischer Wachstumsmodelle mit TurboPascal)
   * Sommer 1998: Bundesheer: Wien, dienstzugeteilter Datenbankprogrammierer; PL/SQL auf Oracle auf AIX3.2 und Win3.1
-  * Seit Herbst 1997: InformatikStudium an der [[Link][Url=http://www.tuwien.ac.at]TU-Wien]
+  * Seit Herbst 1997: InformatikStudium an der [TU-Wien](http://www.tuwien.ac.at)
   * 2003-02: Erste Staatsprüfung der Informatik
-  * 2007-09: [http://club.black.co.at/david/thesis/Diplomarbeit.pdf Diplomarbeit (pdf, 763kB)] eingereicht: Methoden und Werkzeuge für ObjektRelationaleAbbildungen am http://www.dbai.tuwien.ac.at/
+  * 2007-09: [Diplomarbeit (pdf, 763kB)](http://club.black.co.at/david/thesis/Diplomarbeit.pdf) eingereicht: Methoden und Werkzeuge für ObjektRelationaleAbbildungen am http://www.dbai.tuwien.ac.at/
   * 2007-10-02: Staatsprüfung zum Diplom-Ingenieur der Informatik erfolgreich bestanden.
 
 * Bisherige Tätigkeiten
-  * Wintersemester 1996 bis Wintersemester 2002: Studienassistent zur Beratung und Betreuung der Studenten und Computer in den [[Link][Url=http://student.tuwien.ac.at/]Interneträumen] des [[Link][Url=http://www.zid.tuwien.ac.at/]Zentralen Informatik Dienstes] der [[Link][Url=http://www.tuwien.ac.at]TU-Wien]. Administration des Servers für die Studienassistenten.
-  * Sommer 1999: zwei Monate Java Programmierer bei [[Link][Url=http://www.coco.co.at]CoCo Software]
+  * Wintersemester 1996 bis Wintersemester 2002: Studienassistent zur Beratung und Betreuung der Studenten und Computer in den [Interneträumen](http://student.tuwien.ac.at/) des [Zentralen Informatik Dienstes](http://www.zid.tuwien.ac.at/) der [TU-Wien](http://www.tuwien.ac.at). Administration des Servers für die Studienassistenten.
+  * Sommer 1999: zwei Monate Java Programmierer bei [CoCo Software](https://web.archive.org/web/20000229085830/http://www.coco.co.at:80/)
     * XML Verarbeitung, Datenbankabfragen auf TCP/IP Basis, EnterpriseJavaBeans
-  * Sommer 2000: drei Monate C++ Programmierer bei [[Link][Url=http://www.ace.at]ACE] in der Entwicklung eines <nowiki>Client/Server Multiprojektmanagement Tools</nowiki>
+  * Sommer 2000: drei Monate C++ Programmierer bei [ACE](http://www.ace.at) in der Entwicklung eines <nowiki>Client/Server Multiprojektmanagement Tools</nowiki>
     * Windows, Visual C++ 6.0, {{COM}}/{{DCOM}}, einfacher Java Adapter
-  * Sommer 2001/2002: Linux Administration und Installation bei [[Link][Url=http://www.heureka.co.at]HeureKA EDV-Dienstleistungen]. Für diese Firma war ich auch "zwischendurch" stundenweise tätig um bei Problemen einzuspringen.
+  * Sommer 2001/2002: Linux Administration und Installation bei [HeureKA EDV-Dienstleistungen](http://www.heureka.co.at). Für diese Firma war ich auch "zwischendurch" stundenweise tätig um bei Problemen einzuspringen.
     * Linux, Systemadministration, Installationsautomatisierung
   * In diesem Zeitraum war ich auch beratend für eine Kabelfirma tätig, die ihr Kabelnetz in einer Niederöstereichischen Gemeinde mit Internetzugang ausrüsten wollte. Während die Techniker der Firma sich mit den technischen Problemen der letzen Meile beschäftigten, programmierte ich eine Webpage zur Administration der Kunden, Produkte und Domainnamen. Der Server war Debian, das Webinterface mit SprachePHP und mySQL, zusammen mit einigen SprachePerl Skripten, die die Änderungen im System durchführten. Leider wurde die TV Abteilung dann an den größten Konkurrenten in der Gegend verkauft. In den zwei Jahren, in denen ich die Firma begleitet habe, hat sie vier IT Verantwortliche verbraucht. Aber das ist eine längere Geschichte.
     * Linux, Systemadministration, Webinterface
-  * 2001 - 2006: [[Link][Url=http://www.dieangewandte.at/]Universität für Angewandte Kunst]:
+  * 2001 - 2006: [Universität für Angewandte Kunst](http://www.dieangewandte.at/):
     * Übersiedelung von 400 Mitarbeitern und >1000 Studenten von NT/2000/IIS/Exchange Servern auf eine DebianGNULinux<nowiki>/</nowiki>OpenLDAP SingleSignOn Struktur, die aus der UnternehmensDatenbank gefüllt wird.
     * Einführung einer Asterisk-basierten Telephonanlage mit verschiedenen VoiceOverIP Anwendungen.
-    * Netzwerküberwachung mit [http://www.nagios.org/ Nagios] und [http://munin.projects.linpro.no/ Munin]
+    * Netzwerküberwachung mit [Nagios](http://www.nagios.org/) und [Munin](http://munin.projects.linpro.no/)
     * Technische Betreuung der Server und Notfallhilfe
-    * VPN und WLAN Zugang mittels [http://www.openvpn.net/ OpenVPN]
+    * VPN und WLAN Zugang mittels [OpenVPN](http://www.openvpn.net/)
     * Zentraler Backupserver
-  * 2003: Intermezzo als Betreiber eines [[Link][Url=http://wiki.alpha-i.at/]Wiki für Informatik Studenten]
-    * [[Link][Url=http://wiki.alpha-i.at/DavidSchmitt]Besuchte Lehrveranstaltungen]
-  * 2003-07-18: [[Link][Url=http://www.openldap.org/conf/odd-wien-2003/agenda.html]Vortrag über meine Erfahrungen mit OpenLDAP an der Univ. f. angewandte Kunst] am [[Link][Url=http://www.openldap.org/conf/odd-wien-2003/]OpenLDAP Developers' Day] in Wien
+  * 2003: Intermezzo als Betreiber eines [Wiki für Informatik Studenten](https://web.archive.org/web/20070630094029/http://wiki.alpha-i.at/)
+    * [Besuchte Lehrveranstaltungen](https://web.archive.org/web/20070630093958/wiki.alpha-i.at/DavidSchmitt)
+  * 2003-07-18: [Vortrag über meine Erfahrungen mit OpenLDAP an der Univ. f. angewandte Kunst](http://www.openldap.org/conf/odd-wien-2003/agenda.html) am [OpenLDAP Developers' Day](http://www.openldap.org/conf/odd-wien-2003/) in Wien
   * Kleines 3D Game für http://www.cg.tuwien.ac.at/courses/CG23/LU.html mit SpracheCpp und OpenGL implementiert
-  * März 2005: [[Link][Url=http://www.debian.org/vote/2005/vote_001]Debian Project Leader Elections] [[Link][Url=http://debian.edv-bus.at/vote-2005/]Q&A Summaries]
-  * Frühjahr 2005: Praktikum am [[Link][Url=http://www.auto.tuwien.ac.at/]Institut für Rechnergestützte Automation, Arbeitsgruppe Automatisierungssysteme] über RAID [[Link][Url=http://www.drbd.org/]Network Block Devices] vs. [[Link][Url=http://www.redhat.com/software/rha/gfs/]Global File System]
-  * Mai 2005: Betreuung des Debianstandes bei den [http://www.linuxwochen.at/ Linuxwochen]
+  * März 2005: [Debian Project Leader Elections](http://www.debian.org/vote/2005/vote_001) [Q&A Summaries](http://debian.edv-bus.at/vote-2005/)
+  * Frühjahr 2005: Praktikum am [Institut für Rechnergestützte Automation, Arbeitsgruppe Automatisierungssysteme](http://www.auto.tuwien.ac.at/) über RAID [Network Block Devices](http://www.drbd.org/) vs. [Global File System](http://www.redhat.com/software/rha/gfs/)
+  * Mai 2005: Betreuung des Debianstandes bei den [Linuxwochen](http://www.linuxwochen.at/)
   * 2005-06 - 2005-11: Neuentwicklung der Mitgliederverwaltung eines großen österreichischen Vereins mit SprachePHP und PostgreSQL im Rahmen eines Praktikums an der TU-Wien inklusive ReverseEngineering und Migration der alten Datenbestände.
-  * 2006-06 - 2006-10: SpracheCsharp Programmierer bei [http://www.immobilien.net]
+  * 2006-06 - 2006-10: SpracheCsharp Programmierer bei http://www.immobilien.net
 
 * Aktuelles
-  * Laufende beratende und administrative Tätigkeiten für den [[Link][Url=http://zid.uni-ak.ac.at/]Zentralen Informatik Dienst] der [[Link][Url=http://www.angewandte.at/]Universität für angewandte Kunst] im Linux- und Netzwerkbereich.
-  * Seit 2000: Web- und Mail-Hosting für [[Link][Url=http://www.edv-bus.at]EDV-Beratung und Service] und Kunden auf einem DebianGNULinux Rechner
-  * Seit 2005: Engagement beim [http://debian.or.at/news/ Debian Verein Österreich] und dem [http://www.debienna.at/ Debienna Treff].
-  * Seit 2007: Automatisierung von Linux Konfigurationen mit [[Link][Url=http://reductivelabs.com/projects/puppet/]Puppet]; [[Link][Url=http://git.black.co.at/]Public Gitweb], [[Link][Url=http://github.com/DavidS]github Account]
-  * Seit 2007: Mitbegründer einer [[Link][Url=http://dasz.at/]Firma für benutzbare Technologie]
-* [http://avtomati.net/ avtomati igrovie]
+  * Laufende beratende und administrative Tätigkeiten für den [Zentralen Informatik Dienst](http://zid.uni-ak.ac.at/) der [Universität für angewandte Kunst](http://www.angewandte.at/) im Linux- und Netzwerkbereich.
+  * Seit 2000: Web- und Mail-Hosting für [EDV-Beratung und Service](http://www.edv-bus.at) und Kunden auf einem DebianGNULinux Rechner
+  * Seit 2005: Engagement beim [Debian Verein Österreich](http://debian.or.at/news/) und dem [Debienna Treff](http://www.debienna.at/).
+  * Seit 2007: Automatisierung von Linux Konfigurationen mit [Puppet](http://reductivelabs.com/projects/puppet/); [Public Gitweb](http://git.black.co.at), [github Account](http://github.com/DavidS)
+  * Seit 2007: Mitbegründer einer [Firma für benutzbare Technologie](http://dasz.at/)
 * Persönliches
   * Am WardsWiki:DavidSchmitt seit 2001-01-04
   * Freundin seit 2001-04-03
   * Wohnung seit 2001-11-01
-  * [/Krebs Wiedergeboren] am 2004-06-19
-  * [http://www.cheesy.at/fotos.php?lang=de&dir=fotos/alben/Feiern/2006-10-13-Hochzeit/cimg1508.jpg Geheiratet] am 2006-10-13
+  * [Wiedergeboren](/log/archive/dsewiki_krebs) am 2004-06-19
+  * [Geheiratet](http://www.cheesy.at/fotos.php?lang=de&dir=fotos/alben/Feiern/2006-10-13-Hochzeit/cimg1508.jpg) am 2006-10-13
   * Mit Frau in's [[Link][Url=http://www.slb.com]Ausland] gegangen am 2006-11-12
-  * Umzug nach [[Link][Url=http://www.meinestadt.de/vechta/home]Vechta] am 2007-04-27
+  * Umzug nach [Vechta](http://www.meinestadt.de/vechta/home) am 2007-04-27
   * Neue Wohnung in Klosterneuburg seit 2009-06-01
 
 # Interessen
@@ -164,9 +163,9 @@ No. They're dead.
 
 Gratulation zur Abgabe.
 
-Zufällig bin ich heute auf was zum Thema passendes gestoßen: [http://www.ibm.com/developerworks/db2/library/techarticle/dm-0708ahadian/index.html?ca=drs- pureQuery]: IBM's new paradigm for writing Java database applications
+Zufällig bin ich heute auf was zum Thema passendes gestoßen: [pureQuery](http://www.ibm.com/developerworks/db2/library/techarticle/dm-0708ahadian/index.html?ca=drs-): IBM's new paradigm for writing Java database applications
 
--- {{SDö}}
+-- [SDö](http://www.wikiservice.at/dse/wiki.cgi?SD%f6)
 
 ----
 KategorieHomePage
