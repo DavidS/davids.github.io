@@ -110,4 +110,4 @@ Ran on 1 node in 9.47 seconds
 david@zion:~/git/dasz-configuration$
 ```
 
-See [this commit](https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908) for the rather trivial implementatoin details.
+See [this commit](https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908) for the rather trivial implementation details.
