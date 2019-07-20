@@ -14,7 +14,7 @@ If, for whatever reason, you want to have the services _not_ running `docker-com
 
 # Updating the containers
 
-After ascertaining that a `down` does not nuke away all my data, I tried updating the containers using the default turn-off-turn-on cycle. I alsoe tried to use the `--foce-rebuild` command line option. Although *something* was happening, it turned out that no new upstream container images where retrieved.
+After ascertaining that a `down` does not nuke away all my data, I tried updating the containers using the default turn-off-turn-on cycle. I also tried to use the `--foce-rebuild` command line option. Although *something* was happening, it turned out that no new upstream container images where retrieved.
 
 There is a separate `docker-compose pull` command to do so:
 
