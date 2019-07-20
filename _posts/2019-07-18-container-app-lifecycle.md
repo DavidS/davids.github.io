@@ -71,3 +71,7 @@ I don't believe that the problems listed above can be fixed at the image or comp
 * approachable. while autoconf is a cess-pool of M4 under the hood, that doesn't mean you can't `grep` for the thing you're staring at and bang on it in the source with a big hammer for a while to get it to do what you need. Similarily for debhelper: as a complete system, its million little helpers seem to be a mess, but adding one or modifying an existing one is a tractable task. This is crucial for growing the pool of contributors, and evolving its capabilities moving forward.
 * community around open source. Paying for optimizing the common case by making a back-end work more complicated is a win in my eyes. To reap those fruits there need to be users though.
 * content content content. automake/autoconf were big improvement over the contemporal experience of building software. So much that within a few years enough people felt that it was less painful to add it to the project they were building than to carry on as they were. A broad base of projects using it in turn meant that any core improvement amortised over tens of thousands of developers and millions of users. Compare this to other build systems like cmake, which did not provide such a huge step forward, did not see an aggressive push to convert everything, and never gained the same universal adoption.
+
+# Next Steps
+
+Follow along planning at [github://DavidS/fluffy-chainsaw](https://github.com/DavidS/fluffy-chainsaw).
