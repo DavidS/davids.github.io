@@ -4,8 +4,7 @@ category: devops
 tags: devops hosting deployment applications containers docker docker-compose
 ---
 
-A few days ago, I posted a random thought on twitter. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I'm expanding on this.
-<!-- TODO: link -->.
+A few days ago, I posted [a random thought on twitter](https://twitter.com/dev_el_ops/status/1151432006879862784). I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I'm expanding on this.
 
 Currently with docker-compose, my implementation for these is as follows:
 
@@ -24,7 +23,7 @@ While this process is _basically_ working, it is tedious, error-prone, full of o
 
 I'm currently working as root on my production host because I didn't know better at the start. Later I also realised that even when running as non-root, the containers still run processes with whatever uid was baked into the image, and the volumes, will expose files using those uids. For local development this is quite inconvenient. For production use this is seems risky, as having a user on the host means that it is easy to accidentally gain access to some files from a running container. Currently I work around this by not granting anyone but me access on the host.
 
-# Scope Creep
+# Scope Definition
 
 A lot of the confusion and complexity described above is because app developers want their images to be the be-all-end-all for everyone, while not really having the bandwidth to actually solve the problems that would need solving to make that happen. Instead issues are either haphazardly addressed by individuals covering their particular special case, or hoisted on the end-users by providing working but unusable example configurations.
 
@@ -63,10 +62,9 @@ This covers a lot of folks I've met over the years, from small sites like my own
 
   Instances also need to be conscientious with their on-disk footprint: use shared base-images, collapse intermediate build layers, strip unused files, keep logfiles under control.
 
+# Why and how I think this can be successful
 
-# Why and how I think this could be successful
-
-Like I insinuate in the original tweet, I don't believe that the problems listed above can be fixed at the image or compose level of individual projects. Looking at the solutions our problems of the 90's, like autoconf/automake, Debian, debhelper, I can extrapolate some properties of successful solutions to this for the future:
+I don't believe that the problems listed above can be fixed at the image or compose level of individual projects. Looking at the solutions our problems of the 90's, like autoconf/automake, Debian, debhelper, I can extrapolate some properties of successful solutions to this for the future:
 
 * usable by mere mortals. autoconf/automake is absolute balls if you ever need to look under the hood, but developers don't need to. Day-to-day usage is cargo-culting a few dependency statements in your config, and running `./configure`. This leads to my next point:
 * uniformity. providing a standardised interface buffers the day-to-day users from the nasty under-belly of hacks and work-arounds. See how `dh` has benefitted over the years from building on top of a common stable interface and has risen in popularity for many of the same reasons.
