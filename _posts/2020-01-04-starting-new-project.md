@@ -92,10 +92,10 @@ After a good two or three days of research I therefore resign myself to the fact
 
 All the other links:
 
-* Jekyll: https://jekyllrb.com/
-* Jekyll Repo: https://github.com/jekyll/jekyll
-* SASS: https://sass-lang.com/guide
-* Liquid: https://shopify.github.io/liquid/ ; for programmers: https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers
-* HTML spec: https://html.spec.whatwg.org/multipage/
-* data schemas: http://schema.org/
-* CSS Reference: https://www.w3schools.com/css/default.asp
+* [Jekyll](https://jekyllrb.com/)
+* [Jekyll Repo](https://github.com/jekyll/jekyll)
+* [SASS](https://sass-lang.com/guide)
+* [Liquid](https://shopify.github.io/liquid/) ; [for programmers](https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers)
+* [HTML spec](https://html.spec.whatwg.org/multipage/)
+* [data schemas](http://schema.org/)
+* [CSS Reference](https://www.w3schools.com/css/default.asp)
