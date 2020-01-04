@@ -11,6 +11,7 @@ author: 'David Schmitt'
 
 plugins:
   - jekyll-feed
+  - jekyll-analytics
 
 feed:
   collections:
@@ -26,3 +27,8 @@ defaults:
       layout: "post"
       # this pattern matches up with previous' ikiwiki URLs for the blog
       permalink: /posts/:year-:month-:day-:title/index:output_ext
+
+jekyll_analytics:
+  GoogleAnalytics:
+    id: UA-155086367-1
+    anonymizeIp: true
