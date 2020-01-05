@@ -8,7 +8,7 @@ This post contains the more detailed technical planning and how successfull thos
 
 # The Plan
 
-These are the points from the [last post](2020-01-04-starting-new-project) that I want to hit with my implementation:
+These are the points from the [last post](../2020-01-04-starting-new-project) that I want to hit with my implementation:
 
 * Create a new gallery by adding a folder of pictures.
 
