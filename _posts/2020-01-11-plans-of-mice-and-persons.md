@@ -1,5 +1,5 @@
 ---
-title: "Jekyll Gallery Hosting pt2: The best laid plans, of mice and persons ..."
+title: "Jekyll Gallery Hosting pt3: The best laid plans, of mice and persons ..."
 category: programming
 tags: devops hosting deployment applications jekyll programming
 ---

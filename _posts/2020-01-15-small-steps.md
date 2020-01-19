@@ -1,5 +1,5 @@
 ---
-title: "Jekyll Gallery Hosting pt2: Small Steps"
+title: "Jekyll Gallery Hosting pt4: Small Steps"
 category: programming
 tags: devops hosting deployment applications jekyll programming
 ---
