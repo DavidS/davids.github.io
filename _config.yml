@@ -10,8 +10,9 @@ title: "DavidS' log"
 author: 'David Schmitt'
 
 plugins:
-  - jekyll-feed
   - jekyll-analytics
+  - jekyll-feed
+  - jekyll-sitemap
 
 feed:
   collections:

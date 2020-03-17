@@ -8,4 +8,5 @@ group :jekyll_plugins do
   gem 'jekyll-feed', '~> 0.11'
   gem 'jekyll-analytics', github: 'DavidS/jekyll-analytics', branch: 'master'
   gem 'jekyll-seo-tag'
+  gem 'jekyll-sitemap'
 end
