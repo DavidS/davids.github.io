@@ -1,7 +1,7 @@
 # use my hacked up gem locally
-theme: jekyll-theme-time-machine
+theme: minima
 # use my hacked up version on github
-remote_theme: DavidS/time-machine
+# remote_theme: DavidS/time-machine
 show_downloads: false
 
 url: 'https://club.black.co.at'
