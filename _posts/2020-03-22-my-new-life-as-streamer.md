@@ -114,6 +114,14 @@ If the webcam does not provide that, it is not usable in Skype.
 Loopback devices in V4L2 (which is what the v4l2sink plugin uses under the hood) do not support any mode negotiation or transcoding.
 Changing the output resolution in OBS is possible, but tedious.
 
+## Encoding Pitfall
+
+One of the things that OBS (and V4L2) do badly is choosing default video formats on webcams.
+The default is `YUYV (4:2:2)` which is a uncompressed pixelformat that takes up a lot of processing power and limits the framerate of the devices.
+I've switched all inputs and the virtual webcam to `YU12 (Emulated)` (or `YUV420`, which seems to be the same), which leads to a slight loss in color accuracy but allows devices to run at their full resolution and framerate.
+
+[`qv4l2`](https://packages.debian.org/qv4l2) was very helpful to inspect the state of the cameras depending on the settings used in OBS.
+
 ## Multi-Cam Pitfall
 
 One of the gotchas of this setup is that Firefox, Chrome and OBS basically index webcams by activation order (that is, when it was plugged in).
