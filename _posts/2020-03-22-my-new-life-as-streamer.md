@@ -138,6 +138,9 @@ To avoid all of those issues, I wrote a short script that forces loading the web
 #!/bin/bash
 set -ex
 
+# wait for all cameras to come online
+while [ $(ls /dev/video* | wc -l) -lt 5 ]; do ls /dev/video*; sleep 1; done
+
 function manufacturer() { udevadm info -a -n $1 | grep manufacturer | head -n1 | cut -d\" -f2; }
 function usbname() { basename $(udevadm trigger -n -v --attr-match=manufacturer="$(manufacturer $1)"); }
 function unbind() { echo $1 > /sys/bus/usb/drivers/usb/unbind; }
