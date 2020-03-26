@@ -114,6 +114,13 @@ If the webcam does not provide that, it is not usable in Skype.
 Loopback devices in V4L2 (which is what the v4l2sink plugin uses under the hood) do not support any mode negotiation or transcoding.
 Changing the output resolution in OBS is possible, but tedious.
 
+## Installing the Plugins
+
+The v4l2loopback kernel module and the OBS v42lsink plugin are not regularly available in Linux distributions.
+On Debian at least there is v4l2loopback-dkms, which worked fine for me.
+For everything else, [Tom Callaway](https://twitter.com/spotrh/) has a great writeup of how to compile and install at his "[Hacking the video stream for BlueJeans on Linux](https://spot.livejournal.com/327990.html)" over on lifejournal.
+Thanks to [Evgeni Golov](https://twitter.com/zhenech) for making the connection.
+
 ## Encoding Pitfall
 
 One of the things that OBS (and V4L2) do badly is choosing default video formats on webcams.
