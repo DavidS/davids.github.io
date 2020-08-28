@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Re-Bootstrapping a Module | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Re-Bootstrapping a Module" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<meta property="og:description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-03-26T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.","headline":"Re-Bootstrapping a Module","dateModified":"2016-03-26T00:00:00+00:00","datePublished":"2016-03-26T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/"},"url":"https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Re-Bootstrapping a Module</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2016-03-26T00:00:00+00:00" itemprop="datePublished">Mar 26, 2016
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <blockquote>
+  <p>Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</p>
+</blockquote>
+
+<p>In an effort to refresh my hosting solution, I started looking at refreshing some of the modules I built back then. One thing I need to bring forward, for example is <a href="https://github.com/DavidS/puppet-exiscan">The Olde Exiscan Module</a>. Here’s a log of what I did towards refreshing it to current standards, using <a href="https://github.com/nwops/puppet-retrospec">retrospec-puppet</a>.</p>
+
+<h1 id="install-restrospec-puppet">Install restrospec-puppet</h1>
+
+<p>Since the original module (see commits before today) was still using a <code class="language-plaintext highlighter-rouge">Modulefile</code> and had no test infrastructure at all, I started out by adding a minimal <code class="language-plaintext highlighter-rouge">Gemfile</code> and install retrospec-puppet:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>david@zion:~/git/davids-exiscan$ ls
+files  manifests  Modulefile  templates
+david@zion:~/git/davids-exiscan$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'puppet-retrospec'
+gem 'puppet'
+david@zion:~/git/davids-exiscan$ bundle install --path=~/gems
+Using awesome_print 1.6.1
+Using facets 3.0.0
+Using facter 2.4.6
+Using json_pure 1.8.3
+Using trollop 2.1.2
+Using bundler 1.11.2
+Using hiera 3.1.1
+Using retrospec 0.4.0
+Using puppet 4.4.1
+Using puppet-retrospec 0.12.1
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet --help
+Generates puppet rspec test code based on the classes and defines inside the manifests directory.
+
+Subcommands:
+new_module
+new_fact
+new_type
+new_provider
+new_function
+  -t, --template-dir=&lt;s&gt;        Path to templates directory (only for overriding Retrospec templates) (default:
+                                /home/david/.retrospec/repos/retrospec-puppet-templates)
+  -s, --scm-url=&lt;s&gt;             SCM url for retrospec templates (default: https://github.com/nwops/retrospec-templates)
+  -b, --branch=&lt;s&gt;              Branch you want to use for the retrospec template repo (default: master)
+  -e, --enable-beaker-tests     Enable the creation of beaker tests
+  -n, --enable-future-parser    Enables the future parser only during validation
+  -v, --version                 Print version and exit
+  -h, --help                    Show this message
+david@zion:~/git/davids-exiscan$
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">new_module</code> kept breaking on the already existing code in the module, so I moved everything out of the way and just took the generated files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet new_module --name=davids-exiscan -a 'David Schmitt &lt;david@black.co.at&gt;'
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+The module located at: /home/david/git/davids-exiscan does not exist, do you wish to create it? (y/n): y
+ + /home/david/git/davids-exiscan/manifests/
+ + /home/david/git/davids-exiscan/manifests/init.pp
+ + /home/david/git/davids-exiscan/metadata.json
+david@zion:~/git/davids-exiscan$ mv tmp/* ..
+</code></pre></div></div>
+
+<p>The metadata.json and .gitignore needed a few touches to add URLs and such. Then I could commit those changes to build upon them.</p>
+
+<p>Trying to generate the tests, I ran into https://github.com/nwops/puppet-retrospec/issues/54 and started using the <code class="language-plaintext highlighter-rouge">future</code> branch, which already has puppet 4 vendored:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'puppet-retrospec', git: 'https://github.com/nwops/puppet-retrospec.git', ref: 'future'
+</code></pre></div></div>
+
+<p>Almost:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>david@zion:~/git/davids-exiscan$ bundle install --path=~/gems
+Using awesome_print 1.6.1
+Using facets 3.0.0
+Using facter 2.4.6
+Using json_pure 1.8.3
+Using trollop 2.1.2
+Using bundler 1.11.2
+Using hiera 3.1.1
+Using retrospec 0.4.0
+Using puppet 4.4.1
+Using puppet-retrospec 0.12.0 from https://github.com/nwops/puppet-retrospec.git (at future@a300496)
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+Attempt to assign a value to unknown setting :parser
+david@zion:~/git/davids-exiscan$
+</code></pre></div></div>
+
+<p>Some <a href="https://github.com/DavidS/puppet-retrospec/tree/remove-future-option">quick code removal later</a> this problem is also fixed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Using puppet-retrospec 0.12.0 from file:///home/david/git/puppet-retrospec (at future@a250574)
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+Cloning into '/home/david/.retrospec/repos/puppet-git-hooks'...
+remote: Counting objects: 524, done.
+remote: Compressing objects: 100% (18/18), done.
+remote: Total 524 (delta 6), reused 0 (delta 0), pack-reused 506
+Receiving objects: 100% (524/524), 115.56 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (285/285), done.
+Checking connectivity... done.
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/pre-hook
+
+!! /home/david/git/davids-exiscan/.bundle/config already exists
+ + /home/david/git/davids-exiscan/.fixtures.yml
+ + /home/david/git/davids-exiscan/.git/hooks/pre-commit
+!! /home/david/git/davids-exiscan/.gitignore already exists and differs from template
+ + /home/david/git/davids-exiscan/.puppet-lint.rc
+ + /home/david/git/davids-exiscan/.travis.yml
+ + /home/david/git/davids-exiscan/DEVELOPMENT.md
+!! /home/david/git/davids-exiscan/Gemfile already exists
+ + /home/david/git/davids-exiscan/Rakefile
+ + /home/david/git/davids-exiscan/Vagrantfile
+ + /home/david/git/davids-exiscan/files/.gitkeep
+ + /home/david/git/davids-exiscan/spec/
+ + /home/david/git/davids-exiscan/spec/acceptance/
+ + /home/david/git/davids-exiscan/spec/shared_contexts.rb
+ + /home/david/git/davids-exiscan/spec/spec_helper.rb
+ + /home/david/git/davids-exiscan/templates/.gitkeep
+ + /home/david/git/davids-exiscan/tests/
+ + /home/david/git/davids-exiscan/tests/.gitkeep
+ + /home/david/git/davids-exiscan/davids-exiscan_schema.yaml
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/post-hook
+
+david@zion:~/git/davids-exiscan$
+</code></pre></div></div>
+
+<p>Remember to replace the bootstrap <code class="language-plaintext highlighter-rouge">Gemfile</code> by retrospec’s version. I generated a completely noew module and cribbed it from there.</p>
+
+<p>Also, annoying, but understandable, is the lack of <code class="language-plaintext highlighter-rouge">puppet-retrospec</code> itself in the Gemfile. Since I haven’t installed it in my system, I just re-added my reference to the local checkout I’ve been hacking on.</p>
+
+<p>Additionally the template defaults to 3.x puppet, which also needed fixing. And https://github.com/nwops/retrospec-templates/pull/6 .</p>
+
+<p>Generating tests now didn’t fail anymore, but also didn’t generate any tests. In the good old divide and conquer strategy, I’ve removed all manifests, which might not parse sanely, and replaced them by a trivial class, to see if that would work.</p>
+
+<p>Having no luck with the future branch, I rolled back to the released puppet-retrospec gem and retried everything on a ruby (2.2) that was able to run puppet 3.7, the vendored version. Thankfully Debian provides ruby2.2 and ruby2.2-dev packages, so that was quite “painless”.</p>
+
+<p>Corey also hinted at yet <a href="https://github.com/nwops/puppet-retrospec/pull/55#issuecomment-201893898">unreleased code that will fix</a> these pains.</p>
+
+<p>Did I say “painless” ? ruby2.2 ALSO cannot run puppet 3.7</p>
+
+<p>I’ve also tried building older versions of ruby with rbenv, a few weeks ago. Doesn’t work, because those depend on SSLv2 functions that were removed upstream.</p>
+
+<p>Instead I ripped out the vendored safe_yaml gem that is causing the ruby2.3 issues and replaced it with the normal safe_yaml 1.0.4. This required some persuasion (of the forced kind) so that puppet would start up, but since YAML is only used on the wire, we’re not touching those parts anyways.</p>
+
+<blockquote>
+  <p>side note: installing bundler and safe_yaml with gem2.2 from Debian into the 2.2 ruby install created <code class="language-plaintext highlighter-rouge">/usr/local/bin/bundler</code> causing even more “fun” after removing ruby2.2.</p>
+</blockquote>
+
+<p>After more testing, it turned out that just adding safe_yaml to the Gemfile, or installing Debian’s ruby-safe-yaml are enough to keep puppet from loading its broken vendored version.</p>
+
+<p>At last the tests are running and are <em>finally</em> complaining about something that is wrong with the actual module itself: it can’t find the <code class="language-plaintext highlighter-rouge">exim</code> module. A expected error as it is a dependency I did not migrate into the new metadata.json as it was replaced upstream with a <a href="https://github.com/example42/puppet-tp">tp</a> plugin.</p>
+
+<p>But that will be a story for another day.</p>
+
+  </div><a class="u-url" href="/log/posts/2016-03-26-bootstrapping-a-module/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

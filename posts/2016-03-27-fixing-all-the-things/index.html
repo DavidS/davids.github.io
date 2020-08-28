@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Fixing all the Things | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Fixing all the Things" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<meta property="og:description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-03-27T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.","headline":"Fixing all the Things","dateModified":"2016-03-27T00:00:00+00:00","datePublished":"2016-03-27T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/"},"url":"https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Fixing all the Things</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2016-03-27T00:00:00+00:00" itemprop="datePublished">Mar 27, 2016
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <blockquote>
+  <p>Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</p>
+</blockquote>
+
+<table>
+  <tbody>
+    <tr>
+      <td>This is a continuation of [[yesterday’s post</td>
+      <td>/posts/2016-03-26-bootstrapping-a-module]], refreshing my <a href="https://github.com/DavidS/puppet-exiscan">exiscan module</a> using <a href="https://github.com/nwops/puppet-retrospec">retrospec-puppet</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="braindump">Braindump</h1>
+
+<p>To recap from yesterday, I stopped after finally getting all the boilerplate code up and running, so that the new tests told me that the <code class="language-plaintext highlighter-rouge">exim</code> class was missing. In the current code this was a local version of <code class="language-plaintext highlighter-rouge">example42/exim</code>. Alessandro has deprecated that module and replaced it with his <a href="https://github.com/example42/puppet-tp">example42/tp</a> thing that is mostly data driven. This is something I wanted to have a look at for the longest time.</p>
+
+<p>First, I started with changing the <code class="language-plaintext highlighter-rouge">.fixtures.yml</code> to install the example42/tp module which I wanted to try to for the longest time:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fixtures:
+    symlinks:
+      exiscan: "#{source_dir}"
+    forge_modules:
+      stdlib: "puppetlabs/stdlib"
+      tp: "example42/tp"
+</code></pre></div></div>
+
+<p>Installing:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>david@zion:~/git/davids-exiscan$ bundle exec rake spec_prep
+Notice: Preparing to install into /home/david/git/davids-exiscan/spec/fixtures/modules ...
+Notice: Downloading from https://forgeapi.puppetlabs.com ...
+Notice: Installing -- do not interrupt ...
+/home/david/git/davids-exiscan/spec/fixtures/modules
+└── puppetlabs-stdlib (v4.11.0)
+Notice: Preparing to install into /home/david/git/davids-exiscan/spec/fixtures/modules ...
+Notice: Downloading from https://forgeapi.puppetlabs.com ...
+Notice: Installing -- do not interrupt ...
+/home/david/git/davids-exiscan/spec/fixtures/modules
+└── example42-tp (v1.0.0)
+david@zion:~/git/davids-exiscan$
+</code></pre></div></div>
+
+<p>Looking at the manifest, I will start at one of the leaf classes: <code class="language-plaintext highlighter-rouge">exiscan::spamassassin</code>, which configures a <code class="language-plaintext highlighter-rouge">spamd</code> to use with exiscan. It is a very simple package/file/service class, and should lend itself well to getting all gears greased up, for when I start working on the more complex parts. There is no <a href="https://github.com/example42/tinydata/tree/master/data">predefined data blob for tp</a> so I’ll stay with a manual implementation until I have used tp with one of the existing blobs.</p>
+
+<h1 id="fixing-test-failures">Fixing test failures</h1>
+
+<p>The tests were created using puppet-restrospec and puppet 3.7. Since puppet4 is my target, I’ve changed the Gemfile to default to <code class="language-plaintext highlighter-rouge">puppet ~&gt; 4.0</code>, which got me 4.4.1. The first easy failure is this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>9) exiscan::spamassassin should contain File[/etc/systemd/system/spamassassin.service] with ensure =&gt; "present", group =&gt; "root", mode =&gt; "0644", notify =&gt; "Service[spamassassin]", owner =&gt; "root", require =&gt; "Package[spamassassin]" and source =&gt; "puppet:///modules/exiscan/spamassassin/spamassassin.service"
+   Failure/Error:
+     is_expected.to contain_file('/etc/systemd/system/spamassassin.service')
+       .with(
+         'ensure'  =&gt; 'present',
+         'group'   =&gt; 'root',
+         'mode'    =&gt; '0644',
+         'notify'  =&gt; 'Service[spamassassin]',
+         'owner'   =&gt; 'root',
+         'require' =&gt; 'Package[spamassassin]',
+         'source'  =&gt; 'puppet:///modules/exiscan/spamassassin/spamassassin.service'
+       )
+
+     expected that the catalogue would contain File[/etc/systemd/system/spamassassin.service] with mode set to "0644" but it is set to 420
+   # ./spec/classes/spamassassin_spec.rb:118:in `block (2 levels) in &lt;top (required)&gt;'
+</code></pre></div></div>
+
+<p>This is both easily explained and fixed. Puppet 3 interprets everything as a string. Specifically, a file mode like <code class="language-plaintext highlighter-rouge">0644</code> is passed through to the implementation as the four characters <code class="language-plaintext highlighter-rouge">'0'</code>, <code class="language-plaintext highlighter-rouge">'6'</code>, <code class="language-plaintext highlighter-rouge">'4'</code>, and <code class="language-plaintext highlighter-rouge">'4'</code>. Puppet 4 on the other hand, sees the digits and interprets them as a number, and - thanks to the leading zero - reads this as a number in base 8, passing <code class="language-plaintext highlighter-rouge">420</code> to the <code class="language-plaintext highlighter-rouge">file</code> type, which would be utterly confused by this. I quote all modes and fix four out of the nine current failures. I also fix all occurrences in the other manifests, so I don’t have to think about them later.</p>
+
+<h2 id="relationships-its-complicated">Relationships: It’s Complicated</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5) exiscan::spamassassin should contain File[/var/spool/exim4/scan] with ensure =&gt; "directory", group =&gt; "clamav", mode =&gt; "2750", notify =&gt; "Service[exim4]", owner =&gt; "Debian-exim" and require =&gt; "[Package[$exim::package], Package[clamav-daemon]]"
+   Failure/Error:
+     is_expected.to contain_file('/var/spool/exim4/scan')
+       .with(
+         'ensure'  =&gt; 'directory',
+         'group'   =&gt; 'clamav',
+         'mode'    =&gt; '2750',
+         'notify'  =&gt; 'Service[exim4]',
+         'owner'   =&gt; 'Debian-exim',
+         'require' =&gt; '[Package[$exim::package], Package[clamav-daemon]]'
+       )
+
+     expected that the catalogue would contain File[/var/spool/exim4/scan] with require set to "[Package[$exim::package], Package[clamav-daemon]]" but it is set to [:undef, Package[clamav-daemon]{:name=&gt;"clamav-daemon"}]
+     Diff:
+     @@ -1,2 +1,4 @@
+     -[Package[$exim::package], Package[clamav-daemon]]
+     +undef
+     +
+     +Package[clamav-daemon]
+
+   # ./spec/classes/spamassassin_spec.rb:107:in `block (2 levels) in &lt;top (required)&gt;'
+</code></pre></div></div>
+
+<p>The reference to <code class="language-plaintext highlighter-rouge">$exim::package</code> is broken. No surprise there, there is no exim class. The rendered value had <a href="https://github.com/nwops/retrospec-templates/issues/8">more issues</a>. I changed the line in the test to this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'require' =&gt; ['Package[exim4-daemon-heavy]', 'Package[clamav-daemon]']
+</code></pre></div></div>
+
+<p>as this is the expected package. The error looks much friendlier now:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Diff:
+@@ -1,4 +1,4 @@
+-Package[exim4-daemon-heavy]
++undef
+
+ Package[clamav-daemon]
+</code></pre></div></div>
+
+<p>Reconsidering, I add <code class="language-plaintext highlighter-rouge">tp::install{exim:}</code> to the manifest, and require <code class="language-plaintext highlighter-rouge">Tp::Install[exim]</code>, instead of the package. Since depending on the tp:install is only an implementation detail, the tests now need to use rspec-puppet’s relatively new <a href="https://github.com/rodjek/rspec-puppet/#relationship-matchers">support for transitive dependency checks</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>it do
+  is_expected.to contain_file('/var/spool/exim4/scan')
+    .that_requires(['Package[exim4-daemon-heavy]', 'Package[clamav-daemon]'])
+    .with(
+      'ensure'  =&gt; 'directory',
+      'group'   =&gt; 'clamav',
+      'mode'    =&gt; '2750',
+      'notify'  =&gt; 'Service[exim4]',
+      'owner'   =&gt; 'Debian-exim',
+    )
+end
+</code></pre></div></div>
+
+<p>After adding the required <code class="language-plaintext highlighter-rouge">example42/tinydata</code> module to the fixtures, the tests worked on first try. Unexpected, but welcome. Two more down, three to go.</p>
+
+<h2 id="basic-resources">Basic Resources</h2>
+
+<p>The next two failures are a mixture of the above errors. The generated tests for multiple packages and resources are not quite right. I replace them with these improved versions:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['spamassassin', 'libmail-dkim-perl', 'clamav-daemon', 'libclass-dbi-pg-perl', 'spf-tools-perl'].each do |p|
+  it { is_expected.to contain_package(p).with('ensure' =&gt; 'installed') }
+end
+['spamassassin', 'clamav-freshclam', 'clamav-daemon'].each do |s|
+  it do
+    is_expected.to contain_service(s)
+      .that_requires(['spamassassin', 'libmail-dkim-perl', 'clamav-daemon', 'libclass-dbi-pg-perl', 'spf-tools-perl'].collect {|p| "Package[#{p}]" })
+      .with(
+        'enable'  =&gt; 'true',
+        'ensure'  =&gt; 'running',
+    )
+  end
+end
+</code></pre></div></div>
+
+<p>This creates separate examples for each package and service, which helps debugging, when something goes wrong.</p>
+
+<p>The last failure is again a rendering problem, where the content of a file is supplied by a template, which puppet-retrospec (luckily, who wants oodles of config in the test?) did not expand. I just remove the test for content. Checking the service’s configuration is best left to the service itself, which will be covered in a <a href="https://github.com/puppetlabs/beaker-rspec">beaker</a> test later anyways.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Finished in 1.67 seconds (files took 0.52661 seconds to load)
+16 examples, 0 failures
+</code></pre></div></div>
+
+<p>Wohoo!</p>
+
+<h2 id="shaping-up-the-design">Shaping up the Design</h2>
+
+<p>Now that the first class is passing tests, I can take a step back to think about the new design. Having <code class="language-plaintext highlighter-rouge">exiscan::spamassassin</code> install exim is obviously a no-go, as it should not be its concern. For now, I’ll claim that the <code class="language-plaintext highlighter-rouge">exiscan::spamassassin</code> is a private implementation detail and the parent class will have to take care to setup its environment properly. I move the <code class="language-plaintext highlighter-rouge">tp::install</code> to the main class. This also requires the tests to have that class pre-configured:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let(:pre_condition) do
+  &lt;&lt;-PP
+    class { 'exiscan':
+      sa_bayes_sql_dsn =&gt; 'place_value_here',
+      sa_bayes_sql_username =&gt; 'place_value_here',
+      greylist_dsn =&gt; 'place_value_here',
+      greylist_sql_username =&gt; 'place_value_here',
+    }
+  PP
+end
+</code></pre></div></div>
+
+<p>Of course, this now requires that the main class’ tests pass. The first error is, again, dependencies into the exim class, which I replace with <code class="language-plaintext highlighter-rouge">Tp::Install[exim]</code>.</p>
+
+<p>During fixing the tests, I sent a PR upstream to <a href="https://github.com/nwops/retrospec-templates/pull/9">improve readability of default error messages</a>, and a issue when <a href="https://github.com/nwops/puppet-retrospec/issues/56">rendering values with escapes</a>. Sometimes I think I should go into QA.</p>
+
+<hr />
+<p>Random tip: How to find the start of your test run?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>david@zion:~/git/davids-exiscan$ echo ------------- | figlet; bundle exec rspec -fd -c spec/classes/exiscan_spec.rb ;
+
+
+ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
+|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|
+
+
+
+exiscan
+  should contain Tp::Install[exim] with settings_hash =&gt; {"package_name"=&gt;"exim4-daemon-heavy"}
+  should contain Class[exiscan::spamassassin] with bayes_sql_dsn =&gt; "sa_bayes_sql_dsn_value", bayes_sql_password =&gt; "s3cr3t", bayes_sql_username =&gt; "sa_bayes_sql_username_value" and trusted_networks =&gt; "10.0.0.1"
+[...]
+</code></pre></div></div>
+<hr />
+
+<p>Another interesting test was something that required a optional parameter set to a non-default value. The generated test was</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>it do
+  is_expected.to contain_class('exiscan::spamassassin_db')
+    .with(
+      'db_password' =&gt; '',
+      'db_username' =&gt; ''
+    )
+end
+</code></pre></div></div>
+
+<p>The improved tests looks like this, and test for both cases of <code class="language-plaintext highlighter-rouge">sa_bayes_sql_local</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>context 'without a local sa_bayes_sql' do
+  # sa_bayes_sql_local = false is default
+  it do
+    is_expected.not_to contain_class('exiscan::spamassassin_db')
+  end
+end
+
+context 'with a local sa_bayes_sql' do
+  let(:params) do
+    super().merge({
+      sa_bayes_sql_local: true
+    })
+  end
+  it do
+    is_expected.to contain_class('exiscan::spamassassin_db')
+      .with(
+        'db_password' =&gt; '',
+        'db_username' =&gt; ''
+      )
+  end
+end
+</code></pre></div></div>
+
+<h2 id="more-dependencies">More Dependencies</h2>
+
+<p>After removing some of the more syntactical issues, it turns out that I’ve converted many dependency chains from <code class="language-plaintext highlighter-rouge">Package[exim] -&gt; something local ~&gt; Service[exim]</code> to loops, as <code class="language-plaintext highlighter-rouge">Tp::Install[exim]</code> contains <code class="language-plaintext highlighter-rouge">Service[exim]</code>. Even worse, it is not really called <code class="language-plaintext highlighter-rouge">exim</code> anymore, because that name is dependent on the underlying OS and when I added in the proper OS facts (used elsewhere) everything blew up even harder.</p>
+
+<p>To get a stable base for such dependencies, I’ve <a href="https://github.com/example42/puppet-tp/pull/17">enabled tp to provide stable names</a> for the main package and service resources.</p>
+
+<p>The main class no tests fine, but it directly includes the <code class="language-plaintext highlighter-rouge">exiscan::spamassassin</code> so all the tests for that class fail on duplicate resource for the two class declarations (exiscan’s and the test’s). To keep the tests, I move them into the main <code class="language-plaintext highlighter-rouge">exiscan_spec.rb</code> and adapt the to fit. Amongst other things that meant restoring the <code class="language-plaintext highlighter-rouge">Package[exim]</code> dependencies and tests.</p>
+
+<p>I’ve also added the compile test to all contexts that had non-default params set:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>it { is_expected.to compile.with_all_deps }
+</code></pre></div></div>
+
+<p>With “good” results:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) exiscan with a local sa_bayes db should compile into a catalogue without dependency cycles
+   Failure/Error: it { is_expected.to compile.with_all_deps }
+     error during compilation: Evaluation Error: Error while evaluating a Resource Statement, Evaluation Error: Error while evaluating a Resource Statement, Invalid resource type concat at /home/david/git/davids-exiscan/spec/fixtures/modules/postgresql/manifests/hbaconcat.pp:7:3 at /home/david/git/davids-exiscan/spec/fixtures/modules/postgresql/manifests/dbcreate.pp:38 on node zion.black.co.at
+   # ./spec/classes/exiscan_spec.rb:114:in `block (3 levels) in &lt;top (required)&gt;'
+</code></pre></div></div>
+
+<p>Turned out that my concat fixture was broken. Re-downloading fixed it. Revealing a more pertinent error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) exiscan with a local sa_bayes db should compile into a catalogue without dependency cycles
+   Failure/Error: it { is_expected.to compile.with_all_deps }
+     error during compilation: Parameter mode failed on File[spamassassin_3_2_2_initial.sql]: The file mode specification must be a string, not 'Fixnum' at /home/david/git/davids-exiscan/spec/fixtures/modules/exiscan/manifests/spamassassin_db.pp:23
+   # ./spec/classes/exiscan_spec.rb:114:in `block (3 levels) in &lt;top (required)&gt;'
+</code></pre></div></div>
+
+<p>File mode, my old nemesis!</p>
+
+<h2 id="misc-last-words">Misc Last Words</h2>
+
+<p>Another small improvement to the templates, <a href="https://github.com/nwops/retrospec-templates/pull/10">adding the default compile test</a>.</p>
+
+<p>So finally the spec tests for the main class pass. The <code class="language-plaintext highlighter-rouge">*_db_spec</code> were generated empty, so I need to have a look at them too. Puppet-lint is also complaining massively about my last-year style. And finally, all of these efforts are for naught, if the module doesn’t actually configure exim properly, which needs to be validated on a running system. Luckily, tomorrow is another day off!</p>
+
+  </div><a class="u-url" href="/log/posts/2016-03-27-fixing-all-the-things/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

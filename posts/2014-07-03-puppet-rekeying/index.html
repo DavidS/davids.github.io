@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Puppet Rekeying | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Puppet Rekeying" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Problems with puppet CAs" />
+<meta property="og:description" content="Problems with puppet CAs" />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2014-07-03-puppet-rekeying/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2014-07-03-puppet-rekeying/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-07-03T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Problems with puppet CAs","headline":"Puppet Rekeying","dateModified":"2014-07-03T00:00:00+00:00","datePublished":"2014-07-03T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2014-07-03-puppet-rekeying/"},"url":"https://club.black.co.at/log/posts/2014-07-03-puppet-rekeying/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Puppet Rekeying</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2014-07-03T00:00:00+00:00" itemprop="datePublished">Jul 3, 2014
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="problems-with-puppet-cas">Problems with puppet CAs</h1>
+
+<p>If you have created your puppet ca in The Good Old Days[tm], the chances are
+big that you’re still vulnerable to an impersonation attack, where an attacker
+on one of your nodes tricks the puppet master to sign off on a certificate that
+has the same CN as the CA. You can check you CA CN with this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 -noout -text -in $(puppet master --configprint cacert)
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">Subject</code> field must start with <code class="language-plaintext highlighter-rouge">CN=Puppet CA:</code> to avoid collisions with
+the simple <code class="language-plaintext highlighter-rouge">CN=fqdn</code> subjects of node certificates.</p>
+
+<p>If you have your CA already this long, then you’ll soon notice the <code class="language-plaintext highlighter-rouge">Certificate
+'puppetmaster.example.com' will expire on 2014-07-22</code> message on your agent
+runs.</p>
+
+<p>Finally, if you’re running your puppetmaster as a publically accessible
+service, e.g. because you’re serving a dynamic, heterogeneous, global set of
+nodes, you might very well be exposed to <a href="http://heartbleed.com/">Heartbleed</a>.
+Which has potentially compromised all your certificates anyways.</p>
+
+<h1 id="simple-solution">Simple Solution</h1>
+
+<p>In the simplest case you really only want to redo the CA certificate, without
+changing the CN, the key or anything else, except the “valid until” date.
+Move the <code class="language-plaintext highlighter-rouge">$cacert</code> file to a save place and run <code class="language-plaintext highlighter-rouge">puppet cert list</code> to
+regenerate it with a current certificate. You can check differences by
+comparing both <code class="language-plaintext highlighter-rouge">openssl x509</code> outputs (see above) for both certificates. They
+should have the same <code class="language-plaintext highlighter-rouge">Subject</code> and <code class="language-plaintext highlighter-rouge">Subject Public Key Info</code> values, but the
+new certificate has a fresh <code class="language-plaintext highlighter-rouge">Validity</code> period, by default five years into the
+future.</p>
+
+<p>Deploy the new file to <code class="language-plaintext highlighter-rouge">$localcacert</code> on all nodes and you’re set.</p>
+
+<p>The great thing is that nodes with the old CA cert will still correctly
+validate all connections as the <code class="language-plaintext highlighter-rouge">Subject</code> of the new cert matches what’s
+written on all certificates.</p>
+
+<h1 id="further-complications">Further complications</h1>
+
+<p>If your situation is not so simple, I have a few more tricks saved for the next
+installment.</p>
+
+<h1 id="other-puppet-ca-users">Other puppet CA users</h1>
+
+<p>When futzing around with puppet certificates, you always have to remember other
+places where you have reused those certificates. In my case this was
+<a href="http://theforeman.org">foreman</a> and
+<a href="http://docs.puppetlabs.com/puppetdb/">puppetdb</a>. Both cause grief when not
+handled.</p>
+
+<h2 id="puppetdb">puppetdb</h2>
+
+<p>Depending on the specific setup and version, puppetdb either has its own local
+truststores which have to be refreshed or accesses the puppet certificates
+directly in <code class="language-plaintext highlighter-rouge">$ssldir</code>.</p>
+
+<p>Before proceeding, make a backup of <code class="language-plaintext highlighter-rouge">/etc/puppetdb</code>.</p>
+
+<p>In the former case, run <code class="language-plaintext highlighter-rouge">puppetdb-ssl-setup -f</code> and restart puppetdb. In the
+latter case, just restart it.</p>
+
+<p>Do not forget that puppetdb can take more than ten seconds before it is ready
+to accept API calls. Watch the logfile (<code class="language-plaintext highlighter-rouge">tail -F /var/log/puppetdb/*log</code>) to be
+notified of the actual resumption of service:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2014-07-03 23:41:48,008 INFO  [o.e.j.s.ServerConnector] Started ServerConnector@123456ab{SSL-HTTP/1.1}{puppetmaster.example.com:8081}
+2014-07-03 23:41:48,054 INFO  [c.p.p.c.services] PuppetDB version 2.0.0
+2014-07-03 23:41:48,190 INFO  [c.p.p.c.services] Starting broker
+2014-07-03 23:41:49,225 WARN  [o.a.a.b.BrokerService] Store limit is 100000 mb, whilst the data directory: /var/lib/puppetdb/mq/localhost/KahaDB only has 9714 mb of usable space
+2014-07-03 23:41:49,225 ERROR [o.a.a.b.BrokerService] Temporary Store limit is 50000 mb, whilst the temporary data directory: /var/lib/puppetdb/mq/localhost/tmp_storage only has 9714 mb of usable space
+2014-07-03 23:41:49,225 INFO  [c.p.p.c.services] Starting 2 command processor threads
+2014-07-03 23:41:49,240 INFO  [c.p.p.c.services] Starting query server
+2014-07-03 23:41:49,243 WARN  [o.e.j.s.h.ContextHandler] Empty contextPath
+2014-07-03 23:41:49,253 INFO  [o.e.j.s.h.ContextHandler] Started o.e.j.s.h.ContextHandler@123456ab{/,null,AVAILABLE}
+2014-07-03 23:41:49,288 INFO  [c.p.p.c.services] Starting sweep of stale reports (threshold: 14 days)
+2014-07-03 23:41:49,336 INFO  [c.p.p.c.services] Finished sweep of stale reports (threshold: 14 days)
+2014-07-03 23:41:49,337 INFO  [c.p.p.c.services] Starting database garbage collection
+2014-07-03 23:41:49,382 INFO  [c.p.p.c.services] Finished database garbage collection
+</code></pre></div></div>
+
+<h2 id="foreman">foreman</h2>
+
+<p>My foreman is configured to run in passenger in apache using the puppet
+certificate and key directly from <code class="language-plaintext highlighter-rouge">$ssldir</code>. Restarting the apache loaded the
+new CA PEM file just fine. After this <code class="language-plaintext highlighter-rouge">node.rb</code> worked again.</p>
+
+  </div><a class="u-url" href="/log/posts/2014-07-03-puppet-rekeying/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

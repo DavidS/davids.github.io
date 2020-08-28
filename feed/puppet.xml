@@ -1,0 +1,2057 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed/puppet.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-08-28T11:07:40+00:00</updated><id>https://club.black.co.at/log/feed/puppet.xml</id><title type="html">DavidS’ log | Puppet</title><author><name>David Schmitt</name></author><entry><title type="html">First Steps with Bolt</title><link href="https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/index.html" rel="alternate" type="text/html" title="First Steps with Bolt" /><published>2019-06-09T00:00:00+00:00</published><updated>2019-06-09T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/first-steps-with-bolt</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/index.html">&lt;p&gt;For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo&lt;/code&gt; onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~$ ssh puppetmaster.example.net -p 2200
+Linux puppetmaster 3.2.0-6-amd64 #1 SMP Debian 3.2.102-1 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+You have new mail.
+Last login: Sat May 25 12:15:46 2019 from example.net
+david@puppetmaster:~$ sudo -i
+root@puppetmaster:~# cd /srv/puppet/secrets/ &amp;amp;&amp;amp; git pull --ff-only &amp;amp;&amp;amp; cd /srv/puppet/configuration/ &amp;amp;&amp;amp; git pull --ff-only &amp;amp;&amp;amp; git submodule update --init --recursive &amp;amp;&amp;amp; systemctl restart puppetmaster.service &amp;amp;&amp;amp; sleep 1
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;While totally servicable, I never felt particularily good about having such a crucial step not recorded in some kind of git repo. Today, finally I got with the times and wrapped this up in a task. Here you can see it in action, deploying itself:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/dasz-configuration$ bolt task run site::puppet_deploy --modulepath ./modules --run-as root -n puppetmaster.example.net:2200
+Started on puppetmaster.example.net...
+Finished on puppetmaster.example.net:
+  Already up-to-date.
+  Updating e74a140..d7975aa
+  Fast-forward
+   modules/site/.gitattributes           |    5 ++
+   modules/site/.gitignore               |   27 ++++++++
+   modules/site/.pdkignore               |   42 ++++++++++++
+   modules/site/.puppet-lint.rc          |    1 +
+   modules/site/.rspec                   |    2 +
+   modules/site/.rubocop.yml             |  122 +++++++++++++++++++++++++++++++++
+   modules/site/.sync.yml                |    5 ++
+   modules/site/.travis.yml              |   54 +++++++++++++++
+   modules/site/.yardopts                |    1 +
+   modules/site/Gemfile                  |   71 +++++++++++++++++++
+   modules/site/Modulefile               |    9 ---
+   modules/site/Rakefile                 |   76 +++++++++++++++++++-
+   modules/site/manifests/init.pp        |   15 ----
+   modules/site/spec/default_facts.yml   |    7 ++
+   modules/site/spec/spec_helper.rb      |   47 ++++++++++++-
+   modules/site/tasks/puppet_deploy.json |    7 ++
+   modules/site/tasks/puppet_deploy.sh   |   17 +++++
+   17 files changed, 482 insertions(+), 26 deletions(-)
+   create mode 100644 modules/site/.gitattributes
+   create mode 100644 modules/site/.gitignore
+   create mode 100644 modules/site/.pdkignore
+   create mode 100644 modules/site/.puppet-lint.rc
+   create mode 100644 modules/site/.rspec
+   create mode 100644 modules/site/.rubocop.yml
+   create mode 100644 modules/site/.sync.yml
+   create mode 100644 modules/site/.travis.yml
+   create mode 100644 modules/site/.yardopts
+   create mode 100644 modules/site/Gemfile
+   delete mode 100644 modules/site/Modulefile
+   delete mode 100644 modules/site/manifests/init.pp
+   create mode 100644 modules/site/spec/default_facts.yml
+   create mode 100644 modules/site/tasks/puppet_deploy.json
+   create mode 100644 modules/site/tasks/puppet_deploy.sh
+  Submodule 'modules/apache' () registered for path 'modules/apache'
+  Submodule 'modules/apt' () registered for path 'modules/apt'
+  Submodule 'modules/bind' () registered for path 'modules/bind'
+  Submodule 'modules/chocolatey' () registered for path 'modules/chocolatey'
+  Submodule 'modules/concat' () registered for path 'modules/concat'
+  Submodule 'modules/dhcpd' () registered for path 'modules/dhcpd'
+  Submodule 'modules/dovecot' () registered for path 'modules/dovecot'
+  Submodule 'modules/exim' () registered for path 'modules/exim'
+  Submodule 'modules/exiscan' () registered for path 'modules/exiscan'
+  Submodule 'modules/firewall' () registered for path 'modules/firewall'
+  Submodule 'modules/foreman' () registered for path 'modules/foreman'
+  Submodule 'modules/icinga' () registered for path 'modules/icinga'
+  Submodule 'modules/inittab' () registered for path 'modules/inittab'
+  Submodule 'modules/iptables' () registered for path 'modules/iptables'
+  Submodule 'modules/libvirt' () registered for path 'modules/libvirt'
+  Submodule 'modules/monitor' () registered for path 'modules/monitor'
+  Submodule 'modules/munin' () registered for path 'modules/munin'
+  Submodule 'modules/mysql' () registered for path 'modules/mysql'
+  Submodule 'modules/nginx' () registered for path 'modules/nginx'
+  Submodule 'modules/nrpe' () registered for path 'modules/nrpe'
+  Submodule 'modules/ntp' () registered for path 'modules/ntp'
+  Submodule 'modules/nullmailer' () registered for path 'modules/nullmailer'
+  Submodule 'modules/openssh' () registered for path 'modules/openssh'
+  Submodule 'modules/openvpn' () registered for path 'modules/openvpn'
+  Submodule 'modules/postgresql' () registered for path 'modules/postgresql'
+  Submodule 'modules/puppet' () registered for path 'modules/puppet'
+  Submodule 'modules/puppetdb' () registered for path 'modules/puppetdb'
+  Submodule 'modules/puppi' () registered for path 'modules/puppi'
+  Submodule 'modules/registry' () registered for path 'modules/registry'
+  Submodule 'modules/roundcube' () registered for path 'modules/roundcube'
+  Submodule 'modules/rsyslog' () registered for path 'modules/rsyslog'
+  Submodule 'modules/stdlib' () registered for path 'modules/stdlib'
+  Submodule 'modules/sudo' () registered for path 'modules/sudo'
+  Submodule 'modules/tftp' () registered for path 'modules/tftp'
+  Submodule 'modules/timezone' () registered for path 'modules/timezone'
+  Submodule 'modules/vcsrepo' () registered for path 'modules/vcsrepo'
+  Submodule 'modules/xinetd' () registered for path 'modules/xinetd'
+  Submodule 'vagrant/veewee' () registered for path 'vagrant/veewee'
+  {
+  }
+Successful on 1 node: puppetmaster.example.net:2200
+Ran on 1 node in 9.47 seconds
+david@zion:~/git/dasz-configuration$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908&quot;&gt;this commit&lt;/a&gt; for the rather trivial implementation details.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="bolt" /><category term="hosting" /><category term="deployment" /><summary type="html">For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would ssh and sudo onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:</summary></entry><entry><title type="html">My Kanban Journey</title><link href="https://club.black.co.at/log/posts/2018-11-11-kanban/index.html" rel="alternate" type="text/html" title="My Kanban Journey" /><published>2018-11-11T00:00:00+00:00</published><updated>2018-11-11T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2018-11-11-kanban/kanban</id><content type="html" xml:base="https://club.black.co.at/log/posts/2018-11-11-kanban/index.html">&lt;p&gt;&lt;strong&gt;&lt;em&gt;Disclaimer: This post was written as an employee of Puppet, Inc., but does not constitute opinions of the company.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Last year I was part of the effort to design, develop and deliver the first version of the &lt;a href=&quot;https://puppet.com/blog/develop-modules-faster-new-puppet-development-kit&quot;&gt;Puppet Development Kit&lt;/a&gt;. We started our effort small with a Trello board of ideas and things that we wanted to achieve. Once development started, we switched over to a JIRA project using the companies standard config, which turned out to be quite limiting after a while. At one point I took a day or two to completely rebuild our kanban boards to streamline the info exposed and reduce the friction when using them. Only after leaving the team, I realised &lt;a href=&quot;https://twitter.com/nigelkersten/status/1024675669429518336&quot;&gt;the value of having a low-friction JIRA configuration&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2018-11-11-kanban/tweet.png&quot; alt=&quot;a screenshot of the tweet linked above&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thanks due to some prodding by &lt;a href=&quot;https://twitter.com/sigje/status/1025121668191023104&quot;&gt;@sigje&lt;/a&gt; and some internal folks, I’ve finally come around to writing this up.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2018-11-11-kanban/prod.png&quot; alt=&quot;a screenshot of the tweet linked above&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s start with a short intro to Dual Track Agile, the agile flavour du jour back then. Then I’ll give an overview of how the boards look like today, and walk through the life of a feature/ticket in the second half.&lt;/p&gt;
+
+&lt;h1 id=&quot;dual-track-agile&quot;&gt;Dual Track Agile&lt;/h1&gt;
+
+&lt;p&gt;As mentioned in the intro, there was a big blob of things we wanted to achieve with the PDK, but were unable to address at “this” point in time. With the default setup of JIRA (back then), this was loading up the board with tickets that were not relevant to the day-to-day activities. At the same time, this glut of tickets obscured the view of what should be coming next, as individual stories were too detailed, and not structured to support day-to-day development activities.&lt;/p&gt;
+
+&lt;p&gt;At the time I stumbled over some folks talking about &lt;a href=&quot;https://medium.com/@emabolo/introducing-dual-track-agile-27a23d12268b&quot;&gt;dual track agile&lt;/a&gt;: splitting design and long-term planning out from the day-to-day development board. This allowed me to represent the high-level planning and progress on one board, and to remove those long-term activities from the day-to-day detail view necessary for development on the primary board.&lt;/p&gt;
+
+&lt;p&gt;Read also &lt;a href=&quot;https://medium.com/@emabolo/dual-track-agile-the-experience-so-far-50e3b48b28ec&quot;&gt;Emanuele’s second post&lt;/a&gt; about their dual track experience.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-state-of-play-board&quot;&gt;The “State of Play” Board&lt;/h1&gt;
+
+&lt;p&gt;The main board for day-to-day development usage should look familiar to everyone who had to work with JIRA.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2018-11-11-kanban/state_of_play_board.png&quot; alt=&quot;the main board&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We were already used to using Epics to group tickets, so I followed JIRA’s default of Epics as swimlanes. At that time we were using our internal JIRA defaults for board columns that was built for the much larger team and project of Puppet Enterprise, which had something like 8 different ticket states to handle Dev/QA/CI handoffs. In the PDK team we were mostly using &lt;a href=&quot;https://travis-ci.com&quot;&gt;Travis CI&lt;/a&gt; to directly test pull requests and code would go straight to master after a review from a second engineer. This resulted in the six columns that we have now: Backlog, Groomed, Blocked, In Progress, Review, and Done.&lt;/p&gt;
+
+&lt;p&gt;Astute readers might notice that the backlog column doesn’t show up on the screenshot. This is a recent change in JIRA that I really love. The first column of the board is not shown on the main board anymore, but moved to a separate - aptly named “backlog” - view:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2018-11-11-kanban/backlog.png&quot; alt=&quot;the backlog view&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here the unfinished stories and not-yet-started tickets live a shadow-life away from the day-to-day activities. One click away, in a format optimized for slicing, dicing and reshuffling them. If my memory is correct the board needs to set up as a “Kanban board” when creating it to enable this functionality.&lt;/p&gt;
+
+&lt;p&gt;“Blocked” is a special case, mostly reserved for tickets we started, but now Need Information (or work) from some external party. This might be community feedback, or some service from another team. We’ve kept those tickets on the main board to not lose sight of them, and revisit them every so often to see if we need to follow-up.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://confluence.atlassian.com/jirasoftwareserver/configuring-quick-filters-938845301.html&quot;&gt;quick filters&lt;/a&gt; in the top line get adjusted depending on the overarching theme the team is currently working on. For example you can see the “PDK 1.8.0” filter, which shows all tickets deemed mandatory for the next feature release of the PDK. While this is of lesser importance for the big items, every release has a number of smaller fixes going in which do not necessitate a separate epic.&lt;/p&gt;
+
+&lt;p&gt;Since we’re not using JIRA’s release feature, Done tickets get dropped from the board after 14 days. This preserves context of what we accomplished without overloading the board. This can be accomplished by adding a term to the board’s Filter Query: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AND (resolution = unresolved OR resolved &amp;gt;= -14d)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-epic-overview-board&quot;&gt;The “Epic Overview” Board&lt;/h1&gt;
+
+&lt;p&gt;To keep a longer term overview of what’s going on, the “Epic Overview” board only shows epics. In our case, epics are bigger chunks of work that can be released as features.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2018-11-11-kanban/epic_overview_board.png&quot; alt=&quot;the epic overview board&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The columns here are based on work by others in the company around structuring the pre-programming-process. From idea to development and delivery, epics can accurately reflect their current state, and get refined as they migrate from left to right. This board also serves as an easy interface for folks outside the team to get a high-level of understanding where the team is heading.&lt;/p&gt;
+
+&lt;p&gt;Re-ordering epics here will influence the order in which they appear on the State of Play board. This makes it very easy to translate the high-level priorities here into a daily usable details board that also reflects the priorities without additional maintenance overhead.&lt;/p&gt;
+
+&lt;p&gt;Only Epics in the Development or Delivering stage are shown on the State of Play board. This keeps the daily view uncluttered from work that is not yet ready to start.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-bow-wave-filter&quot;&gt;The “Bow Wave” Filter&lt;/h1&gt;
+
+&lt;p&gt;Since the PDK is run as an open source project, there are lots of folks outside the team who can provide feedback through tickets. When starting out we deliberately decided a multi-format approach to get folks to report issues. We accept reports from the public in &lt;a href=&quot;https://github.com/puppetlabs/pdk/issues&quot;&gt;github&lt;/a&gt; and in &lt;a href=&quot;https://tickets.puppetlabs.com/projects/PDK/summary&quot;&gt;JIRA&lt;/a&gt; (needs a local account). The requirement for a separate account is a barrier - especially for new folks. Over the last year we got a lot more feedback and contributions through github than through JIRA.&lt;/p&gt;
+
+&lt;p&gt;While github has a really nice self-service email notification system, allowing us to keep track of new reports, JIRA (in our setup) is … less forthcoming. To workaround this, we have a JIRA issue filter that surfaces new and untriaged issues in the PDK project and checking the bow wave for new tickets is part of the daily triage.&lt;/p&gt;
+
+&lt;p&gt;There would also be the option to use JIRA’s “service desks”, to make the submission of reports by outsiders a nicer experience. It turned out that there were significant limitations in how JIRA projects need to be configured to be able to handle that, which were incompatible with the rest of our requirements.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-life-of-a-feature&quot;&gt;The Life of a Feature&lt;/h1&gt;
+
+&lt;p&gt;Finally, let’s track a new feature from initial idea to release through the boards to connect the individual pieces and give you a deeper understanding of how these boards are useful.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note that this description is the process as of late last year. Recently the PDK team has introduced the &lt;a href=&quot;https://github.com/puppetlabs/pdk-planning&quot;&gt;pdk-planning&lt;/a&gt; repo to make some of the bits described here more accessible to the community. Please follow the README there if you want to know how PDK planning works today.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Also note that this description of the process is only a set of guidelines, even within the team. I would encourage everyone following these words to apply a hefty dose of &lt;a href=&quot;https://en.wikipedia.org/wiki/Shuhari&quot;&gt;shuhari&lt;/a&gt;.&lt;/p&gt;
+
+  &lt;p&gt;While the individual stages are presented separetely here, in the real world they overlap, blend and complement each other.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
+&lt;p&gt;Every feature starts as an Idea. A conversation on Slack, an identified gap in the feature set, a major restructuring of the code base. Smaller items should go directly into the &lt;a href=&quot;https://tickets.puppetlabs.com/browse/PDK-394&quot;&gt;Ongoing PDK Improvements&lt;/a&gt; epic, and can be directly scheduled. Larger items get started as epic of their own and pass through the Epic Overview board first.&lt;/p&gt;
+
+&lt;h2 id=&quot;discovery---why&quot;&gt;Discovery - Why?&lt;/h2&gt;
+
+&lt;p&gt;The first step after noting a necessity is Discovery, or why is there a problem? Often this goes hand in hand with how the idea was initially formed, but sometimes it could require lots of work by our Product Manager and/or &lt;a href=&quot;https://twitter.com/monro&quot;&gt;UX researcher&lt;/a&gt; to figure out if this is really something that we need to address, and its overall importance.&lt;/p&gt;
+
+&lt;h2 id=&quot;definition---what&quot;&gt;Definition - What?&lt;/h2&gt;
+
+&lt;p&gt;Once “we” have identified and “agreed” on the problem, the next step is Definition, or what is the solution? No problem has a single solution. Figuring out what the solution should be, again is mostly driven by product management and UX; engineers provide input around implementation feasibility of the various possibilities. A very effective tool to judge potential solutions was writing the documentation beforehand, and creating fictional terminal sessions of how the PDK would be used in the new scenario. This makes it easy for users to visualize what would happen, and give early feedback.&lt;/p&gt;
+
+&lt;h2 id=&quot;design---how&quot;&gt;Design - How?&lt;/h2&gt;
+
+&lt;p&gt;Once there is some clarity around what should be built, we can start looking at Designing the implementation, or how to build it. Identifying the integration points within the code base, APIs that need adjustment, fleshing out the steps required to make something happen, breaking down the epic into workable chunks.&lt;/p&gt;
+
+&lt;h2 id=&quot;development&quot;&gt;Development&lt;/h2&gt;
+
+&lt;p&gt;Depending on other work going on, eventually the coding can start. The Epic moves into the Developing stage, and the prepared tickets start appearing in the backlog of the State of Play board. This is also the point where the high-level planning and the Bow Wave external inputs merge: tickets create as Open get Accepted by the team as something that needs to be done.&lt;/p&gt;
+
+&lt;h3 id=&quot;grooming&quot;&gt;Grooming&lt;/h3&gt;
+
+&lt;p&gt;In grooming sessions (often focused on a specific topic), we figure out what needs to be figured out to be able to start working on a specific thing. Some of this comes from the designing stage, and some of the work is only discovered as development progresses. Acceptance criteria can help focus on a individual definition of done for each task. Depending on the specifics, this can include new API interactions, new CLI interactions, unit tests, end-to-end tests, and documentation bits.&lt;/p&gt;
+
+&lt;p&gt;Regular grooming would happen every other week, and focus on the immediate next steps necessary, as well as keeping the board clean and usable. For bigger chunks of work, especially kicking off a new feature, we would allocate separate sessions to break down the tickets. This also meant that the team seldom overcommitted or stalled out, because we were in control of the flow of tickets into the day-to-day process, and would only pull in a new set of work when we were ready.&lt;/p&gt;
+
+&lt;p&gt;Once there is a shared understanding, the ticket becomes Ready for Engineering, and shows up on the Groomed column on the main board.&lt;/p&gt;
+
+&lt;h3 id=&quot;in-progress&quot;&gt;In Progress&lt;/h3&gt;
+
+&lt;p&gt;As folks are looking for the next thing to work on, they can pick up the next task from the Groomed column, assign themselves and get started.&lt;/p&gt;
+
+&lt;h3 id=&quot;ready-to-review&quot;&gt;Ready to Review&lt;/h3&gt;
+
+&lt;p&gt;Once the work is supposedly done (oh, how often am I wrong :-D ) we create a PR with the changes, and have another team member review the changes. In many cases the changes are small enough that no or only minor changes are required where the ticket can stay in this state until those are resolved. (Code Review etiquette is something else I have strong opinions about, definitely too many for this post.)&lt;/p&gt;
+
+&lt;p&gt;To avoid annoying back-and-forths on more complex changes we would pro-actively put up work-in-progress/do-not-merge PRs for preview without moving to this state, and discuss with the wider team long before a change would be considered complete.&lt;/p&gt;
+
+&lt;p&gt;The Ready for Review column is the area I was most not-really-satisfied, but never annoyed (or inspired) enough to make a change, is this column. Part of this is grounded in the disassociation between github PRs and JIRA tickets, and the overhead required to keep the two states synchronized. Part of this is the “Ready to” phrasing that would indicate a queue waiting to be processed, instead of a bit of work currently in flight.&lt;/p&gt;
+
+&lt;h3 id=&quot;done&quot;&gt;Done&lt;/h3&gt;
+
+&lt;p&gt;It’s merged. Ship it. Next!&lt;/p&gt;
+
+&lt;h2 id=&quot;delivery&quot;&gt;Delivery&lt;/h2&gt;
+
+&lt;p&gt;This is a limbo state between “We’ve done the work”, and “Customers can actually use this”. It’s not done-done, until the release is on the download server. Epics get parked here to signal the final stages tying up loose ends, of just waiting for someone to press the right button in Jenkins.&lt;/p&gt;
+
+&lt;h1 id=&quot;metrics&quot;&gt;Metrics&lt;/h1&gt;
+
+&lt;p&gt;Being a small, tight-knit team, numeric metrics were not something we looked into much. The two high-level bits I personally tracked - more as an afterthought - were a created-vs-resolved chart for the project, and the cadence of releases. The chart combines a vague sense of velocity, an overview of significant events in the life of the project, and exposes long-term trends. The release cadence is a good indicator for getting things done overall. It also tracked well the maturing of the PDK overall and individual feature releases.&lt;/p&gt;
+
+&lt;h1 id=&quot;final-words&quot;&gt;Final words&lt;/h1&gt;
+
+&lt;p&gt;There is only so much I can piece together in a lazy Sunday afternoon of a year’s worth of working together with the best team I was ever blessed with working with. By necessity therefore, this blog post only touches the high-points and major avenues of information flow. If you have questions about how I implemented a specific thing, feel free to reach out to me &lt;a href=&quot;https://twitter.com/dev_el_ops&quot;&gt;@dev_el_ops on twitter&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;None of the work presented here would have been possible without the PDK team, and this post would be a shadow of itself without the feedback from Jennifer Davis, Craig Gomes, Brice Figureau, and Michael Smith. If any mistakes remain, they are mine.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="agile" /><category term="kanban" /><summary type="html">Disclaimer: This post was written as an employee of Puppet, Inc., but does not constitute opinions of the company.</summary></entry><entry><title type="html">Hello, Rabbithole</title><link href="https://club.black.co.at/log/posts/2016-04-09-hello-rabbithole/index.html" rel="alternate" type="text/html" title="Hello, Rabbithole" /><published>2016-04-09T00:00:00+00:00</published><updated>2016-04-09T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2016-04-09-hello-rabbithole/hello-rabbithole</id><content type="html" xml:base="https://club.black.co.at/log/posts/2016-04-09-hello-rabbithole/index.html">&lt;blockquote&gt;
+  &lt;p&gt;Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a continuation of &lt;a href=&quot;/log/posts/2016-04-03-containing-docker/&quot;&gt;last week’s post&lt;/a&gt;, refreshing my &lt;a href=&quot;https://github.com/DavidS/puppet-exiscan&quot;&gt;exiscan module&lt;/a&gt; using &lt;a href=&quot;https://github.com/nwops/puppet-retrospec&quot;&gt;retrospec-puppet&lt;/a&gt;, and a few other nifty technologies. In the last installment I contained docker in a virtualbox to avoid magic action at a distance on my desktop (dialogs popping up, audio being muted).&lt;/p&gt;
+
+&lt;h2 id=&quot;picking-up-the-pieces&quot;&gt;Picking up the Pieces&lt;/h2&gt;
+
+&lt;p&gt;Last week, I gave up on this, after provisioning a fresh box with a vboxsf for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/lib/docker&lt;/code&gt;, which confused docker to the point of refusing to work at all. Looking at it with fresh eyes, I have to admit, that it was a very optimistic approach. Rebuilding the box without this mount succeeded, and toock little more than ten minutes.&lt;/p&gt;
+
+&lt;p&gt;While waiting on the box to build, I created a unprivileged user to try out whether that fixed my issues, but of course, these being kernel things, and docker running as root, this did change a thing. Finally I could try to hack the boot sequence to avoid fondling the kernel in unspeakable ways, but the box is already running the tests, and I couldn’t be bothered. Rome wasn’t built in a day either.&lt;/p&gt;
+
+&lt;h2 id=&quot;running-the-tests&quot;&gt;Running the Tests&lt;/h2&gt;
+
+&lt;p&gt;Now that the tests are running without annoyance, I can continue working on the actual code.&lt;/p&gt;
+
+&lt;h2 id=&quot;accelerating-docker&quot;&gt;Accelerating docker&lt;/h2&gt;
+
+&lt;p&gt;Jinxed it. For some reason installing packages in docker in the box causes 100% iowait and approx 150kB/s write I/O in the box, while the host is idling. Failing to spot any obvious causes, I suspect the linked_clone option, and disable that one. Additionally I add strace, and lsof to the biult-in tools for the docker image, so next time around I can have a more in-depth look. Writing this, I also need to check next time whether the same I/O “performance” is seen &lt;strong&gt;outside&lt;/strong&gt; the docker container in the box. Maybe docker’s underlying FS layering is botching up?&lt;/p&gt;
+
+&lt;p&gt;Meanwhile my handiest bash function gets another go:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function unfuck() { vagrant destroy -f &quot;$@&quot; &amp;amp;&amp;amp; vagrant up &quot;$@&quot; ; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Installing packages in the vbox is fast and has a peak I/O bandwidth of 32MB/s. Reading up on docker &lt;a href=&quot;https://docs.docker.com/engine/userguide/storagedriver/selectadriver/&quot;&gt;storage drivers&lt;/a&gt; highlights how the default &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aufs&lt;/code&gt; driver apparantly is not suited for “high write activity”, suggesting the LVM/devicemapper driver instead.&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-a-second-disk&quot;&gt;Adding a second disk&lt;/h3&gt;
+
+&lt;p&gt;It’s really &lt;strong&gt;quite&lt;/strong&gt; easy, and only took me an hour or so to figure out.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.provider &quot;virtualbox&quot; do |vb|
+  disk_image = &quot;/tmp/docker-lvm.vdi&quot;
+
+  vb.customize ['createhd', '--filename', disk_image, '--size', 500 * 1024] unless File.exists?(disk_image)
+  vb.customize ['storagectl', :id, '--add', 'sata', '--name', 'SATA', '--hostiocache', 'off' ]
+  vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk_image]
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Of course, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;disk_image&lt;/code&gt; is not bound to the life cycle of the vagrant box, and vagrant doesn’t support any extended operations, other than calling out to the underlying hypervisor.&lt;/p&gt;
+
+&lt;h3 id=&quot;configuring-docker&quot;&gt;Configuring docker&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/&quot;&gt;Docker’s devicemapper documentation&lt;/a&gt; is pretty comprehensive.&lt;/p&gt;
+
+&lt;p&gt;Beware the traps:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/defaults/docker
+# THIS FILE DOES NOT APPLY TO SYSTEMD
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It also points to this gem of &lt;a href=&quot;https://docs.docker.com/engine/admin/systemd/&quot;&gt;documentation&lt;/a&gt;: “In this example, we’ll assume that your docker.service file looks something like: […]”. I installed the thing from your packages. You should perfectly well know how your config looks like!&lt;/p&gt;
+
+&lt;p&gt;The new provision section for docker on DM looks now like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DISK=$(/bin/echo -e 'sda\nsdb' | grep -v $(ls /dev/disk/by-id/ata-VBOX_HARDDISK_VB????????-????????-part1 -la | cut -d/ -f 7 | cut -b 1-3))
+
+pvcreate /dev/$DISK
+vgcreate docker /dev/$DISK
+lvcreate -L 90G -n data docker
+lvcreate -L 4G -n metadata docker
+mkdir -p /etc/systemd/system/docker.service.d
+
+cat &amp;gt; /etc/systemd/system/docker.service.d/storage-driver.conf &amp;lt;&amp;lt;EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd:// --storage-driver=devicemapper --storage-opt dm.datadev=/dev/docker/data --storage-opt dm.metadatadev=/dev/docker/metadata
+EOF
+
+systemctl daemon-reload
+systemctl enable docker
+systemctl restart docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It turns out that the linux kernel will hold true to its claim that block device initialization order is random. The next try failed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Device /dev/sda not found (or ignored by filtering).&lt;/code&gt; because &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sdb&lt;/code&gt; is now the second disk. This causes the dance with inspecting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/disk/by-id&lt;/code&gt; symlinks.&lt;/p&gt;
+
+&lt;p&gt;After jumping through enough hoops, dpkg package installation is still slow af. “Good” that I’m “learning” on my “personal” time “here”.&lt;/p&gt;
+
+&lt;h2 id=&quot;back-to-the-desktop&quot;&gt;Back to the Desktop&lt;/h2&gt;
+
+&lt;p&gt;Since docker on Debian 8 in a virtualbox doesn’t want to cooperate at acceptable levels, I have to accept the fiddling with my devices and resume running docker directly on my main kernel. 2 minutes 22 seconds total runtime for a beaker run from scratch, and 1:55 when the caches are hot and the base beaker image is already built. I could probably shave off another 30 seconds by caching Debian and Puppet locally, or moving some of the setup code into the docker build command in the nodeset.&lt;/p&gt;
+
+&lt;h2 id=&quot;fixing-the-test&quot;&gt;Fixing the Test&lt;/h2&gt;
+
+&lt;p&gt;Irrespective of the virt tech used to run the tests, they always failed the idempotency test:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Failures:
+
+  1) exiscan is idempotent
+     Failure/Error: expect(result.exit_code).to eq 0
+
+       expected: 0
+            got: 2
+
+       (compared using ==)
+
+     # ./spec/acceptance/exiscan_spec.rb:23:in `block (2 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;because of&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Notice: /Stage[main]/Exiscan::Spamassassin/Service[clamav-daemon]/ensure: ensure changed 'stopped' to 'running'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;poking into the docker container,&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@debian-8-x64:~# systemctl status clamav-daemon
+● clamav-daemon.service - Clam AntiVirus userspace daemon
+   Loaded: loaded (/lib/systemd/system/clamav-daemon.service; enabled)
+   Active: inactive (dead)
+           start condition failed at Sam 2016-04-09 17:35:12 UTC; 1min 35s ago
+           ConditionPathExistsGlob=/var/lib/clamav/daily.{c[vl]d,inc} was not met
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;which can easily be fixed by waiting for freshclam to finish downloading the virus pattern definitions:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# freshclam needs time to download the patterns
+# Instead of failing clamav-daemon, we wait for this to finish
+exec { 'wait-for-freshclam':
+  command =&amp;gt; &quot;/bin/bash -c 'while [ ! -d /var/lib/clamav/daily.cvd ]; do sleep 1; done'&quot;,
+  creates =&amp;gt; '/var/lib/clamav/daily.cvd',
+  require =&amp;gt; Service['clamav-freshclam'],
+  before  =&amp;gt; Service['clamav-daemon'],
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That takes … a while:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: /Stage[main]/Exiscan::Spamassassin/Exec[wait-for-freshclam]/returns: change from notrun to 0 failed: Command exceeded timeout
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It would have helped to check for existence (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt;) instead of directory (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-d&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;But at least, now it works!&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Finished in 2 minutes 45.4 seconds (files took 27.62 seconds to load)
+2 examples, 0 failures
+
+real	3m14.596s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I should rename this blog to “Do not ask how the sausages are made.”&lt;/li&gt;
+  &lt;li&gt;Nesting virtualisation is bad for performance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
+
+&lt;p&gt;To stave off boredom, I upgraded the vagrant box to Debian “stretch”, which is what I’m using on my desktop too. This has the kernel version 4.4.0-1 and suddenly the beaker tests run in 3m27s on hot caches. Not too bad - except for all the hassle.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="testing" /><category term="retrospec" /><category term="exim" /><category term="travisci" /><category term="beaker" /><category term="docker" /><category term="vagrant" /><category term="fullstack" /><category term="clamav" /><summary type="html">Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</summary></entry><entry><title type="html">Containing Docker</title><link href="https://club.black.co.at/log/posts/2016-04-03-containing-docker/index.html" rel="alternate" type="text/html" title="Containing Docker" /><published>2016-04-03T00:00:00+00:00</published><updated>2016-04-03T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2016-04-03-containing-docker/containing-docker</id><content type="html" xml:base="https://club.black.co.at/log/posts/2016-04-03-containing-docker/index.html">&lt;blockquote&gt;
+  &lt;p&gt;Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;This is a continuation of [[lass week’s post&lt;/td&gt;
+      &lt;td&gt;/posts/2016-03-28-cooperating-with-travisci.mdwn]], refreshing my &lt;a href=&quot;https://github.com/DavidS/puppet-exiscan&quot;&gt;exiscan module&lt;/a&gt; using &lt;a href=&quot;https://github.com/nwops/puppet-retrospec&quot;&gt;retrospec-puppet&lt;/a&gt;. In the last installment I managed to get the full-system tests running in docker. Yay! It turns out that the SUT from within the docker “container” changes my sound settings and causes weird interactions with my desktop environment. Boo! Isolating myself from the contents of the container will be the goal for today. Since it’s the 15th anniversary of finding my significant other, I’ll &lt;a href=&quot;http://www.cheesy.at/fotos/events/holi-festival-belfast/&quot;&gt;spend most of the day&lt;/a&gt; at the &lt;a href=&quot;http://www.artsekta.org.uk/festivals/festival-of-colours&quot;&gt;Festival of Colours&lt;/a&gt;.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;isolating-the-container&quot;&gt;Isolating the “container”&lt;/h2&gt;
+
+&lt;p&gt;Of course, I am aware that I’m using docker not in the way it was designed for: I’m booting a “complete” system(d), instead of just “the one process” of the application. On the other hand, the security story of “do not run things that will do unspeakable things to your kernel”, is not very convincing.&lt;/p&gt;
+
+&lt;p&gt;Beaker as hypervisor manager doesn’t allow passing arbitrary options to docker, so any of the possibilities of enabling seccomp profiles or disabling capabilities are impossible to use without patching beaker. Additionally it would mean to handcraft a policy that disallows futzing with my desktop (plausible for the audio, a unknown for the colord issue, and who knows what else?). Alternatively, I could just run docker within a VM (yay vagrant) and get proper containment of the system running in docker.&lt;/p&gt;
+
+&lt;p&gt;Here’s the relevant vagrant provision command to setup a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppetlabs/debian-8.2-64-nocm&lt;/code&gt; box to be able to run beaker in docker on that VM. This has also the advantage, that anyone following along at home gets a pristine, knwon-good environment to run all of this.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.provision &quot;shell&quot;, inline: &amp;lt;&amp;lt;-SHELL
+  # do not use dash's built-in echo, which doesn't understand -e
+  /bin/echo -e &quot;en_US.UTF-8 UTF-8\nde_AT.UTF-8 UTF-8&quot; &amp;gt; /etc/locale.gen
+  locale-gen
+
+  apt-get update
+  apt-get install -y apt-transport-https ca-certificates
+
+  echo deb https://apt.dockerproject.org/repo debian-jessie main &amp;gt; /etc/apt/sources.list.d/docker.list
+  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+  apt-get update
+  apt-get install -y docker-engine ruby-dev ruby bundler build-essential libxml2-dev zlib1g-dev
+
+  systemctl enable docker
+  systemctl start docker
+
+  adduser vagrant docker
+
+  su - vagrant -c 'echo &quot;cd /vagrant&quot; &amp;gt;&amp;gt; /home/vagrant/.bashrc;
+    echo &quot;exec sudo -i&quot; &amp;gt;&amp;gt; /home/vagrant/.bash_history;
+    echo &quot;BEAKER_provision=no BEAKER_destroy=no PUPPET_INSTALL_TYPE=agent BEAKER_set=docker/debian-8 bundle exec rake beaker&quot; &amp;gt;&amp;gt; /home/vagrant/.bash_history;
+    cd /vagrant;
+    bundle install --path=/tmp/bundle;
+    PUPPET_INSTALL_TYPE=agent BEAKER_set=docker/debian-8 bundle exec rake beaker'
+SHELL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vagrant init puppetlabs/debian-8.2-64-nocm&lt;/code&gt; in a temporary directory and added the above commands to the generated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vagrantfile&lt;/code&gt; to get a box that had all the necessary software installed. In the end I added a few commands to the bash history and installed the required gems, so I have them ready when the machine is finalized.&lt;/p&gt;
+
+&lt;p&gt;Waiting for gems to compile, I figured adding a little bit more oomph to the box would help too. Researching the exact incantation I also found the linked_clone option, which should help when recycling the box.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.provider &quot;virtualbox&quot; do |vb|
+  vb.cpus = 4
+  vb.memory = &quot;2048&quot;
+  vb.linked_clone = true
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;While the gems were compiling (the next time after adding more -dev packages) I considered storing the compiled gems in a persistent folder outside of the box. Turns out this is as easy as:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.synced_folder &quot;/tmp/vbox_gems&quot;, &quot;/tmp/bundle&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Depending on your system setup, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp&lt;/code&gt; might be a ram disk. In that case you might want to use a different place.&lt;/p&gt;
+
+&lt;p&gt;All of this together means that I can run the beaker tests with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vagrant ssh&lt;/code&gt;, enter, up, enter. Building the initial docker file also takes a bit of time, so I add a initial beaker run to the vagrant provision step. (See above, there &lt;strong&gt;are&lt;/strong&gt; limits to my no-editing/braindump rule)&lt;/p&gt;
+
+&lt;p&gt;Preparing the docker image also takes its time. I guess I’ll mount &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/lib/docker&lt;/code&gt; for persisting the docker images.&lt;/p&gt;
+
+&lt;p&gt;The first full run failed on&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;==&amp;gt; default:   Error: Evaluation Error: Error while evaluating a Resource Statement, Could not find declared class exiscan at /tmp/apply_manifest.pp.ndZ2Lh:1:7 on node debian-8-x64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;after 20 minutes.&lt;/p&gt;
+
+&lt;p&gt;To debug this, look at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker ps&lt;/code&gt; output and connect to that port with ssh. The default password setup by beaker is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vagrant@localhost:/vagrant$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                   NAMES
+069b9b964ede        3e3ff809749a        &quot;/sbin/init&quot;        2 minutes ago       Up 2 minutes        0.0.0.0:32769-&amp;gt;22/tcp   nauseous_hopper
+vagrant@localhost:/vagrant$ ssh root@localhost -p 32769
+The authenticity of host '[localhost]:32769 ([::1]:32769)' can't be established.
+ECDSA key fingerprint is 81:ff:c9:01:3f:4d:7b:93:a7:a1:e2:af:3c:4f:ef:a9.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[localhost]:32769' (ECDSA) to the list of known hosts.
+root@localhost's password:
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+root@debian-8-x64:~#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;One thing that is always annoying with the stripped down systems, like docker images, is missing locales. I thought I had already fixed that by installing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;locales&lt;/code&gt; package and genning the data for the en_US.UTF-8 locale, but there is something more going on, keeping the locale data missing, even after reinstalling the locales package. A divert perhaps? Nope:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@debian-8-x64:~# dpkg-divert --list
+local diversion of /sbin/initctl to /sbin/initctl.distrib
+diversion of /usr/share/man/man1/sh.1.gz to /usr/share/man/man1/sh.distrib.1.gz by dash
+diversion of /bin/sh to /bin/sh.distrib by dash
+root@debian-8-x64:~#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It turns out that I was completely confused about the actual syntax of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;locale.gen&lt;/code&gt; (already fixed above). Leave me alone in my shame!&lt;/p&gt;
+
+&lt;p&gt;Back to the original problem of the exiscan class not being found. This does not look healthy.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@debian-8-x64:/etc/puppetlabs/code/modules# ls
+exiscan			       vagrantfilesdefaultconf.dretry	   vagrantfilesgreylistexim4conf.dmain	vagrantfilesspamassassinpostgres
+tp			       vagrantfilesdefaultconf.drewrite    vagrantfilesgreylistpostgres		vagrantjunit
+vagrantfiles		       vagrantfilesdefaultconf.drouter	   vagrantfilesscanner			vagrantjunitdebian-8
+vagrantfilesdefault	       vagrantfilesdefaultconf.dtransport  vagrantfilesscanneracls		vagrantjunitdefault
+vagrantfilesdefaultconf.d      vagrantfilesgreylist		   vagrantfilesscannerconf.d		vagrantmanifests
+vagrantfilesdefaultconf.dacl   vagrantfilesgreylistexim4	   vagrantfilesscannerconf.dacl		vagranttemplates
+vagrantfilesdefaultconf.dauth  vagrantfilesgreylistexim4conf.d	   vagrantfilesscannerconf.dmain
+vagrantfilesdefaultconf.dmain  vagrantfilesgreylistexim4conf.dacl  vagrantfilesspamassassin
+root@debian-8-x64:/etc/puppetlabs/code/modules#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It does appear to be a weird issue with copying the module into the docker container. The weird thing is how apparently all the slashes seem to be missing from the filenames, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vagrantfilesgreylistexim4conf.dmain&lt;/code&gt; should be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/vagrant/files/greylist/exim4/conf.d/main&lt;/code&gt;. Looking at that, even more suspicious is that these are only the directories, and none of the contained files. Maybe beaker or scp gets confused by copying from /vagrant? I’ll run an experiment from  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/foo/bar&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On the performance side, the next thing I’d need to look into is having a local mirrors of debian, puppetlabs, and rubygems. But that may be a problem for another weekend, meanwhile I’ll bask in the speed of my home cable downlink. Thinking more about this, replacing the puppetlabs’ repo will be a pain, since the list file is installed by beaker internals. ngngngng.&lt;/p&gt;
+
+&lt;p&gt;Meanwhile the testrun where I copied the module to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/foo/bar&lt;/code&gt; finished successfully. Let’s see if there is anything “obvious” in &lt;a href=&quot;https://github.com/puppetlabs/beaker&quot;&gt;beaker’s source&lt;/a&gt;. The &lt;a href=&quot;https://github.com/puppetlabs/beaker/blob/master/lib/beaker/ssh_connection.rb#L265-L287&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scp_to&lt;/code&gt;&lt;/a&gt; function looks straight forward enough. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ssh&lt;/code&gt; is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Net::SSH&lt;/code&gt; object, but the &lt;a href=&quot;https://net-ssh.github.io/net-ssh/index.html&quot;&gt;documentation&lt;/a&gt; doesn’t seem to contain any references to scp. Looking into the &lt;a href=&quot;https://github.com/puppetlabs/beaker/blob/master/beaker.gemspec#L37-L38&quot;&gt;gemspec&lt;/a&gt; I realize that there is a separate &lt;a href=&quot;https://github.com/net-ssh/net-scp&quot;&gt;net-scp&lt;/a&gt; gem. (“this project is in maintenance mode”) Helpfully, there is a progress block attached to beaker’s call of the scp. Its output is stored in the usual beaker result object, so let’s check that output in our setup code.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;result = copy_module_to(host, :source =&amp;gt; proj_root, :module_name =&amp;gt; 'exiscan')
+puts result.stdout
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Again I run afoul of my unfounded optimism. Looking at the &lt;a href=&quot;https://github.com/puppetlabs/beaker/blob/6975e329ed1d9c7481aed1136c59b57a50db63c8/lib/beaker/dsl/install_utils/module_utils.rb#L134-L135&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;copy_module_to&lt;/code&gt; source&lt;/a&gt;, the scp_to result is not passed up the call chain. In these cases I usually start modifying the installed gem source that is used by bundler. Having a separate install dir for the vbox makes that not as terrible as it sounds at first. Having that directory persistent across boxes is both a boon and an annoyance: I don’t lose my local changes, but when I forget to clean up, I’ll confuse the heck out of &lt;em&gt;future-me&lt;/em&gt;. Except that the retrospec templates install beaker from git, which puts it &lt;strong&gt;somewhere else&lt;/strong&gt;. I remove the git references, since the recent releases are just fine anyways. Trying again.&lt;/p&gt;
+
+&lt;p&gt;The debug output is not very helpful:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;copying /vagrant/Gemfile.lock:          0/8562
+copying /vagrant/Gemfile.lock:       8562/8562
+SCP'ed file /vagrant/Gemfile.lock to debian-8-x64:/etc/puppetlabs/code/modules/vagrant
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Yes. that’s all. Maybe the chunk size of the ssh connection is interfering? I spy a rsync transfer protocol implementation in the same method, so I try that out before continuing down the scp rabbit hole.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;copy_module_to(host, source: proj_root, module_name: 'exiscan', protocol: 'rsync')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;411 kB/s is not enough download speed for the debian packages. :-(&lt;/p&gt;
+
+&lt;p&gt;rsync requires manual password entry, and then fails, because the target container doesn’t have rsync installed.&lt;/p&gt;
+
+&lt;p&gt;Another dead end. Instead of further fighting these demons, I simply switch out the mount on /vagrant to /tmp/exiscan. I bet you it’ll turn out that some weirdness of the vboxsf, and not the path, was the issue when copying. -.-&lt;/p&gt;
+
+&lt;p&gt;I’ve also cleaned out the bundler cache to revert my changes to beaker. I’ll not wait for another 20 minutes until this box has built. There is literally not enough time in this day left: it’s after 23:00.&lt;/p&gt;
+
+&lt;p&gt;Good night.&lt;/p&gt;
+
+&lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
+
+&lt;p&gt;Rebuilding the box suddenly failed with docker complaining about:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Apr 03 15:18:56 localhost docker[29239]: time=&quot;2016-04-03T15:18:56.491483351-07:00&quot; level=fatal msg=&quot;Error starting daemon: Error initializing network controller: error obtaining controller instance: failed to get bridge network configurations from store: error while populating kmap: invalid argument&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Why do I even bother??&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="testing" /><category term="retrospec" /><category term="exim" /><category term="travisci" /><category term="beaker" /><category term="docker" /><category term="vagrant" /><category term="fullstack" /><summary type="html">Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</summary></entry><entry><title type="html">Cooperating with Travis CI</title><link href="https://club.black.co.at/log/posts/2016-03-28-cooperating-with-travisci/index.html" rel="alternate" type="text/html" title="Cooperating with Travis CI" /><published>2016-03-28T00:00:00+00:00</published><updated>2016-03-28T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2016-03-28-cooperating-with-travisci/cooperating-with-travisci</id><content type="html" xml:base="https://club.black.co.at/log/posts/2016-03-28-cooperating-with-travisci/index.html">&lt;blockquote&gt;
+  &lt;p&gt;Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;This is a continuation of [[yesterday’s post&lt;/td&gt;
+      &lt;td&gt;/posts/2016-03-27-fixing-all-the-things.mdwn]], refreshing my &lt;a href=&quot;https://github.com/DavidS/puppet-exiscan&quot;&gt;exiscan module&lt;/a&gt; using &lt;a href=&quot;https://github.com/nwops/puppet-retrospec&quot;&gt;retrospec-puppet&lt;/a&gt;. Today I’m aiming for getting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;release_checks&lt;/code&gt; running on travis. This should ensure that going forward, the module stays neat and clean.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;At &lt;a href=&quot;https://puppetlabs.com/&quot;&gt;work&lt;/a&gt; we recently released a new version of &lt;a href=&quot;https://github.com/puppetlabs/puppetlabs_spec_helper&quot;&gt;puppetlabs_spec_helper&lt;/a&gt; that has a new rake task that will run all checks that we want to pass before releasing a module.&lt;/p&gt;
+
+&lt;h1 id=&quot;braindump&quot;&gt;Braindump&lt;/h1&gt;
+
+&lt;p&gt;The first check is &lt;a href=&quot;http://puppet-lint.com/&quot;&gt;puppet-lint&lt;/a&gt;, but I replaced retrospec’s default tests with the ones from Puppet Labs’ &lt;a href=&quot;https://github.com/puppetlabs/modulesync_configs/blob/master/config_defaults.yml#L38-L43&quot;&gt;modulesync_configs&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;manifests/greylist_db.pp - WARNING: case statement without a default case on line 11
+manifests/greylist_db.pp - WARNING: double quoted string containing no variables on line 19
+...
+manifests/greylist_db.pp - WARNING: mode should be represented as a 4 digit octal value or symbolic mode on line 33
+manifests/init.pp - WARNING: double quoted string containing no variables on line 11
+...
+manifests/init.pp - WARNING: unquoted resource title on line 36
+manifests/spamassassin.pp - WARNING: double quoted string containing no variables on line 10
+manifests/spamassassin.pp - WARNING: double quoted string containing no variables on line 93
+...
+manifests/spamassassin_db.pp - WARNING: case statement without a default case on line 12
+manifests/spamassassin_db.pp - WARNING: double quoted string containing no variables on line 20
+...
+manifests/spamassassin_db.pp - WARNING: mode should be represented as a 4 digit octal value or symbolic mode on line 34
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I skipped duplicate errors, in the above listing, to keep the length down. In the module’s current state puppet-lint complained about 64 things. Some string fixing to do. I’ll be right back. Also, apparently I missed some file modes, but it turned out that lint is only very particular about what is acceptable for mode values.&lt;/p&gt;
+
+&lt;p&gt;Fixing the “case statement without a default case” warning on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;greylist_db&lt;/code&gt; reminds me that I desperately need to replace all the validation code with puppet 4 type annotations. Ican’t wait to be rid of them!&lt;/p&gt;
+
+&lt;p&gt;I also fixed up a few other minor issues with the aesthetics as I worked through the files, like removing unnecessary parenthesis.&lt;/p&gt;
+
+&lt;p&gt;Syntax checks and specs worked just fine, thanks to yesterday’s labour.&lt;/p&gt;
+
+&lt;p&gt;The next thing that fails is&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;14687107      4 lrwxrwxrwx   1 david    david          56 Mär 26 20:37 ./.git/hooks/pre-commit -&amp;gt; /home/david/.retrospec/repos/puppet-git-hooks/pre-commit
+rake aborted!
+A symlink exists within this directory
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This was &lt;a href=&quot;https://github.com/puppetlabs/puppetlabs_spec_helper/commit/c7acc51e364f1c93b8580baa95476ef3b6185aa8&quot;&gt;fixed by Federico Voges&lt;/a&gt;, so I upgrade the puppetlabs_spec_helper reference in the Gemfile to the current master, so I can get rid of the false positive, adjust the .travis.yml file and push everything up to see how it is doing. I adjusted the test matrix to something more sensible, other than the eight cells of outdated versions the default had. Finally I also add the caching instructions and request travis’ container infrastructure for less resource usage and quicker answer times.&lt;/p&gt;
+
+&lt;p&gt;Of course it failed spectacularly, since I’ve not yet uploaded my tp fix. Referencing the git branch on github instead, et voila! GREEN!&lt;/p&gt;
+
+&lt;h2 id=&quot;validating-the-configuration&quot;&gt;Validating the configuration&lt;/h2&gt;
+
+&lt;p&gt;Now that the module is at least syntactically valid and doesn’t blow up at the first touch, I’ll try to add some acceptance/validation tests using beaker-rspec. These tests provision a complete setup and try to verify the functionality as deeply as possible. For the exiscan module, this means setting up a host and trying to send a valid mail, a spam, and a virus, and then check that they are correctly filtered. Luckily the retrospec templates have setup beaker tests for us, all ready to go.&lt;/p&gt;
+
+&lt;p&gt;Only a few adjustments and we’re ready to go:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/acceptance/nodesets/default.yml&lt;/code&gt; needs to be changed to be a debian 8 box:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOSTS:
+  debian-8-x64:
+    roles:
+      - agent
+      - default
+    platform: debian-8-amd64
+    box: puppetlabs/debian-8.2-64-nocm
+    hypervisor: vagrant
+CONFIG:
+  log_level: debug
+  type: git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;All other nodesets can be deleted, as I’m only targeting one distro.&lt;/p&gt;
+
+&lt;p&gt;Here is the first “successful” beaker run:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no bundle exec rake beaker
+/usr/bin/ruby2.3 -I/home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/lib:/home/david/gems/ruby/2.3.0/gems/rspec-support-3.4.1/lib /home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/exe/rspec spec/acceptance --color
+/home/david/gems/ruby/2.3.0/bundler/gems/beaker-rspec-a617f7bbc3e6/lib/beaker-rspec/helpers/serverspec.rb:43: warning: already initialized constant Module::VALID_OPTIONS_KEYS
+/home/david/gems/ruby/2.3.0/gems/specinfra-2.54.1/lib/specinfra/configuration.rb:4: warning: previous definition of VALID_OPTIONS_KEYS was here
+Hypervisor for debian-8-x64 is vagrant
+Beaker::Hypervisor, found some vagrant boxes to create
+==&amp;gt; debian-8-x64: Forcing shutdown of VM...
+==&amp;gt; debian-8-x64: Destroying VM and associated drives...
+created Vagrantfile for VagrantHost debian-8-x64
+Bringing machine 'debian-8-x64' up with 'virtualbox' provider...
+==&amp;gt; debian-8-x64: Importing base box 'puppetlabs/debian-8.2-64-nocm'...
+Progress: 10%Progress: 20%Progress: 40%Progress: 60%Progress: 70%Progress: 80%Progress: 90%==&amp;gt; debian-8-x64: Matching MAC address for NAT networking...
+==&amp;gt; debian-8-x64: Checking if box 'puppetlabs/debian-8.2-64-nocm' is up to date...
+==&amp;gt; debian-8-x64: A newer version of the box 'puppetlabs/debian-8.2-64-nocm' is available! You currently
+==&amp;gt; debian-8-x64: have version '1.0.0'. The latest is version '1.0.1'. Run
+==&amp;gt; debian-8-x64: `vagrant box update` to update.
+==&amp;gt; debian-8-x64: Setting the name of the VM: defaultyml_debian-8-x64_1459190378202_18534
+==&amp;gt; debian-8-x64: Clearing any previously set network interfaces...
+==&amp;gt; debian-8-x64: Preparing network interfaces based on configuration...
+    debian-8-x64: Adapter 1: nat
+    debian-8-x64: Adapter 2: hostonly
+==&amp;gt; debian-8-x64: Forwarding ports...
+    debian-8-x64: 22 (guest) =&amp;gt; 2222 (host) (adapter 1)
+==&amp;gt; debian-8-x64: Running 'pre-boot' VM customizations...
+==&amp;gt; debian-8-x64: Booting VM...
+==&amp;gt; debian-8-x64: Waiting for machine to boot. This may take a few minutes...
+    debian-8-x64: SSH address: 127.0.0.1:2222
+    debian-8-x64: SSH username: vagrant
+    debian-8-x64: SSH auth method: private key
+==&amp;gt; debian-8-x64: Machine booted and ready!
+==&amp;gt; debian-8-x64: Checking for guest additions in VM...
+    debian-8-x64: The guest additions on this VM do not match the installed version of
+    debian-8-x64: VirtualBox! In most cases this is fine, but in rare cases it can
+    debian-8-x64: prevent things such as shared folders from working properly. If you see
+    debian-8-x64: shared folder errors, please make sure the guest additions within the
+    debian-8-x64: virtual machine match the version of VirtualBox you have installed on
+    debian-8-x64: your host and reload your VM.
+    debian-8-x64:
+    debian-8-x64: Guest Additions Version: 4.3.22
+    debian-8-x64: VirtualBox Version: 5.0
+==&amp;gt; debian-8-x64: Setting hostname...
+==&amp;gt; debian-8-x64: Configuring and enabling network interfaces...
+==&amp;gt; debian-8-x64: Mounting shared folders...
+    debian-8-x64: /vagrant =&amp;gt; /home/david/git/davids-exiscan/.vagrant/beaker_vagrant_files/default.yml
+configure vagrant boxes (set ssh-config, switch to root user, hack etc/hosts)
+Give root a copy of current user's keys, on debian-8-x64
+
+debian-8-x64 19:40:05$ sudo su -c &quot;cp -r .ssh /root/.&quot;
+  Attempting ssh connection to 10.255.181.132, user: vagrant, opts: {:config=&amp;gt;&quot;/tmp/debian-8-x6420160328-18447-cwdn8w&quot;}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  Allocated a PTY on debian-8-x64 for &quot;sudo su -c \&quot;cp -r .ssh /root/.\&quot;&quot;
+
+debian-8-x64 executed in 0.14 seconds
+Update /etc/ssh/sshd_config to allow root login
+
+debian-8-x64 19:40:05$ sudo su -c &quot;sed -ri 's/^#?PermitRootLogin no|^#?PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config&quot;
+  Allocated a PTY on debian-8-x64 for &quot;sudo su -c \&quot;sed -ri 's/^#?PermitRootLogin no|^#?PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config\&quot;&quot;
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:05$ sudo su -c &quot;service ssh restart&quot;
+  Allocated a PTY on debian-8-x64 for &quot;sudo su -c \&quot;service ssh restart\&quot;&quot;
+
+debian-8-x64 executed in 0.04 seconds
+Warning: ssh connection to debian-8-x64 has been terminated
+
+debian-8-x64 19:40:07$ cat /etc/resolv.conf
+  Attempting ssh connection to 10.255.181.132, user: root, opts: {:config=&amp;gt;&quot;/tmp/debian-8-x6420160328-18447-125v0dx&quot;}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  nameserver 10.0.2.3
+
+debian-8-x64 executed in 0.14 seconds
+
+debian-8-x64 19:40:07$ echo '127.0.0.1	localhost localhost.localdomain
+10.255.181.132	debian-8-x64. debian-8-x64
+' &amp;gt;&amp;gt; /etc/hosts
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:07$ dpkg -s curl
+  Package: curl
+  Status: install ok installed
+  Priority: optional
+  Section: web
+  Installed-Size: 325
+  Maintainer: Alessandro Ghedini &amp;lt;ghedo@debian.org&amp;gt;
+  Architecture: amd64
+  Multi-Arch: foreign
+  Version: 7.38.0-4+deb8u2
+  Depends: libc6 (&amp;gt;= 2.17), libcurl3 (= 7.38.0-4+deb8u2), zlib1g (&amp;gt;= 1:1.1.4)
+  Description: command line tool for transferring data with URL syntax
+   curl is a command line tool for transferring data with URL syntax, supporting
+   DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3,
+   POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP.
+   .
+   curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form
+   based upload, proxies, cookies, user+password authentication (Basic, Digest,
+   NTLM, Negotiate, kerberos...), file transfer resume, proxy tunneling and a
+   busload of other useful tricks.
+  Homepage: http://curl.haxx.se
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:07$ dpkg -s ntpdate
+  dpkg-query: package 'ntpdate' is not installed and no information is available
+  Use dpkg --info (= dpkg-deb --info) to examine archive files,
+  and dpkg --contents (= dpkg-deb --contents) to list their contents.
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:07$ apt-get update
+  Get:1 http://security.debian.org jessie/updates InRelease [63.1 kB]
+  Ign http://http.us.debian.org jessie InRelease
+  Get:2 http://security.debian.org jessie/updates/main Sources [122 kB]
+  Get:3 http://http.us.debian.org jessie-updates InRelease [142 kB]
+  Get:4 http://security.debian.org jessie/updates/main amd64 Packages [221 kB]
+  Get:5 http://security.debian.org jessie/updates/main Translation-en [122 kB]
+  Get:6 http://http.us.debian.org jessie Release.gpg [2,373 B]
+  Get:7 http://http.us.debian.org jessie-updates/main Sources [4,092 B]
+  Get:8 http://http.us.debian.org jessie-updates/main amd64 Packages/DiffIndex [1,504 B]
+  Get:9 http://http.us.debian.org jessie-updates/main Translation-en/DiffIndex [736 B]
+  Get:10 http://http.us.debian.org jessie Release [148 kB]
+  Get:11 http://http.us.debian.org jessie-updates/main amd64 2016-03-04-0853.34.pdiff [3,697 B]
+  Get:12 http://http.us.debian.org jessie-updates/main amd64 2016-03-26-2053.48.pdiff [527 B]
+  Get:13 http://http.us.debian.org jessie-updates/main amd64 2016-03-26-2053.48.pdiff [527 B]
+  Get:14 http://http.us.debian.org jessie-updates/main 2016-03-04-0853.34.pdiff [1,371 B]
+  Get:15 http://http.us.debian.org jessie-updates/main 2016-03-04-0853.34.pdiff [1,371 B]
+  Get:16 http://http.us.debian.org jessie/main Sources [7,058 kB]
+  Get:17 http://http.us.debian.org jessie/main amd64 Packages [6,763 kB]
+  Get:18 http://http.us.debian.org jessie/main Translation-en [4,582 kB]
+  Fetched 19.2 MB in 11s (1,614 kB/s)
+  Reading package lists...
+
+debian-8-x64 executed in 11.29 seconds
+
+debian-8-x64 19:40:18$ apt-get install --force-yes  -y ntpdate
+  Reading package lists...
+  Building dependency tree...
+  Reading state information...
+  The following extra packages will be installed:
+    lockfile-progs
+  The following NEW packages will be installed:
+    lockfile-progs ntpdate
+  0 upgraded, 2 newly installed, 0 to remove and 88 not upgraded.
+  Need to get 85.5 kB of archives.
+  After this operation, 306 kB of additional disk space will be used.
+  Get:1 http://http.us.debian.org/debian/ jessie/main ntpdate amd64 1:4.2.6.p5+dfsg-7+deb8u1 [74.5 kB]
+  Get:2 http://http.us.debian.org/debian/ jessie/main lockfile-progs amd64 0.1.17 [11.0 kB]
+  debconf: unable to initialize frontend: Dialog
+  debconf: (TERM is not set, so the dialog frontend is not usable.)
+  debconf: falling back to frontend: Readline
+  debconf: unable to initialize frontend: Readline
+  debconf: (This frontend requires a controlling tty.)
+  debconf: falling back to frontend: Teletype
+  dpkg-preconfigure: unable to re-open stdin:
+  Fetched 85.5 kB in 0s (123 kB/s)
+  Selecting previously unselected package ntpdate.
+  (Reading database ...   (Reading database ... 5%  (Reading database ... 10%  (Reading database ... 15%  (Reading database ... 20%  (Reading database ... 25%  (Reading database ... 30%  (Reading database ... 35%  (Reading database ... 40%  (Reading database ... 45%  (Reading database ... 50%  (Reading database ... 55%  (Reading database ... 60%  (Reading database ... 65%  (Reading database ... 70%  (Reading database ... 75%  (Reading database ... 80%  (Reading database ... 85%  (Reading database ... 90%  (Reading database ... 95%  (Reading database ... 100%  (Reading database ...   46030 files and directories currently installed.)
+  Preparing to unpack .../ntpdate_1%3a4.2.6.p5+dfsg-7+deb8u1_amd64.deb ...
+  Unpacking ntpdate (1:4.2.6.p5+dfsg-7+deb8u1) ...
+  Selecting previously unselected package lockfile-progs.
+  Preparing to unpack .../lockfile-progs_0.1.17_amd64.deb ...
+  Unpacking lockfile-progs (0.1.17) ...
+  Processing triggers for man-db (2.7.0.2-5) ...
+  Setting up ntpdate (1:4.2.6.p5+dfsg-7+deb8u1) ...
+  Setting up lockfile-progs (0.1.17) ...
+
+debian-8-x64 executed in 1.70 seconds
+
+debian-8-x64 19:40:20$ dpkg -s lsb-release
+  Package: lsb-release
+  Status: install ok installed
+  Priority: optional
+  Section: misc
+  Installed-Size: 97
+  Maintainer: Debian LSB Team &amp;lt;debian-lsb@lists.debian.org&amp;gt;
+  Architecture: all
+  Multi-Arch: foreign
+  Source: lsb
+  Version: 4.1+Debian13+nmu1
+  Depends: python (&amp;gt;= 2.7), python (&amp;lt;&amp;lt; 2.8)
+  Recommends: apt
+  Suggests: lsb
+  Description: Linux Standard Base version reporting utility
+   The Linux Standard Base (http://www.linuxbase.org/) is a standard
+   core system that third-party applications written for Linux can
+   depend upon.
+   .
+   The lsb-release command is a simple tool to help identify the Linux
+   distribution being used and its compliance with the Linux Standard Base.
+   LSB conformance will not be reported unless the required metapackages are
+   installed.
+   .
+   While it is intended for use by LSB packages, this command may also
+   be useful for programmatically distinguishing between a pure Debian
+   installation and derived distributions.
+  Homepage: http://www.linuxfoundation.org/collaborate/workgroups/lsb
+
+debian-8-x64 executed in 0.04 seconds
+setting local environment on debian-8-x64
+
+debian-8-x64 19:40:20$ getent passwd root
+  root:x:0:0:root:/root:/bin/bash
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mktemp -dt .XXXXXX
+  /tmp/.3yIuRm
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ chown root:root /tmp/.3yIuRm
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ echo 'PermitUserEnvironment yes' | cat - /etc/ssh/sshd_config &amp;gt; /tmp/.3yIuRm/sshd_config.permit
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mv /tmp/.3yIuRm/sshd_config.permit /etc/ssh/sshd_config
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ service ssh restart
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ mkdir -p ~/.ssh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ chmod 0600 ~/.ssh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ touch ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:20$ grep ^PATH=.*\$PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:20$ grep ^PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:20$ echo &quot;PATH=$PATH&quot; &amp;gt;&amp;gt; ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat &amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/beaker_env.sh
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ echo &quot;/usr/bin&quot;
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ echo &quot;/opt/puppet-git-repos/hiera/bin&quot;
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:21$ grep ^PATH ~/.ssh/environment
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ sed -i -e &quot;s/^PATH=/PATH=\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin:/&quot; ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat &amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/beaker_env.sh
+export PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ grep ^PATH=.*PATH ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+Exited: 1
+
+debian-8-x64 19:40:21$ grep ^PATH ~/.ssh/environment
+  PATH=/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ sed -i -e &quot;s/^PATH=/PATH=PATH:/&quot; ~/.ssh/environment
+
+debian-8-x64 executed in 0.04 seconds
+mirroring environment to /etc/profile.d on sles platform host
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ cat &amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/beaker_env.sh
+export PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EOF
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ chmod +x /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:21$ source /etc/profile.d/beaker_env.sh
+
+debian-8-x64 executed in 0.04 seconds
+Warning: ssh connection to debian-8-x64 has been terminated
+
+debian-8-x64 19:40:21$ cat ~/.ssh/environment
+  Attempting ssh connection to 10.255.181.132, user: root, opts: {:config=&amp;gt;&quot;/tmp/debian-8-x6420160328-18447-125v0dx&quot;, :user=&amp;gt;&quot;root&quot;}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.13 seconds
+Disabling updates.puppetlabs.com by modifying hosts file to resolve updates to 127.0.0.1 on debian-8-x64
+
+debian-8-x64 19:40:21$ echo '127.0.0.1	updates.puppetlabs.com
+' &amp;gt;&amp;gt; /etc/hosts
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:22$ wget -O /tmp/puppet.deb http://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+  --2016-03-28 11:40:22--  http://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+  Resolving apt.puppetlabs.com (apt.puppetlabs.com)...   192.155.89.90  ,   2600:3c03::f03c:91ff:fedb:6b1d
+  Connecting to apt.puppetlabs.com (apt.puppetlabs.com)|192.155.89.90|:80...   connected.
+  HTTP request sent, awaiting response...   200 OK
+  Length:   7368   (7.2K)   [application/x-debian-package]
+  Saving to: ‘/tmp/puppet.deb’
+
+       0K     .  .  .  .  .  .  .                                                                                           100% 7.93M=0.001s
+
+  2016-03-28 11:40:22 (7.93 MB/s) - ‘/tmp/puppet.deb’ saved [7368/7368]
+
+debian-8-x64 executed in 0.41 seconds
+
+debian-8-x64 19:40:22$ dpkg -i --force-all /tmp/puppet.deb
+  Selecting previously unselected package puppetlabs-release.
+  (Reading database ... 46063 files and directories currently installed.)
+  Preparing to unpack /tmp/puppet.deb ...
+  Unpacking puppetlabs-release (1.0-11) ...
+  Setting up puppetlabs-release (1.0-11) ...
+
+  Configuration file `/etc/apt/trusted.gpg.d/puppetlabs-keyring.gpg', does not exist on system.
+  Installing new config file as you requested.
+
+  Configuration file `/etc/apt/trusted.gpg.d/puppetlabs-nightly-keyring.gpg', does not exist on system.
+  Installing new config file as you requested.
+
+  Configuration file `/etc/apt/sources.list.d/puppetlabs.list', does not exist on system.
+  Installing new config file as you requested.
+
+debian-8-x64 executed in 0.22 seconds
+
+debian-8-x64 19:40:22$ apt-get update
+  Hit http://security.debian.org jessie/updates InRelease
+  Hit http://security.debian.org jessie/updates/main Sources
+  Hit http://security.debian.org jessie/updates/main amd64 Packages
+  Ign http://http.us.debian.org jessie InRelease
+  Ign http://apt.puppetlabs.com jessie InRelease
+  Hit http://security.debian.org jessie/updates/main Translation-en
+  Hit http://http.us.debian.org jessie-updates InRelease
+  Get:1 http://apt.puppetlabs.com jessie Release.gpg [836 B]
+  Hit http://http.us.debian.org jessie Release.gpg
+  Get:2 http://apt.puppetlabs.com jessie Release [24.3 kB]
+  Hit http://http.us.debian.org jessie-updates/main Sources
+  Get:3 http://http.us.debian.org jessie-updates/main amd64 Packages/DiffIndex [1,504 B]
+  Get:4 http://apt.puppetlabs.com jessie/main Sources [685 B]
+  Get:5 http://http.us.debian.org jessie-updates/main Translation-en/DiffIndex [736 B]
+  Get:6 http://apt.puppetlabs.com jessie/dependencies Sources [682 B]
+  Hit http://http.us.debian.org jessie Release
+  Get:7 http://apt.puppetlabs.com jessie/main amd64 Packages [410 B]
+  Hit http://http.us.debian.org jessie/main Sources
+  Get:8 http://apt.puppetlabs.com jessie/dependencies amd64 Packages [413 B]
+  Hit http://http.us.debian.org jessie/main amd64 Packages
+  Hit http://http.us.debian.org jessie/main Translation-en
+  Ign http://apt.puppetlabs.com jessie/dependencies Translation-en_US
+  Ign http://apt.puppetlabs.com jessie/dependencies Translation-en
+  Ign http://apt.puppetlabs.com jessie/main Translation-en_US
+  Ign http://apt.puppetlabs.com jessie/main Translation-en
+  Fetched 29.6 kB in 4s (5,973 B/s)
+  Reading package lists...
+
+debian-8-x64 executed in 5.86 seconds
+
+debian-8-x64 19:40:28$ echo &quot;/usr/bin&quot;
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ echo &quot;/opt/puppet-git-repos/hiera/bin&quot;
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ grep ^PATH=.*PATH ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:28$ apt-get install --force-yes  -y puppet
+  Reading package lists...
+  Building dependency tree...
+  Reading state information...
+  The following extra packages will be installed:
+    augeas-lenses debconf-utils facter hiera javascript-common libaugeas0
+    libjs-jquery libruby2.1 libyaml-0-2 puppet-common ruby ruby-augeas
+    ruby-hiera ruby-json ruby-rgen ruby-safe-yaml ruby-selinux ruby-shadow
+    ruby2.1 rubygems-integration virt-what
+  Suggested packages:
+    augeas-doc mcollective-common apache2 lighttpd httpd augeas-tools puppet-el
+    vim-puppet etckeeper ruby-rrd librrd-ruby ri ruby-dev bundler
+  The following NEW packages will be installed:
+    augeas-lenses debconf-utils facter hiera javascript-common libaugeas0
+    libjs-jquery libruby2.1 libyaml-0-2 puppet puppet-common ruby ruby-augeas
+    ruby-hiera ruby-json ruby-rgen ruby-safe-yaml ruby-selinux ruby-shadow
+    ruby2.1 rubygems-integration virt-what
+  0 upgraded, 22 newly installed, 0 to remove and 88 not upgraded.
+  Need to get 5,758 kB of archives.
+  After this operation, 24.2 MB of additional disk space will be used.
+  Get:1 http://http.us.debian.org/debian/ jessie/main libyaml-0-2 amd64 0.1.6-3 [50.4 kB]
+  Get:2 http://http.us.debian.org/debian/ jessie/main augeas-lenses all 1.2.0-0.2+deb8u1 [335 kB]
+  Get:3 http://http.us.debian.org/debian/ jessie/main debconf-utils all 1.5.56 [57.6 kB]
+  Get:4 http://http.us.debian.org/debian/ jessie/main libruby2.1 amd64 2.1.5-2+deb8u2 [3,278 kB]
+  Get:5 http://http.us.debian.org/debian/ jessie/main rubygems-integration all 1.8 [4,514 B]
+  Get:6 http://http.us.debian.org/debian/ jessie/main ruby2.1 amd64 2.1.5-2+deb8u2 [275 kB]
+  Get:7 http://http.us.debian.org/debian/ jessie/main ruby all 1:2.1.5+deb8u1 [9,620 B]
+  Get:8 http://http.us.debian.org/debian/ jessie/main ruby-json amd64 1.8.1-1+b2 [52.1 kB]
+  Get:9 http://http.us.debian.org/debian/ jessie/main facter all 2.2.0-1 [74.5 kB]
+  Get:10 http://http.us.debian.org/debian/ jessie/main hiera all 1.3.4-1 [18.0 kB]
+  Get:11 http://http.us.debian.org/debian/ jessie/main javascript-common all 11 [6,120 B]
+  Get:12 http://http.us.debian.org/debian/ jessie/main libaugeas0 amd64 1.2.0-0.2+deb8u1 [256 kB]
+  Get:13 http://http.us.debian.org/debian/ jessie/main libjs-jquery all 1.7.2+dfsg-3.2 [97.5 kB]
+  Get:14 http://http.us.debian.org/debian/ jessie/main ruby-augeas amd64 0.5.0-2+b2 [11.2 kB]
+  Get:15 http://http.us.debian.org/debian/ jessie/main ruby-hiera all 1.3.4-1 [2,890 B]
+  Get:16 http://http.us.debian.org/debian/ jessie/main ruby-safe-yaml all 1.0.3-1 [18.4 kB]
+  Get:17 http://http.us.debian.org/debian/ jessie/main ruby-shadow amd64 2.3.4-2 [11.0 kB]
+  Get:18 http://http.us.debian.org/debian/ jessie/main puppet-common all 3.7.2-4 [1,010 kB]
+  Get:19 http://http.us.debian.org/debian/ jessie/main puppet all 3.7.2-4 [25.7 kB]
+  Get:20 http://http.us.debian.org/debian/ jessie/main ruby-rgen all 0.7.0-1 [73.5 kB]
+  Get:21 http://http.us.debian.org/debian/ jessie/main ruby-selinux amd64 2.3-2 [77.0 kB]
+  Get:22 http://http.us.debian.org/debian/ jessie/main virt-what amd64 1.14-1 [12.9 kB]
+  debconf: unable to initialize frontend: Dialog
+  debconf: (TERM is not set, so the dialog frontend is not usable.)
+  debconf: falling back to frontend: Readline
+  debconf: unable to initialize frontend: Readline
+  debconf: (This frontend requires a controlling tty.)
+  debconf: falling back to frontend: Teletype
+  dpkg-preconfigure: unable to re-open stdin:
+  Fetched 5,758 kB in 6s (957 kB/s)
+  Selecting previously unselected package libyaml-0-2:amd64.
+  (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 46070 files and directories currently installed.)
+  Preparing to unpack .../libyaml-0-2_0.1.6-3_amd64.deb ...
+  Unpacking libyaml-0-2:amd64 (0.1.6-3) ...
+  Selecting previously unselected package augeas-lenses.
+  Preparing to unpack .../augeas-lenses_1.2.0-0.2+deb8u1_all.deb ...
+  Unpacking augeas-lenses (1.2.0-0.2+deb8u1) ...
+  Selecting previously unselected package debconf-utils.
+  Preparing to unpack .../debconf-utils_1.5.56_all.deb ...
+  Unpacking debconf-utils (1.5.56) ...
+  Selecting previously unselected package libruby2.1:amd64.
+  Preparing to unpack .../libruby2.1_2.1.5-2+deb8u2_amd64.deb ...
+  Unpacking libruby2.1:amd64 (2.1.5-2+deb8u2) ...
+  Selecting previously unselected package rubygems-integration.
+  Preparing to unpack .../rubygems-integration_1.8_all.deb ...
+  Unpacking rubygems-integration (1.8) ...
+  Selecting previously unselected package ruby2.1.
+  Preparing to unpack .../ruby2.1_2.1.5-2+deb8u2_amd64.deb ...
+  Unpacking ruby2.1 (2.1.5-2+deb8u2) ...
+  Selecting previously unselected package ruby.
+  Preparing to unpack .../ruby_1%3a2.1.5+deb8u1_all.deb ...
+  Unpacking ruby (1:2.1.5+deb8u1) ...
+  Selecting previously unselected package ruby-json.
+  Preparing to unpack .../ruby-json_1.8.1-1+b2_amd64.deb ...
+  Unpacking ruby-json (1.8.1-1+b2) ...
+  Selecting previously unselected package facter.
+  Preparing to unpack .../facter_2.2.0-1_all.deb ...
+  Unpacking facter (2.2.0-1) ...
+  Selecting previously unselected package hiera.
+  Preparing to unpack .../archives/hiera_1.3.4-1_all.deb ...
+  Unpacking hiera (1.3.4-1) ...
+  Selecting previously unselected package javascript-common.
+  Preparing to unpack .../javascript-common_11_all.deb ...
+  Unpacking javascript-common (11) ...
+  Selecting previously unselected package libaugeas0.
+  Preparing to unpack .../libaugeas0_1.2.0-0.2+deb8u1_amd64.deb ...
+  Unpacking libaugeas0 (1.2.0-0.2+deb8u1) ...
+  Selecting previously unselected package libjs-jquery.
+  Preparing to unpack .../libjs-jquery_1.7.2+dfsg-3.2_all.deb ...
+  Unpacking libjs-jquery (1.7.2+dfsg-3.2) ...
+  Selecting previously unselected package ruby-augeas.
+  Preparing to unpack .../ruby-augeas_0.5.0-2+b2_amd64.deb ...
+  Unpacking ruby-augeas (0.5.0-2+b2) ...
+  Selecting previously unselected package ruby-hiera.
+  Preparing to unpack .../ruby-hiera_1.3.4-1_all.deb ...
+  Unpacking ruby-hiera (1.3.4-1) ...
+  Selecting previously unselected package ruby-safe-yaml.
+  Preparing to unpack .../ruby-safe-yaml_1.0.3-1_all.deb ...
+  Unpacking ruby-safe-yaml (1.0.3-1) ...
+  Selecting previously unselected package ruby-shadow.
+  Preparing to unpack .../ruby-shadow_2.3.4-2_amd64.deb ...
+  Unpacking ruby-shadow (2.3.4-2) ...
+  Selecting previously unselected package puppet-common.
+  Preparing to unpack .../puppet-common_3.7.2-4_all.deb ...
+  Unpacking puppet-common (3.7.2-4) ...
+  Selecting previously unselected package puppet.
+  Preparing to unpack .../puppet_3.7.2-4_all.deb ...
+  Unpacking puppet (3.7.2-4) ...
+  Selecting previously unselected package ruby-rgen.
+  Preparing to unpack .../ruby-rgen_0.7.0-1_all.deb ...
+  Unpacking ruby-rgen (0.7.0-1) ...
+  Selecting previously unselected package ruby-selinux.
+  Preparing to unpack .../ruby-selinux_2.3-2_amd64.deb ...
+  Unpacking ruby-selinux (2.3-2) ...
+  Selecting previously unselected package virt-what.
+  Preparing to unpack .../virt-what_1.14-1_amd64.deb ...
+  Unpacking virt-what (1.14-1) ...
+  Processing triggers for man-db (2.7.0.2-5) ...
+  Processing triggers for systemd (215-17+deb8u2) ...
+  Setting up libyaml-0-2:amd64 (0.1.6-3) ...
+  Setting up augeas-lenses (1.2.0-0.2+deb8u1) ...
+  Setting up debconf-utils (1.5.56) ...
+  Setting up libruby2.1:amd64 (2.1.5-2+deb8u2) ...
+  Setting up rubygems-integration (1.8) ...
+  Setting up ruby2.1 (2.1.5-2+deb8u2) ...
+  Setting up ruby (1:2.1.5+deb8u1) ...
+  Setting up ruby-json (1.8.1-1+b2) ...
+  Setting up facter (2.2.0-1) ...
+  Setting up hiera (1.3.4-1) ...
+  Setting up javascript-common (11) ...
+  Setting up libaugeas0 (1.2.0-0.2+deb8u1) ...
+  Setting up libjs-jquery (1.7.2+dfsg-3.2) ...
+  Setting up ruby-augeas (0.5.0-2+b2) ...
+  Setting up ruby-hiera (1.3.4-1) ...
+  Setting up ruby-safe-yaml (1.0.3-1) ...
+  Setting up ruby-shadow (2.3.4-2) ...
+  Setting up puppet-common (3.7.2-4) ...
+  Setting up puppet (3.7.2-4) ...
+  Setting up ruby-rgen (0.7.0-1) ...
+  Setting up ruby-selinux (2.3-2) ...
+  Setting up virt-what (1.14-1) ...
+  Processing triggers for libc-bin (2.19-18+deb8u1) ...
+  Processing triggers for systemd (215-17+deb8u2) ...
+
+debian-8-x64 executed in 9.86 seconds
+
+debian-8-x64 19:40:38$ echo &quot;/usr/bin&quot;
+  /usr/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ echo &quot;/opt/puppet-git-repos/hiera/bin&quot;
+  /opt/puppet-git-repos/hiera/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ grep ^PATH=.*\/usr\/bin:\/opt\/puppet\-git\-repos\/hiera\/bin ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ grep ^PATH=.*PATH ~/.ssh/environment
+  PATH=PATH:/usr/bin:/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ mkdir -p /etc/puppet
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:38$ puppet agent --configprint hiera_config
+  /etc/puppet/hiera.yaml
+
+debian-8-x64 executed in 0.64 seconds
+
+debian-8-x64 19:40:39$ echo '' &amp;gt;&amp;gt; /etc/puppet/hiera.yaml
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:39$ mkdir -p /etc/puppet/modules
+
+debian-8-x64 executed in 0.04 seconds
+No examples found.
+
+debian-8-x64 19:40:39$ echo /etc/puppet/modules
+  /etc/puppet/modules
+
+debian-8-x64 executed in 0.04 seconds
+Using scp to transfer /home/david/git/davids-exiscan to /etc/puppet/modules/exiscan
+localhost $ scp /home/david/git/davids-exiscan debian-8-x64:/etc/puppet/modules {:ignore =&amp;gt; [&quot;.bundle&quot;, &quot;.git&quot;, &quot;.idea&quot;, &quot;.vagrant&quot;, &quot;.vendor&quot;, &quot;vendor&quot;, &quot;acceptance&quot;, &quot;bundle&quot;, &quot;spec&quot;, &quot;tests&quot;, &quot;log&quot;, &quot;.&quot;, &quot;..&quot;]}
+going to ignore (?-mix:((\/|\A)\.bundle(\/|\z))|((\/|\A)\.git(\/|\z))|((\/|\A)\.idea(\/|\z))|((\/|\A)\.vagrant(\/|\z))|((\/|\A)\.vendor(\/|\z))|((\/|\A)vendor(\/|\z))|((\/|\A)acceptance(\/|\z))|((\/|\A)bundle(\/|\z))|((\/|\A)spec(\/|\z))|((\/|\A)tests(\/|\z))|((\/|\A)log(\/|\z))|((\/|\A)\.(\/|\z))|((\/|\A)\.\.(\/|\z)))
+
+debian-8-x64 19:40:49$ rm -rf /etc/puppet/modules/exiscan
+
+debian-8-x64 executed in 0.05 seconds
+
+debian-8-x64 19:40:50$ mv /etc/puppet/modules/davids-exiscan /etc/puppet/modules/exiscan
+
+debian-8-x64 executed in 0.04 seconds
+
+debian-8-x64 19:40:50$ puppet module install puppetlabs-stdlib
+  Notice: Preparing to install into /etc/puppet/modules ...
+  Notice: Downloading from https://forgeapi.puppetlabs.com ...
+  Notice: Installing -- do not interrupt ...
+  /etc/puppet/modules
+  └── puppetlabs-stdlib (v4.11.0)
+
+debian-8-x64 executed in 5.60 seconds
+
+Finished in 16.2 seconds (files took 1 minute 15.57 seconds to load)
+0 examples, 0 failures
+
+david@zion:~/git/davids-exiscan$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once the vagrant hosts have been configured correctly, I can add BEAKER_provision=no and save quite a bit of time by re-using the existing boxes.&lt;/p&gt;
+
+&lt;p&gt;The first example is the trivial “it needs to apply correctly”:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require 'spec_helper_acceptance'
+
+describe 'exiscan' do
+  before(:all) do
+    @manifest = &amp;lt;&amp;lt;-PP
+      class {
+        'exiscan':
+          sa_bayes_sql_dsn      =&amp;gt; 'sa_bayes_sql_dsn_value',
+          sa_bayes_sql_username =&amp;gt; 'sa_bayes_sql_username_value',
+          greylist_dsn          =&amp;gt; 'greylist_dsn',
+          greylist_sql_username =&amp;gt; 'greylist_sql_username_value',
+      }
+    PP
+    @result = apply_manifest_on default, @manifest, accepted_exitcodes: [0..255]
+  end
+
+  it 'runs with changes' do
+    expect(@result.exit_code).to eq 2
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/acceptance/exiscan_spec.rb&lt;/code&gt;. Of course this requires also a proper set of modules installed, since beaker-rspec can’t re-use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.fixtures.yml&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppetlabs_spec_helper&lt;/code&gt;. Or, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppetlabs_spec_helper&lt;/code&gt; doesn’t correctly set up fixtures for beaker, or whatever. Again the hacked version of tp rears its ugly head.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Install this module
+copy_module_to(host, :source =&amp;gt; proj_root, :module_name =&amp;gt; 'exiscan')
+# List other dependencies here so they are installed on the host
+on host, puppet('module', 'install', 'example42-tinydata')
+# on host, puppet('module', 'install', 'example42-tp')
+install_dev_puppet_module( :source =&amp;gt; './spec/fixtures/modules/tp', :module_name =&amp;gt; 'tp' )
+on host, puppet('module', 'install', 'puppetlabs-stdlib')
+on host, puppet('module', 'install', 'ripienaar-concat')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I hack-upon-hack and re-use the already installed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./spec/fixtures/modules/tp&lt;/code&gt;. It might be interesting to ask beaker-rspec to just deploy that directory to the master, but then the main symlink becomes a liability. Ugh.&lt;/p&gt;
+
+&lt;p&gt;Meanwhile I realize that the retrospec templates are not yet using &lt;a href=&quot;https://github.com/puppetlabs/beaker-puppet_install_helper/&quot;&gt;beaker-puppet_install_helper&lt;/a&gt;, and the installed puppet defaulted to 3.7.something. Ugh.&lt;/p&gt;
+
+&lt;p&gt;The helper code looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require 'beaker/puppet_install_helper'
+run_puppet_install_helper
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Much better, but I need to re-provision the nodes.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/home/david/git/davids-exiscan/spec/spec_helper_acceptance.rb:2:in `require': cannot load such file -- beaker-puppet_install_helper (LoadError)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I might want to add the helper to the Gemfile, though…&lt;/p&gt;
+
+&lt;p&gt;It is alive!&lt;/p&gt;
+
+&lt;p&gt;One minor change is needed for the test:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@result = apply_manifest_on default, @manifest, accept_all_exit_codes: true, expect_changes: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will enable detailed exit codes and allow the spec to do the testing. This needs to go away anyways, as I won’t copy and paste this call all over the tests. For now it is fine, as it is, and runs green.&lt;/p&gt;
+
+&lt;h1 id=&quot;gareths-greatest-trick&quot;&gt;Gareth’s Greatest Trick&lt;/h1&gt;
+
+&lt;p&gt;Recently Gareth Rushgrove has hacked up a &lt;a href=&quot;https://github.com/puppetlabs/puppetlabs-ntp/pull/320&quot;&gt;patch to run beaker tests in docker on travisci&lt;/a&gt;. This is the last thing I want to try for today.&lt;/p&gt;
+
+&lt;p&gt;I add the entry to the travisci matrix, adjust the nodeset file:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOSTS:
+  debian-8-x64:
+    roles:
+      - agent
+      - default
+    platform: debian-8-amd64
+    image: debian:8
+    hypervisor: docker
+    docker_preserve_image: true
+    docker_cmd: '[&quot;/sbin/init&quot;]'
+    docker_image_commands:
+      - 'apt-get install -y net-tools wget'
+CONFIG:
+  log_level: debug
+  trace_limit: 200
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and run&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ PUPPET_INSTALL_TYPE=agent BEAKER_set=&quot;docker/debian-8&quot; bundle exec rake beaker
+/usr/bin/ruby2.3 -I/home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/lib:/home/david/gems/ruby/2.3.0/gems/rspec-support-3.4.1/lib /home/david/gems/ruby/2.3.0/gems/rspec-core-3.4.4/exe/rspec spec/acceptance --color
+/home/david/gems/ruby/2.3.0/bundler/gems/beaker-rspec-a617f7bbc3e6/lib/beaker-rspec/helpers/serverspec.rb:43: warning: already initialized constant Module::VALID_OPTIONS_KEYS
+/home/david/gems/ruby/2.3.0/gems/specinfra-2.54.1/lib/specinfra/configuration.rb:4: warning: previous definition of VALID_OPTIONS_KEYS was here
+Hypervisor for debian-8-x64 is docker
+Beaker::Hypervisor, found some docker boxes to create
+get
+/v1.16/version
+{}
+
+Provisioning docker
+provisioning debian-8-x64
+Creating image
+Dockerfile is           FROM debian:8
+            RUN apt-get update
+            RUN apt-get install -y openssh-server openssh-client curl ntpdate lsb-release
+          RUN mkdir -p /var/run/sshd
+          RUN echo root:root | chpasswd
+          RUN sed -ri 's/^#?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+          RUN sed -ri 's/^#?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+RUN apt-get install -y net-tools wget
+          EXPOSE 22
+          CMD [&quot;/sbin/init&quot;]
+post
+/v1.16/build
+{:rm=&amp;gt;true}
+Dockerfile0000640000000000000000000000076712676310361013323 0ustar00wheelwheel00000000000000          FROM debian:8
+            RUN apt-get update
+            RUN apt-get install -y openssh-server openssh-client curl ntpdate lsb-release
+          RUN mkdir -p /var/run/sshd
+          RUN echo root:root | chpasswd
+          RUN sed -ri 's/^#?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+          RUN sed -ri 's/^#?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+RUN apt-get install -y net-tools wget
+          EXPOSE 22
+          CMD [&quot;/sbin/init&quot;]
+
+Creating container from image 52103cc9f308
+post
+/v1.16/containers/create
+{}
+{&quot;Image&quot;:&quot;52103cc9f308&quot;,&quot;Hostname&quot;:&quot;debian-8-x64&quot;}
+Starting container 817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128
+post
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/start
+{}
+{&quot;PublishAllPorts&quot;:true,&quot;Privileged&quot;:true}
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+Using docker server at 0.0.0.0
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+node available as  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@0.0.0.0 -p 32770
+get
+/v1.16/containers/817b21ba6a5de43a05e3d285bfddcf1aef9add78e397596767453cdead2d6128/json
+{}
+
+
+debian-8-x64 21:15:47$ cat /etc/resolv.conf
+  Attempting ssh connection to 0.0.0.0, user: root, opts: {:password=&amp;gt;&quot;root&quot;, :port=&amp;gt;&quot;32770&quot;, :forward_agent=&amp;gt;false}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  Warning: Try 1 -- Host 0.0.0.0 unreachable: Net::SSH::Disconnect - connection closed by remote host
+  Warning: Trying again in 3 seconds
+  Attempting ssh connection to 0.0.0.0, user: root, opts: {:password=&amp;gt;&quot;root&quot;, :port=&amp;gt;&quot;32770&quot;, :forward_agent=&amp;gt;false, :user=&amp;gt;&quot;root&quot;}
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:67:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+/home/david/gems/ruby/2.3.0/gems/net-ssh-2.9.4/lib/net/ssh/transport/session.rb:84:in `initialize': Object#timeout is deprecated, use Timeout.timeout instead.
+  # Generated by NetworkManager
+  nameserver 8.8.8.8
+
+debian-8-x64 executed in 3.09 seconds
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Side note: every time the docker container boots it opens GNOME’s colord dialog. Soooo funny. Not.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And, it works! Incredible. Still needs a bit fine-tuning to re-establich Gareth’s locale workaround and to install the fixtures, so my tp-hack works, but that’s easy enough. &lt;a href=&quot;https://travis-ci.org/DavidS/puppet-exiscan/builds/119069907&quot;&gt;Build #13&lt;/a&gt; was the lucky one.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="testing" /><category term="retrospec" /><category term="exim" /><category term="travisci" /><category term="beaker" /><category term="docker" /><summary type="html">Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</summary></entry><entry><title type="html">Fixing all the Things</title><link href="https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/index.html" rel="alternate" type="text/html" title="Fixing all the Things" /><published>2016-03-27T00:00:00+00:00</published><updated>2016-03-27T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/fixing-all-the-things</id><content type="html" xml:base="https://club.black.co.at/log/posts/2016-03-27-fixing-all-the-things/index.html">&lt;blockquote&gt;
+  &lt;p&gt;Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;This is a continuation of [[yesterday’s post&lt;/td&gt;
+      &lt;td&gt;/posts/2016-03-26-bootstrapping-a-module]], refreshing my &lt;a href=&quot;https://github.com/DavidS/puppet-exiscan&quot;&gt;exiscan module&lt;/a&gt; using &lt;a href=&quot;https://github.com/nwops/puppet-retrospec&quot;&gt;retrospec-puppet&lt;/a&gt;.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;braindump&quot;&gt;Braindump&lt;/h1&gt;
+
+&lt;p&gt;To recap from yesterday, I stopped after finally getting all the boilerplate code up and running, so that the new tests told me that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exim&lt;/code&gt; class was missing. In the current code this was a local version of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;example42/exim&lt;/code&gt;. Alessandro has deprecated that module and replaced it with his &lt;a href=&quot;https://github.com/example42/puppet-tp&quot;&gt;example42/tp&lt;/a&gt; thing that is mostly data driven. This is something I wanted to have a look at for the longest time.&lt;/p&gt;
+
+&lt;p&gt;First, I started with changing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.fixtures.yml&lt;/code&gt; to install the example42/tp module which I wanted to try to for the longest time:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fixtures:
+    symlinks:
+      exiscan: &quot;#{source_dir}&quot;
+    forge_modules:
+      stdlib: &quot;puppetlabs/stdlib&quot;
+      tp: &quot;example42/tp&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Installing:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ bundle exec rake spec_prep
+Notice: Preparing to install into /home/david/git/davids-exiscan/spec/fixtures/modules ...
+Notice: Downloading from https://forgeapi.puppetlabs.com ...
+Notice: Installing -- do not interrupt ...
+/home/david/git/davids-exiscan/spec/fixtures/modules
+└── puppetlabs-stdlib (v4.11.0)
+Notice: Preparing to install into /home/david/git/davids-exiscan/spec/fixtures/modules ...
+Notice: Downloading from https://forgeapi.puppetlabs.com ...
+Notice: Installing -- do not interrupt ...
+/home/david/git/davids-exiscan/spec/fixtures/modules
+└── example42-tp (v1.0.0)
+david@zion:~/git/davids-exiscan$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looking at the manifest, I will start at one of the leaf classes: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exiscan::spamassassin&lt;/code&gt;, which configures a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spamd&lt;/code&gt; to use with exiscan. It is a very simple package/file/service class, and should lend itself well to getting all gears greased up, for when I start working on the more complex parts. There is no &lt;a href=&quot;https://github.com/example42/tinydata/tree/master/data&quot;&gt;predefined data blob for tp&lt;/a&gt; so I’ll stay with a manual implementation until I have used tp with one of the existing blobs.&lt;/p&gt;
+
+&lt;h1 id=&quot;fixing-test-failures&quot;&gt;Fixing test failures&lt;/h1&gt;
+
+&lt;p&gt;The tests were created using puppet-restrospec and puppet 3.7. Since puppet4 is my target, I’ve changed the Gemfile to default to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppet ~&amp;gt; 4.0&lt;/code&gt;, which got me 4.4.1. The first easy failure is this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;9) exiscan::spamassassin should contain File[/etc/systemd/system/spamassassin.service] with ensure =&amp;gt; &quot;present&quot;, group =&amp;gt; &quot;root&quot;, mode =&amp;gt; &quot;0644&quot;, notify =&amp;gt; &quot;Service[spamassassin]&quot;, owner =&amp;gt; &quot;root&quot;, require =&amp;gt; &quot;Package[spamassassin]&quot; and source =&amp;gt; &quot;puppet:///modules/exiscan/spamassassin/spamassassin.service&quot;
+   Failure/Error:
+     is_expected.to contain_file('/etc/systemd/system/spamassassin.service')
+       .with(
+         'ensure'  =&amp;gt; 'present',
+         'group'   =&amp;gt; 'root',
+         'mode'    =&amp;gt; '0644',
+         'notify'  =&amp;gt; 'Service[spamassassin]',
+         'owner'   =&amp;gt; 'root',
+         'require' =&amp;gt; 'Package[spamassassin]',
+         'source'  =&amp;gt; 'puppet:///modules/exiscan/spamassassin/spamassassin.service'
+       )
+
+     expected that the catalogue would contain File[/etc/systemd/system/spamassassin.service] with mode set to &quot;0644&quot; but it is set to 420
+   # ./spec/classes/spamassassin_spec.rb:118:in `block (2 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is both easily explained and fixed. Puppet 3 interprets everything as a string. Specifically, a file mode like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0644&lt;/code&gt; is passed through to the implementation as the four characters &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;'0'&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;'6'&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;'4'&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;'4'&lt;/code&gt;. Puppet 4 on the other hand, sees the digits and interprets them as a number, and - thanks to the leading zero - reads this as a number in base 8, passing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;420&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;file&lt;/code&gt; type, which would be utterly confused by this. I quote all modes and fix four out of the nine current failures. I also fix all occurrences in the other manifests, so I don’t have to think about them later.&lt;/p&gt;
+
+&lt;h2 id=&quot;relationships-its-complicated&quot;&gt;Relationships: It’s Complicated&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5) exiscan::spamassassin should contain File[/var/spool/exim4/scan] with ensure =&amp;gt; &quot;directory&quot;, group =&amp;gt; &quot;clamav&quot;, mode =&amp;gt; &quot;2750&quot;, notify =&amp;gt; &quot;Service[exim4]&quot;, owner =&amp;gt; &quot;Debian-exim&quot; and require =&amp;gt; &quot;[Package[$exim::package], Package[clamav-daemon]]&quot;
+   Failure/Error:
+     is_expected.to contain_file('/var/spool/exim4/scan')
+       .with(
+         'ensure'  =&amp;gt; 'directory',
+         'group'   =&amp;gt; 'clamav',
+         'mode'    =&amp;gt; '2750',
+         'notify'  =&amp;gt; 'Service[exim4]',
+         'owner'   =&amp;gt; 'Debian-exim',
+         'require' =&amp;gt; '[Package[$exim::package], Package[clamav-daemon]]'
+       )
+
+     expected that the catalogue would contain File[/var/spool/exim4/scan] with require set to &quot;[Package[$exim::package], Package[clamav-daemon]]&quot; but it is set to [:undef, Package[clamav-daemon]{:name=&amp;gt;&quot;clamav-daemon&quot;}]
+     Diff:
+     @@ -1,2 +1,4 @@
+     -[Package[$exim::package], Package[clamav-daemon]]
+     +undef
+     +
+     +Package[clamav-daemon]
+
+   # ./spec/classes/spamassassin_spec.rb:107:in `block (2 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The reference to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$exim::package&lt;/code&gt; is broken. No surprise there, there is no exim class. The rendered value had &lt;a href=&quot;https://github.com/nwops/retrospec-templates/issues/8&quot;&gt;more issues&lt;/a&gt;. I changed the line in the test to this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;'require' =&amp;gt; ['Package[exim4-daemon-heavy]', 'Package[clamav-daemon]']
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;as this is the expected package. The error looks much friendlier now:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Diff:
+@@ -1,4 +1,4 @@
+-Package[exim4-daemon-heavy]
++undef
+
+ Package[clamav-daemon]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Reconsidering, I add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tp::install{exim:}&lt;/code&gt; to the manifest, and require &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tp::Install[exim]&lt;/code&gt;, instead of the package. Since depending on the tp:install is only an implementation detail, the tests now need to use rspec-puppet’s relatively new &lt;a href=&quot;https://github.com/rodjek/rspec-puppet/#relationship-matchers&quot;&gt;support for transitive dependency checks&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it do
+  is_expected.to contain_file('/var/spool/exim4/scan')
+    .that_requires(['Package[exim4-daemon-heavy]', 'Package[clamav-daemon]'])
+    .with(
+      'ensure'  =&amp;gt; 'directory',
+      'group'   =&amp;gt; 'clamav',
+      'mode'    =&amp;gt; '2750',
+      'notify'  =&amp;gt; 'Service[exim4]',
+      'owner'   =&amp;gt; 'Debian-exim',
+    )
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After adding the required &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;example42/tinydata&lt;/code&gt; module to the fixtures, the tests worked on first try. Unexpected, but welcome. Two more down, three to go.&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-resources&quot;&gt;Basic Resources&lt;/h2&gt;
+
+&lt;p&gt;The next two failures are a mixture of the above errors. The generated tests for multiple packages and resources are not quite right. I replace them with these improved versions:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;['spamassassin', 'libmail-dkim-perl', 'clamav-daemon', 'libclass-dbi-pg-perl', 'spf-tools-perl'].each do |p|
+  it { is_expected.to contain_package(p).with('ensure' =&amp;gt; 'installed') }
+end
+['spamassassin', 'clamav-freshclam', 'clamav-daemon'].each do |s|
+  it do
+    is_expected.to contain_service(s)
+      .that_requires(['spamassassin', 'libmail-dkim-perl', 'clamav-daemon', 'libclass-dbi-pg-perl', 'spf-tools-perl'].collect {|p| &quot;Package[#{p}]&quot; })
+      .with(
+        'enable'  =&amp;gt; 'true',
+        'ensure'  =&amp;gt; 'running',
+    )
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This creates separate examples for each package and service, which helps debugging, when something goes wrong.&lt;/p&gt;
+
+&lt;p&gt;The last failure is again a rendering problem, where the content of a file is supplied by a template, which puppet-retrospec (luckily, who wants oodles of config in the test?) did not expand. I just remove the test for content. Checking the service’s configuration is best left to the service itself, which will be covered in a &lt;a href=&quot;https://github.com/puppetlabs/beaker-rspec&quot;&gt;beaker&lt;/a&gt; test later anyways.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Finished in 1.67 seconds (files took 0.52661 seconds to load)
+16 examples, 0 failures
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Wohoo!&lt;/p&gt;
+
+&lt;h2 id=&quot;shaping-up-the-design&quot;&gt;Shaping up the Design&lt;/h2&gt;
+
+&lt;p&gt;Now that the first class is passing tests, I can take a step back to think about the new design. Having &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exiscan::spamassassin&lt;/code&gt; install exim is obviously a no-go, as it should not be its concern. For now, I’ll claim that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exiscan::spamassassin&lt;/code&gt; is a private implementation detail and the parent class will have to take care to setup its environment properly. I move the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tp::install&lt;/code&gt; to the main class. This also requires the tests to have that class pre-configured:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let(:pre_condition) do
+  &amp;lt;&amp;lt;-PP
+    class { 'exiscan':
+      sa_bayes_sql_dsn =&amp;gt; 'place_value_here',
+      sa_bayes_sql_username =&amp;gt; 'place_value_here',
+      greylist_dsn =&amp;gt; 'place_value_here',
+      greylist_sql_username =&amp;gt; 'place_value_here',
+    }
+  PP
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Of course, this now requires that the main class’ tests pass. The first error is, again, dependencies into the exim class, which I replace with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tp::Install[exim]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;During fixing the tests, I sent a PR upstream to &lt;a href=&quot;https://github.com/nwops/retrospec-templates/pull/9&quot;&gt;improve readability of default error messages&lt;/a&gt;, and a issue when &lt;a href=&quot;https://github.com/nwops/puppet-retrospec/issues/56&quot;&gt;rendering values with escapes&lt;/a&gt;. Sometimes I think I should go into QA.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;Random tip: How to find the start of your test run?&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ echo ------------- | figlet; bundle exec rspec -fd -c spec/classes/exiscan_spec.rb ;
+
+
+ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
+|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|
+
+
+
+exiscan
+  should contain Tp::Install[exim] with settings_hash =&amp;gt; {&quot;package_name&quot;=&amp;gt;&quot;exim4-daemon-heavy&quot;}
+  should contain Class[exiscan::spamassassin] with bayes_sql_dsn =&amp;gt; &quot;sa_bayes_sql_dsn_value&quot;, bayes_sql_password =&amp;gt; &quot;s3cr3t&quot;, bayes_sql_username =&amp;gt; &quot;sa_bayes_sql_username_value&quot; and trusted_networks =&amp;gt; &quot;10.0.0.1&quot;
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;Another interesting test was something that required a optional parameter set to a non-default value. The generated test was&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it do
+  is_expected.to contain_class('exiscan::spamassassin_db')
+    .with(
+      'db_password' =&amp;gt; '',
+      'db_username' =&amp;gt; ''
+    )
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The improved tests looks like this, and test for both cases of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sa_bayes_sql_local&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;context 'without a local sa_bayes_sql' do
+  # sa_bayes_sql_local = false is default
+  it do
+    is_expected.not_to contain_class('exiscan::spamassassin_db')
+  end
+end
+
+context 'with a local sa_bayes_sql' do
+  let(:params) do
+    super().merge({
+      sa_bayes_sql_local: true
+    })
+  end
+  it do
+    is_expected.to contain_class('exiscan::spamassassin_db')
+      .with(
+        'db_password' =&amp;gt; '',
+        'db_username' =&amp;gt; ''
+      )
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;more-dependencies&quot;&gt;More Dependencies&lt;/h2&gt;
+
+&lt;p&gt;After removing some of the more syntactical issues, it turns out that I’ve converted many dependency chains from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Package[exim] -&amp;gt; something local ~&amp;gt; Service[exim]&lt;/code&gt; to loops, as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tp::Install[exim]&lt;/code&gt; contains &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Service[exim]&lt;/code&gt;. Even worse, it is not really called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exim&lt;/code&gt; anymore, because that name is dependent on the underlying OS and when I added in the proper OS facts (used elsewhere) everything blew up even harder.&lt;/p&gt;
+
+&lt;p&gt;To get a stable base for such dependencies, I’ve &lt;a href=&quot;https://github.com/example42/puppet-tp/pull/17&quot;&gt;enabled tp to provide stable names&lt;/a&gt; for the main package and service resources.&lt;/p&gt;
+
+&lt;p&gt;The main class no tests fine, but it directly includes the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exiscan::spamassassin&lt;/code&gt; so all the tests for that class fail on duplicate resource for the two class declarations (exiscan’s and the test’s). To keep the tests, I move them into the main &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exiscan_spec.rb&lt;/code&gt; and adapt the to fit. Amongst other things that meant restoring the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Package[exim]&lt;/code&gt; dependencies and tests.&lt;/p&gt;
+
+&lt;p&gt;I’ve also added the compile test to all contexts that had non-default params set:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it { is_expected.to compile.with_all_deps }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With “good” results:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1) exiscan with a local sa_bayes db should compile into a catalogue without dependency cycles
+   Failure/Error: it { is_expected.to compile.with_all_deps }
+     error during compilation: Evaluation Error: Error while evaluating a Resource Statement, Evaluation Error: Error while evaluating a Resource Statement, Invalid resource type concat at /home/david/git/davids-exiscan/spec/fixtures/modules/postgresql/manifests/hbaconcat.pp:7:3 at /home/david/git/davids-exiscan/spec/fixtures/modules/postgresql/manifests/dbcreate.pp:38 on node zion.black.co.at
+   # ./spec/classes/exiscan_spec.rb:114:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Turned out that my concat fixture was broken. Re-downloading fixed it. Revealing a more pertinent error:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1) exiscan with a local sa_bayes db should compile into a catalogue without dependency cycles
+   Failure/Error: it { is_expected.to compile.with_all_deps }
+     error during compilation: Parameter mode failed on File[spamassassin_3_2_2_initial.sql]: The file mode specification must be a string, not 'Fixnum' at /home/david/git/davids-exiscan/spec/fixtures/modules/exiscan/manifests/spamassassin_db.pp:23
+   # ./spec/classes/exiscan_spec.rb:114:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;File mode, my old nemesis!&lt;/p&gt;
+
+&lt;h2 id=&quot;misc-last-words&quot;&gt;Misc Last Words&lt;/h2&gt;
+
+&lt;p&gt;Another small improvement to the templates, &lt;a href=&quot;https://github.com/nwops/retrospec-templates/pull/10&quot;&gt;adding the default compile test&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So finally the spec tests for the main class pass. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*_db_spec&lt;/code&gt; were generated empty, so I need to have a look at them too. Puppet-lint is also complaining massively about my last-year style. And finally, all of these efforts are for naught, if the module doesn’t actually configure exim properly, which needs to be validated on a running system. Luckily, tomorrow is another day off!&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="testing" /><category term="retrospec" /><category term="exim" /><summary type="html">Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</summary></entry><entry><title type="html">Re-Bootstrapping a Module</title><link href="https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/index.html" rel="alternate" type="text/html" title="Re-Bootstrapping a Module" /><published>2016-03-26T00:00:00+00:00</published><updated>2016-03-26T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/bootstrapping-a-module</id><content type="html" xml:base="https://club.black.co.at/log/posts/2016-03-26-bootstrapping-a-module/index.html">&lt;blockquote&gt;
+  &lt;p&gt;Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In an effort to refresh my hosting solution, I started looking at refreshing some of the modules I built back then. One thing I need to bring forward, for example is &lt;a href=&quot;https://github.com/DavidS/puppet-exiscan&quot;&gt;The Olde Exiscan Module&lt;/a&gt;. Here’s a log of what I did towards refreshing it to current standards, using &lt;a href=&quot;https://github.com/nwops/puppet-retrospec&quot;&gt;retrospec-puppet&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;install-restrospec-puppet&quot;&gt;Install restrospec-puppet&lt;/h1&gt;
+
+&lt;p&gt;Since the original module (see commits before today) was still using a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Modulefile&lt;/code&gt; and had no test infrastructure at all, I started out by adding a minimal &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt; and install retrospec-puppet:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ ls
+files  manifests  Modulefile  templates
+david@zion:~/git/davids-exiscan$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'puppet-retrospec'
+gem 'puppet'
+david@zion:~/git/davids-exiscan$ bundle install --path=~/gems
+Using awesome_print 1.6.1
+Using facets 3.0.0
+Using facter 2.4.6
+Using json_pure 1.8.3
+Using trollop 2.1.2
+Using bundler 1.11.2
+Using hiera 3.1.1
+Using retrospec 0.4.0
+Using puppet 4.4.1
+Using puppet-retrospec 0.12.1
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet --help
+Generates puppet rspec test code based on the classes and defines inside the manifests directory.
+
+Subcommands:
+new_module
+new_fact
+new_type
+new_provider
+new_function
+  -t, --template-dir=&amp;lt;s&amp;gt;        Path to templates directory (only for overriding Retrospec templates) (default:
+                                /home/david/.retrospec/repos/retrospec-puppet-templates)
+  -s, --scm-url=&amp;lt;s&amp;gt;             SCM url for retrospec templates (default: https://github.com/nwops/retrospec-templates)
+  -b, --branch=&amp;lt;s&amp;gt;              Branch you want to use for the retrospec template repo (default: master)
+  -e, --enable-beaker-tests     Enable the creation of beaker tests
+  -n, --enable-future-parser    Enables the future parser only during validation
+  -v, --version                 Print version and exit
+  -h, --help                    Show this message
+david@zion:~/git/davids-exiscan$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new_module&lt;/code&gt; kept breaking on the already existing code in the module, so I moved everything out of the way and just took the generated files:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet new_module --name=davids-exiscan -a 'David Schmitt &amp;lt;david@black.co.at&amp;gt;'
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+The module located at: /home/david/git/davids-exiscan does not exist, do you wish to create it? (y/n): y
+ + /home/david/git/davids-exiscan/manifests/
+ + /home/david/git/davids-exiscan/manifests/init.pp
+ + /home/david/git/davids-exiscan/metadata.json
+david@zion:~/git/davids-exiscan$ mv tmp/* ..
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The metadata.json and .gitignore needed a few touches to add URLs and such. Then I could commit those changes to build upon them.&lt;/p&gt;
+
+&lt;p&gt;Trying to generate the tests, I ran into https://github.com/nwops/puppet-retrospec/issues/54 and started using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;future&lt;/code&gt; branch, which already has puppet 4 vendored:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'puppet-retrospec', git: 'https://github.com/nwops/puppet-retrospec.git', ref: 'future'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Almost:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/davids-exiscan$ bundle install --path=~/gems
+Using awesome_print 1.6.1
+Using facets 3.0.0
+Using facter 2.4.6
+Using json_pure 1.8.3
+Using trollop 2.1.2
+Using bundler 1.11.2
+Using hiera 3.1.1
+Using retrospec 0.4.0
+Using puppet 4.4.1
+Using puppet-retrospec 0.12.0 from https://github.com/nwops/puppet-retrospec.git (at future@a300496)
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+Attempt to assign a value to unknown setting :parser
+david@zion:~/git/davids-exiscan$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Some &lt;a href=&quot;https://github.com/DavidS/puppet-retrospec/tree/remove-future-option&quot;&gt;quick code removal later&lt;/a&gt; this problem is also fixed:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Using puppet-retrospec 0.12.0 from file:///home/david/git/puppet-retrospec (at future@a250574)
+Bundle complete! 2 Gemfile dependencies, 10 gems now installed.
+Bundled gems are installed into /home/david/gems.
+david@zion:~/git/davids-exiscan$ bundle exec retrospec puppet
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/clone-hook
+
+Cloning into '/home/david/.retrospec/repos/puppet-git-hooks'...
+remote: Counting objects: 524, done.
+remote: Compressing objects: 100% (18/18), done.
+remote: Total 524 (delta 6), reused 0 (delta 0), pack-reused 506
+Receiving objects: 100% (524/524), 115.56 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (285/285), done.
+Checking connectivity... done.
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/pre-hook
+
+!! /home/david/git/davids-exiscan/.bundle/config already exists
+ + /home/david/git/davids-exiscan/.fixtures.yml
+ + /home/david/git/davids-exiscan/.git/hooks/pre-commit
+!! /home/david/git/davids-exiscan/.gitignore already exists and differs from template
+ + /home/david/git/davids-exiscan/.puppet-lint.rc
+ + /home/david/git/davids-exiscan/.travis.yml
+ + /home/david/git/davids-exiscan/DEVELOPMENT.md
+!! /home/david/git/davids-exiscan/Gemfile already exists
+ + /home/david/git/davids-exiscan/Rakefile
+ + /home/david/git/davids-exiscan/Vagrantfile
+ + /home/david/git/davids-exiscan/files/.gitkeep
+ + /home/david/git/davids-exiscan/spec/
+ + /home/david/git/davids-exiscan/spec/acceptance/
+ + /home/david/git/davids-exiscan/spec/shared_contexts.rb
+ + /home/david/git/davids-exiscan/spec/spec_helper.rb
+ + /home/david/git/davids-exiscan/templates/.gitkeep
+ + /home/david/git/davids-exiscan/tests/
+ + /home/david/git/davids-exiscan/tests/.gitkeep
+ + /home/david/git/davids-exiscan/davids-exiscan_schema.yaml
+Successfully ran hook: /home/david/.retrospec/repos/retrospec-puppet-templates/post-hook
+
+david@zion:~/git/davids-exiscan$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember to replace the bootstrap &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt; by retrospec’s version. I generated a completely noew module and cribbed it from there.&lt;/p&gt;
+
+&lt;p&gt;Also, annoying, but understandable, is the lack of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppet-retrospec&lt;/code&gt; itself in the Gemfile. Since I haven’t installed it in my system, I just re-added my reference to the local checkout I’ve been hacking on.&lt;/p&gt;
+
+&lt;p&gt;Additionally the template defaults to 3.x puppet, which also needed fixing. And https://github.com/nwops/retrospec-templates/pull/6 .&lt;/p&gt;
+
+&lt;p&gt;Generating tests now didn’t fail anymore, but also didn’t generate any tests. In the good old divide and conquer strategy, I’ve removed all manifests, which might not parse sanely, and replaced them by a trivial class, to see if that would work.&lt;/p&gt;
+
+&lt;p&gt;Having no luck with the future branch, I rolled back to the released puppet-retrospec gem and retried everything on a ruby (2.2) that was able to run puppet 3.7, the vendored version. Thankfully Debian provides ruby2.2 and ruby2.2-dev packages, so that was quite “painless”.&lt;/p&gt;
+
+&lt;p&gt;Corey also hinted at yet &lt;a href=&quot;https://github.com/nwops/puppet-retrospec/pull/55#issuecomment-201893898&quot;&gt;unreleased code that will fix&lt;/a&gt; these pains.&lt;/p&gt;
+
+&lt;p&gt;Did I say “painless” ? ruby2.2 ALSO cannot run puppet 3.7&lt;/p&gt;
+
+&lt;p&gt;I’ve also tried building older versions of ruby with rbenv, a few weeks ago. Doesn’t work, because those depend on SSLv2 functions that were removed upstream.&lt;/p&gt;
+
+&lt;p&gt;Instead I ripped out the vendored safe_yaml gem that is causing the ruby2.3 issues and replaced it with the normal safe_yaml 1.0.4. This required some persuasion (of the forced kind) so that puppet would start up, but since YAML is only used on the wire, we’re not touching those parts anyways.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;side note: installing bundler and safe_yaml with gem2.2 from Debian into the 2.2 ruby install created &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/bundler&lt;/code&gt; causing even more “fun” after removing ruby2.2.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;After more testing, it turned out that just adding safe_yaml to the Gemfile, or installing Debian’s ruby-safe-yaml are enough to keep puppet from loading its broken vendored version.&lt;/p&gt;
+
+&lt;p&gt;At last the tests are running and are &lt;em&gt;finally&lt;/em&gt; complaining about something that is wrong with the actual module itself: it can’t find the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exim&lt;/code&gt; module. A expected error as it is a dependency I did not migrate into the new metadata.json as it was replaced upstream with a &lt;a href=&quot;https://github.com/example42/puppet-tp&quot;&gt;tp&lt;/a&gt; plugin.&lt;/p&gt;
+
+&lt;p&gt;But that will be a story for another day.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="testing" /><category term="retrospec" /><summary type="html">Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</summary></entry><entry><title type="html">scanf update</title><link href="https://club.black.co.at/log/posts/2015-02-10-scanf-update/index.html" rel="alternate" type="text/html" title="scanf update" /><published>2015-02-10T00:00:00+00:00</published><updated>2015-02-10T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2015-02-10-scanf-update/scanf-update</id><content type="html" xml:base="https://club.black.co.at/log/posts/2015-02-10-scanf-update/index.html">&lt;p&gt;[[!meta title=””]]&lt;/p&gt;
+
+&lt;p&gt;I’ve just created a &lt;a href=&quot;https://github.com/puppetlabs/puppet/pull/3593&quot;&gt;PR&lt;/a&gt;
+implmenting the &lt;a href=&quot;2015-02-04-puppet-future-parser&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scanf&lt;/code&gt;&lt;/a&gt; function for the
+classical parser. Watch it or &lt;a href=&quot;https://tickets.puppetlabs.com/browse/PUP-3991&quot;&gt;the
+ticket&lt;/a&gt; for the merge.
+According to &lt;a href=&quot;https://twitter.com/hel&quot;&gt;Henrik&lt;/a&gt; it should be just in time for
+3.7.5 release.&lt;/p&gt;
+
+&lt;p&gt;Henrik also pointed me at the nice fact that the future parser will auto-coerce
+(fail-safely) strings to numbers in arithmetic expressions. This means &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$var +
+0&lt;/code&gt; will be either the numerical value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$var&lt;/code&gt; or a compile error.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="programming" /><summary type="html">[[!meta title=””]]</summary></entry><entry><title type="html">Puppet Module Skeleton</title><link href="https://club.black.co.at/log/posts/2015-02-07-puppet-module-skeleton/index.html" rel="alternate" type="text/html" title="Puppet Module Skeleton" /><published>2015-02-07T00:00:00+00:00</published><updated>2015-02-07T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2015-02-07-puppet-module-skeleton/puppet-module-skeleton</id><content type="html" xml:base="https://club.black.co.at/log/posts/2015-02-07-puppet-module-skeleton/index.html">&lt;p&gt;At the &lt;a href=&quot;http://cfgmgmtcamp.eu/puppet.html&quot;&gt;Puppet Contributor Summit 2015 Gent&lt;/a&gt;
+I &lt;a href=&quot;../2015-02-04-puppet-future-parser&quot;&gt;rediscovered&lt;/a&gt;
+&lt;a href=&quot;https://twitter.com/garethr&quot;&gt;@garethr&lt;/a&gt;’s wonderful
+&lt;a href=&quot;https://github.com/garethr/puppet-module-skeleton&quot;&gt;puppet-module-skeleton&lt;/a&gt;. It
+plugs into the puppet module face and enables you to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;puppet module
+generate myname-modulename&lt;/code&gt; and get a working sekelton with all testing goodies
+enabled.&lt;/p&gt;
+
+&lt;p&gt;Sadly there were some bring-up issues, which he now started to adress, adding a
+&lt;a href=&quot;https://travis-ci.org/garethr/puppet-module-skeleton&quot;&gt;travis job&lt;/a&gt; to keep it
+that way.  More help is always welcome to improve this resource.&lt;/p&gt;
+
+&lt;h1 id=&quot;advanced-usage&quot;&gt;Advanced usage&lt;/h1&gt;
+
+&lt;p&gt;Gareth’s tool is great to create a new module. For working with existing
+modules, &lt;a href=&quot;https://github.com/puppetlabs/modulesync&quot;&gt;modulesync&lt;/a&gt; is the way to
+go. This tool can be configured with a set of templates and data to keep all
+the tedious meta-bits in a set of a big number of modules aligned.&lt;/p&gt;
+
+&lt;p&gt;To cover all bases, modulesync needed a &lt;a href=&quot;https://github.com/puppetlabs/modulesync/pull/36&quot;&gt;small
+modification&lt;/a&gt;. Now I’m
+porting over Gareth’s skeleton into a modulesync config, so I can apply this to
+all &lt;a href=&quot;https://github.com/DavidS&quot;&gt;my modules&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I’m making good progress and will update you as soon as I’ve got something
+proper to show.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><summary type="html">At the Puppet Contributor Summit 2015 Gent I rediscovered @garethr’s wonderful puppet-module-skeleton. It plugs into the puppet module face and enables you to use puppet module generate myname-modulename and get a working sekelton with all testing goodies enabled.</summary></entry><entry><title type="html">Migrating to puppet future parser</title><link href="https://club.black.co.at/log/posts/2015-02-04-puppet-future-parser/index.html" rel="alternate" type="text/html" title="Migrating to puppet future parser" /><published>2015-02-04T00:00:00+00:00</published><updated>2015-02-04T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2015-02-04-puppet-future-parser/puppet-future-parser</id><content type="html" xml:base="https://club.black.co.at/log/posts/2015-02-04-puppet-future-parser/index.html">&lt;p&gt;The &lt;a href=&quot;https://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html&quot;&gt;future
+parser&lt;/a&gt;
+in &lt;a href=&quot;https://puppetlabs.com/&quot;&gt;puppet&lt;/a&gt; is the compatibility shim to use before
+moving to Puppet 4.0, whose release is imminent. The future parser in 3.7
+allows us to run the stable version with the parser of the new version, making
+manifests and modules ready for a seamless upgrade. Here I’ll describe the
+steps I needded to make this move.&lt;/p&gt;
+
+&lt;h1 id=&quot;goal&quot;&gt;Goal&lt;/h1&gt;
+
+&lt;p&gt;To make the transition possible and easy, I’ve two goals. first, I want to make
+sure that I change as little as possible. This avoids trying too much in a
+single pass of the codebase, which helps general stability. Secondly, the code
+needs to run on both the old and the new parser to avoid having a flag day
+across all people using the example42 modules.&lt;/p&gt;
+
+&lt;h1 id=&quot;preparation&quot;&gt;Preparation&lt;/h1&gt;
+
+&lt;p&gt;First I’ve upgraded to the most recent stable puppet version (3.7.4). This
+ensure that I have a up-to-date iteration of the future parser, and I’m
+developing against the state of the art.&lt;/p&gt;
+
+&lt;p&gt;Then I’ve created a new puppet.conf to use while testing. This way I can leave
+the rest of my system running without impact while hacking on the future
+branch. More sensible people would use vagrant, but being my own
+biggest customer in this prod environment makes things easier.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;--- /etc/puppet/puppet.conf 2015-02-04 12:45:02.000000000 +0100
++++ /etc/puppet/future.conf 2015-02-04 12:45:16.000000000 +0100
+@@ -32,21 +32,17 @@
+   listen = false
+   runinterval = 1800
+   localconfig = $vardir/localconfig
+-  environment = production
++  environment = future
++  masterport = 8888
++  noop = true
+
+ [master]
+   bindaddress = 0.0.0.0
+   autosign = false
+
+-  environment = production
+-  manifest    = /srv/puppet/configuration/manifests/site.pp
+-  modulepath  = /srv/puppet/configuration/modules
+-  manifestdir=/srv/puppet/configuration/manifests
++  masterport = 8888
++  pidfile = /var/run/puppet/future.pid
++  parser = future
++  environment = future
++  environmentpath = /srv/puppet/environments
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Commands:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;puppet master --no-daemonize --verbose --config=/etc/puppet/future.conf
+puppet agent --test --config=/etc/puppet/future.conf --noop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I hadn’t enabled &lt;a href=&quot;https://docs.puppetlabs.com/puppet/latest/reference/environments_configuring.html&quot;&gt;directory
+environments&lt;/a&gt;
+and &lt;a href=&quot;https://docs.puppetlabs.com/puppet/latest/reference/dirs_manifest.html#directory-behavior-vs-single-file&quot;&gt;manifest
+directory&lt;/a&gt;,
+so you see that there too. They are required to get access to a more nuanced
+deployment workflow, caching and getting rid of “import”, which helps the
+autoloader to actually notice that things have changed.&lt;/p&gt;
+
+&lt;h1 id=&quot;puppet-changes&quot;&gt;Puppet changes&lt;/h1&gt;
+
+&lt;p&gt;After those preparations, puppet now can tell me what I’m doing wrong, let’s get to the various things to fix:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error: This 'if' statement is not productive. A non productive construct may only be placed last in a block/sequence&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error: Evaluation Error: Use of 'import' has been discontinued in favor of a manifest directory.&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error: Evaluation Error: No matching entry for selector parameter with value '6'&lt;/code&gt;: this one is nasty. Here’s the code:&lt;/p&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Cope with Debian's folies
+$debian_isc_era = $::operatingsystem ? {
+  /(?i:Ubuntu)/ =&amp;gt; $::lsbmajdistrelease ? {
+    8       =&amp;gt; '5',
+    9       =&amp;gt; '5',
+    default =&amp;gt; '6',
+  },
+  /(?i:Debian)/ =&amp;gt; $::lsbmajdistrelease ? {
+    5       =&amp;gt; '5',
+    default =&amp;gt; '6',
+  },
+  default   =&amp;gt; '6',
+}
+
+### Application related parameters
+
+$package = $::operatingsystem ? {
+  /(?i:Debian|Ubuntu|Mint)/ =&amp;gt; $debian_isc_era ? {
+    5 =&amp;gt; 'dhcp3-server',
+    6 =&amp;gt; 'isc-dhcp-server',   # &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;  Error HERE
+  },
+  /(?i:SLES|OpenSuSE)/      =&amp;gt; 'dhcp-server',
+  default                   =&amp;gt; 'dhcp',
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;The error is flagged on the marked line with “Error HERE”, luckily, because
+this selector has no default case. What happens, is that facter delivers
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$::lsbmajdistrelease&lt;/code&gt; as a string and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;? { 5 =&amp;gt;&lt;/code&gt; is not matching &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;5&quot;&lt;/code&gt;
+as it is a different type. The first selectors all have default statements
+that fall through to the default label due to the mismatch.&lt;/p&gt;
+
+    &lt;p&gt;The recommended solution is to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scanf&lt;/code&gt; to type-convert safely.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;intermission&quot;&gt;Intermission&lt;/h1&gt;
+
+&lt;p&gt;Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scanf&lt;/code&gt; brings several problems. First, it is only available in the
+future parser. Secondly, there is no good way to find all instances where the
+stricter interpretation will cause mismatches.&lt;/p&gt;
+
+&lt;p&gt;To actually prepare for a safe and regression-free migration, I’ve also
+upgraded travis files to actually test against the future parser.&lt;/p&gt;
+
+&lt;p&gt;Or, at least, tried to. The module I was working on proved to be of the older
+sort and testing &lt;a href=&quot;https://twitter.com/garethr&quot;&gt;@garethr&lt;/a&gt;’s
+&lt;a href=&quot;https://github.com/garethr/puppet-module-skeleton&quot;&gt;puppet-module-skeleton&lt;/a&gt;
+&lt;a href=&quot;https://travis-ci.org/DavidS/puppet-scanf/builds/49461609&quot;&gt;didn’t really work
+out&lt;/a&gt; either.&lt;/p&gt;
+
+&lt;h1 id=&quot;acknowledgements&quot;&gt;Acknowledgements&lt;/h1&gt;
+
+&lt;p&gt;This post was written at the &lt;a href=&quot;http://cfgmgmtcamp.eu/puppet.html&quot;&gt;Puppet Contributor Summit Gent
+2015&lt;/a&gt;, graciously sponsored by Puppetlabs.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><summary type="html">The future parser in puppet is the compatibility shim to use before moving to Puppet 4.0, whose release is imminent. The future parser in 3.7 allows us to run the stable version with the parser of the new version, making manifests and modules ready for a seamless upgrade. Here I’ll describe the steps I needded to make this move.</summary></entry></feed>

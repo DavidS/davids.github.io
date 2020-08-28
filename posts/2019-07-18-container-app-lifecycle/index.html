@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Application lifecycle (with containers) | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Application lifecycle (with containers)" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A few days ago, I posted a random thought on twitter. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this." />
+<meta property="og:description" content="A few days ago, I posted a random thought on twitter. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-07-18T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"A few days ago, I posted a random thought on twitter. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this.","headline":"Application lifecycle (with containers)","dateModified":"2019-07-18T00:00:00+00:00","datePublished":"2019-07-18T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/"},"url":"https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Application lifecycle (with containers)</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-07-18T00:00:00+00:00" itemprop="datePublished">Jul 18, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>A few days ago, I posted <a href="https://twitter.com/dev_el_ops/status/1151432006879862784">a random thought on twitter</a>. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this.</p>
+
+<p>Currently with docker-compose, my implementation for these is as follows:</p>
+
+<ul>
+  <li>Install: locate a compose yaml, clone or init a git repo with the file and surrounding scripts to your host.</li>
+  <li>Configure: analyse the compose file and used docker images to identify the injection points (usually environment variables) and set the desired values in te <code class="language-plaintext highlighter-rouge">.env</code> file.</li>
+  <li>Publish: <code class="language-plaintext highlighter-rouge">docker-compose up -d</code>, except that you need some custom nginx configuration to hook it up to your frontend nginx and there are 100 ways this could go wrong. Don’t get me started on SSL termination and authentication proxying.</li>
+  <li>Backup: <code class="language-plaintext highlighter-rouge">/var/lib/docker/volumes</code> contains neatly named directories with all data of your application. Except for those images that were using internal volumes, which do not have a name, and instead are just a large hex string. Oh, and of course except all your database images, because backing up the binary files doesn’t mean that you can restore from it, because who knows in what state the DB is while you’re copying it away. So I’m just making a copy of those files and hope for the best.</li>
+  <li>Restore: See above, but with more fingers crossed when copying the files back.</li>
+  <li>Inspect: <code class="language-plaintext highlighter-rouge">docker ps</code> shows me running configs. By god, I hope I remember where I put the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>. This is less of an issue on my production host, since there I’ve got everything in <code class="language-plaintext highlighter-rouge">/root</code> (I was young and needed the money), but on my dev workstation I’ve already found an abandoned project running in the background wasting a CPU core, where I’m pretty sure the compose file and directory already had been deleted.</li>
+  <li>Update: See <a href="/log/posts/2019-04-27-docker-compose/">my previous post</a> on the topic. It is not very transparent to me. I just hope that new versions of the containers can deal with existing data versions and run upgrade migrations as required. It also requires updating the compose and config to deal with whatever changes happened upstream since the last update. There are no notifications that something needs to be updated.</li>
+  <li>Patch: Sometimes, you need “just this one patch”. with compose files, you can easily switch up an image for a locally built version that comes from a <code class="language-plaintext highlighter-rouge">Dockerfile</code> specifying <code class="language-plaintext highlighter-rouge">FROM "original"</code>. Such images get automatically built on deploy, if required.</li>
+  <li>Migrate: Luckily, I haven’t required that yet, but with volumes and config being nicely separated, I hope that’ll be rather straight-forward.</li>
+  <li>Decommission: <code class="language-plaintext highlighter-rouge">docker-compose kill</code> the running processes. Then there is some incantation to also get rid of the volumes. Then I can clean up/remove the config directory. Not awful as a process, but easy to forget a step. Don’t ask me how I know O:-)</li>
+</ul>
+
+<p>While this process is <em>basically</em> working, it is tedious, error-prone, full of one-offs and workarounds, requires understanding the diverse individual image’s workings to wire everything together. Only some projects provide working compose files, and some docker images are unexpectedly unwieldy to use and/or contain bugs that make configuring them hard. Especially mapping applications into my public webserver is a world of pain, since existing compose files usually assume <em>no</em> shared frontend server and bring their own frontend webserver. While I understand the motivation behind it (providing a one-stop deployment solution), the consequences are that SSL termination and co-hosting of multiple apps is incredibly frustrating.</p>
+
+<p>I’m currently working as root on my production host because I didn’t know better at the start. Later I also realised that even when running as non-root, the containers still run processes with whatever uid was baked into the image, and the volumes, will expose files using those uids. For local development this is quite inconvenient. For production use this is seems risky, as having a user on the host means that it is easy to accidentally gain access to some files from a running container. Currently I work around this by not granting anyone but me access on the host.</p>
+
+<h1 id="scope-definition">Scope Definition</h1>
+
+<p>A lot of the confusion and complexity described above is because app developers want their images to be the be-all-end-all for everyone, while not really having the bandwidth to actually solve the problems that would need solving to make that happen. Instead issues are either haphazardly addressed by individuals covering their particular special case, or hoisted on the end-users by providing working but unusable example configurations.</p>
+
+<p>Some thoughts on how this situation could be better. The only way I found working to make a project tractable for me is to radically reduce scope. The only projects I’ve been successful at were the ones where I was my own customer zero. The scope I’m choosing therefore is “artisanal web application self-hosting”. Let me expand on this:</p>
+
+<ul>
+  <li>low traffic / no scaling requirements</li>
+  <li>single hobbyist/part-time admin</li>
+  <li>single node / no distributed system</li>
+  <li>a handful of applications</li>
+  <li>“flexible” availability requirements</li>
+  <li>more time than money</li>
+</ul>
+
+<p>This covers a lot of folks I’ve met over the years, from small sites like my own vanity domain hosting this blog to clubs and NGOs who are hosted by volunteers with little or no resources for SaaS offerings.</p>
+
+<h1 id="vision">Vision</h1>
+
+<ul>
+  <li>Install: Like apt, yum or brew, but for compositions. I can query a directory for applications. After selecting an application, the tooling downloads the bits for me. From the directory I can understand who is responsible for the packaging, and where I can contribute changes.</li>
+  <li>Configure: From the applications selected, I can create independent instances each with its own private configuration. The configuration file format is easy to write, and the schema easily maps to upstream’s documentation. There are common basic configuration directives for repeating information that I can learn once and use often.</li>
+  <li>Publish: I define a single route to expose an application at a specific point in my public web namespace (domain names and paths). I can manage my SSL certs in a single place and all applications pick up that they’re protected.</li>
+  <li>Backup: There is a single command to create a consistent backup for an application. The backup contains, configuration, and all metadata required to fully recover the application as it is running just now.</li>
+  <li>Restore: Given a backup from the previous step, I can restore the application to exactly that state on a completely new host.</li>
+  <li>Inspect: There is a list of running instances that can be queried. For each instance I can see the current service, diagnostic and access logs. The current configuration is accessible, and I can inspect historical changes to remind me of what I did last summer. I can see which applications are out of date with respect to upstream versions, and which have security issues that I need to address. The tooling knows about all bits on disk and in memory relating to an application instance: Configuration, runtime bits, keys, volumes, backups.</li>
+  <li>Update: When I have to install a security update, or want to consume a new feature from upstream, I can run a single command to update a running instance to the newer version.</li>
+  <li>Patch: Sometimes I need just that one change to the base-image of something. I can side-load a changed image into the tooling to carry that forward until the change has made it through upstream.</li>
+  <li>Migrate: Since Backup/Restore works, I can move the backup to a new machine, restore there and be up-and-running as fast as I can transfer the file.</li>
+  <li>Decommision: Since the tooling has working knowledge of all the bits making up an instance, I can delete those bits as necessary when shutting down a service.</li>
+</ul>
+
+<h1 id="non-functional-requirements">Non-functional Requirements</h1>
+
+<ul>
+  <li>Security: It’s easy to throw up a few containers and have them run wordpress. It’s less straight-forward to do so with the confidence that
+    <ul>
+      <li>your mysqld is not listening on a globally accessible port with default credentials,</li>
+      <li>your private gallery is not accessible to that rogue script in cousin Ted’s hacked up instance, and</li>
+      <li>you’re not unintentionally leaking unencrypted BasicAuth credentials through a confused redirect to port 80. Don’t ask me how I know :-(</li>
+    </ul>
+  </li>
+  <li>
+    <p>Resource usage: the applications will run on a single node that usually is resource constrained and overcommitted. To make this viable, there should be a minimal number of processes running to make the applications tick. For example, there should be one front-end webserver for routing and SSL termination, and one php-fpm instance per PHP application, instead of multiple apaches running that load PHP as cgi-bin.</p>
+
+    <p>Instances also need to be conscientious with their on-disk footprint: use shared base-images, collapse intermediate build layers, strip unused files, keep logfiles under control.</p>
+  </li>
+</ul>
+
+<h1 id="why-and-how-i-think-this-can-be-successful">Why and how I think this can be successful</h1>
+
+<p>I don’t believe that the problems listed above can be fixed at the image or compose level of individual projects. Looking at the solutions our problems of the 90’s, like autoconf/automake, Debian, debhelper, I can extrapolate some properties of successful solutions to this for the future:</p>
+
+<ul>
+  <li>usable by mere mortals. autoconf/automake is absolute balls if you ever need to look under the hood, but developers don’t need to. Day-to-day usage is cargo-culting a few dependency statements in your config, and running <code class="language-plaintext highlighter-rouge">./configure</code>. This leads to my next point:</li>
+  <li>uniformity. providing a standardised interface buffers the day-to-day users from the nasty under-belly of hacks and work-arounds. See how <code class="language-plaintext highlighter-rouge">dh</code> has benefitted over the years from building on top of a common stable interface and has risen in popularity for many of the same reasons.</li>
+  <li>approachable. while autoconf is a cess-pool of M4 under the hood, that doesn’t mean you can’t <code class="language-plaintext highlighter-rouge">grep</code> for the thing you’re staring at and bang on it in the source with a big hammer for a while to get it to do what you need. Similarily for debhelper: as a complete system, its million little helpers seem to be a mess, but adding one or modifying an existing one is a tractable task. This is crucial for growing the pool of contributors, and evolving its capabilities moving forward.</li>
+  <li>community around open source. Paying for optimizing the common case by making a back-end work more complicated is a win in my eyes. To reap those fruits there need to be users though.</li>
+  <li>content content content. automake/autoconf were big improvement over the contemporal experience of building software. So much that within a few years enough people felt that it was less painful to add it to the project they were building than to carry on as they were. A broad base of projects using it in turn meant that any core improvement amortised over tens of thousands of developers and millions of users. Compare this to other build systems like cmake, which did not provide such a huge step forward, did not see an aggressive push to convert everything, and never gained the same universal adoption.</li>
+</ul>
+
+<h1 id="next-steps">Next Steps</h1>
+
+<p>Follow along planning at <a href="https://github.com/DavidS/fluffy-chainsaw">github://DavidS/fluffy-chainsaw</a>.</p>
+
+  </div><a class="u-url" href="/log/posts/2019-07-18-container-app-lifecycle/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

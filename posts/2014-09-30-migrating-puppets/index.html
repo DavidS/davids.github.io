@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Migrating Puppets | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Migrating Puppets" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I’ve wrapped up a nice little project preparing an infrastructure to switch to puppet. The customer’s own puppet lead had the system configuration already well prepared, so it was mostly a matter of integrating the final pieces, lining up all stars and keeping an eye out for unforeseen surprises." />
+<meta property="og:description" content="I’ve wrapped up a nice little project preparing an infrastructure to switch to puppet. The customer’s own puppet lead had the system configuration already well prepared, so it was mostly a matter of integrating the final pieces, lining up all stars and keeping an eye out for unforeseen surprises." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2014-09-30-migrating-puppets/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2014-09-30-migrating-puppets/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-09-30T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"I’ve wrapped up a nice little project preparing an infrastructure to switch to puppet. The customer’s own puppet lead had the system configuration already well prepared, so it was mostly a matter of integrating the final pieces, lining up all stars and keeping an eye out for unforeseen surprises.","headline":"Migrating Puppets","dateModified":"2014-09-30T00:00:00+00:00","datePublished":"2014-09-30T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2014-09-30-migrating-puppets/"},"url":"https://club.black.co.at/log/posts/2014-09-30-migrating-puppets/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Migrating Puppets</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2014-09-30T00:00:00+00:00" itemprop="datePublished">Sep 30, 2014
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I’ve wrapped up a nice little project preparing an infrastructure to switch to puppet. The customer’s own puppet lead had the system configuration already well prepared, so it was mostly a matter of integrating the final pieces, lining up all stars and keeping an eye out for unforeseen surprises.</p>
+
+<p>Some takeaways:</p>
+
+<ul>
+  <li>preparation is everything: having base services like sssd and logstash well tested before starting the switchover was a great help to focus on the more delicate applications.</li>
+  <li>reusing puppet’s CA for apps is convenient, but creates a noticeable coupling. While it reduces time to rollout, it makes some transitions very troublesome as different parts of the systems use different trusts for prolonged periods while migrating nodes. Having a separate CA would keep those two transitions independent and probably make a cert switchover without longer delays possible. I’ve still found no obvious way to do good CA handling. The puppet ca face is (understandably) inflexible, and the openssl tinyca scripts are a pain to configure due to openssl’s general arcaneness.</li>
+  <li>doing base system configuration separately before application deployment makes for a stable base to work off for the latter. Except when it doesn’t. For example dynamically excluding data directories from various scanners (aide, AV, locate) is an important point to reconsider for future projects. Having default locations like /srv excluded statically might reduce friction before capturing a complete system. Technically this can be done by using –tags to apply common resources.</li>
+  <li>Having no monitoring in place makes for some guesswork as how the changes are impacting the applications. Of course, being in the process of rolling out puppet, this is also an inventory project, making proper monitoring a consequence, not a precondition. Improved tooling could support a process and/or service level inventory/monitoring. Alessandro’s puppi/monitoring integration is already going in that direction, but fall short on giving a global view whether everything is caught.</li>
+  <li>when doing bigger numbers of changes with puppet it’d be great to be able to define a baseline of acceptable changes. This would make it easier when going from node to node to spot the relevant differences. Normally I’d say testing should have found all those special cases already, but when activating puppet the first time on existing systems, there cannot be - by definition - an accurate test environment and all cases are special cases. Having a way to filter or even selectively apply the common/accepted/checked changes would be helpful. Primarily we solved this by applying the base config separately as described above.</li>
+</ul>
+
+<p>A simple way to do so is collecting all puppet agent logs and checking for non-universal log entries:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>time puppet agent --test --noop --color=false 2&gt;&amp;1 | tee puppet-pre-release-$(date --iso)-$(hostname).log
+sort puppet-pre-release-2014-09-30-* | uniq -c | sort -n | grep "^ *$(ls puppet-pre-release-2014-09-30-*|wc -l) " | sed -e 's/^ *//' | cut -d' ' -f 2- &gt; common_patterns
+grep -vFf common_patterns puppet-pre-release-2014-09-30-* | less
+</code></pre></div></div>
+
+<ul>
+  <li>there were only around ten nodes in this environment, so a central reporting server was not necessary. It might help though, if there are more nodes to migrate.</li>
+  <li>always keep an eye on the logs. Two nodes formed a postgres failover cluster managed by redhat’s cluster manager. In addition to the complexity of keeping the puppet module from touching the service, the cgmanager is regularly checking the service health. A fact only learned when it started shutting down the pgsqld when it failed to connect to it because the configuration file and SSL config (see above) changed.</li>
+  <li>keep all logs together. In the cgmanager incident the postgres log immediately indicated the shutdown, but the cgmanager’s log went somewhere else, so diagnosing the root cause proved to be a little more involved due to the fact that nobody thought about checking the “other” log.</li>
+  <li>good backups are necessary, but not sufficient. Additional information to keep for reference include the active networking config, iptables rules, process lists, routing table, sysctls. Basically everything that can be changed manually and is not persisted into the filesystem. Some of those also can be a pain if the current state is not recreated properly on a reboot.</li>
+</ul>
+
+  </div><a class="u-url" href="/log/posts/2014-09-30-migrating-puppets/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

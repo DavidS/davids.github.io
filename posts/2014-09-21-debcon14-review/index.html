@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>DebConf 14 review | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="DebConf 14 review" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="DebConf 14" />
+<meta property="og:description" content="DebConf 14" />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2014-09-21-debcon14-review/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2014-09-21-debcon14-review/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-09-21T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"DebConf 14","headline":"DebConf 14 review","dateModified":"2014-09-21T00:00:00+00:00","datePublished":"2014-09-21T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2014-09-21-debcon14-review/"},"url":"https://club.black.co.at/log/posts/2014-09-21-debcon14-review/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">DebConf 14 review</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2014-09-21T00:00:00+00:00" itemprop="datePublished">Sep 21, 2014
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="debconf-14">DebConf 14</h1>
+
+<p>While I could not attend <a href="http://debconf14.debconf.org/">Debconf 14</a> in person,
+reviewing the <a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/">video
+coverage</a>
+has enabled me to learn new and interesting things about what’s going on.
+Here’re a few highlights.</p>
+
+<ul>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/A_glimpse_into_a_systemd_future.webm">A glimpse into a systemd
+future</a>
+by Josh Triplett: enumerates a few features that should/could be used in a
+Debian context to improve integration with systemd. Sadly the video has a
+few corruption issues, so I hope that the video team (I reported the issue)
+can issue an improved version.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/Quit_logging_or_data_minimization_in_Debian.webm">Quit logging or data
+minimization</a>
+by Daniel Gillmor: Food for thought. Daniel’s entry point is that to
+protect “our users” privacy, default configurations should strive to
+minimize logging. As one egregious example, apache keeps a full access (IP,
+URL, username, referer) log for 52 weeks. In the following discussion, many
+interesting points were touched. From the need to have full logs available
+for debugging and forensic, over the possibilities to redact logs after “a
+while” to the necessity that logs mustn’t be kept on permanent storage if
+one wants to be safe from subpoenas.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/Reproducible_Builds_for_Debian_a_year_later.webm">Reproducible Builds for Debian a year
+later</a>
+by Jérémy Bobbio: With a few tricks, a large number of packages can be made
+to produce bit-for-bit identical outputs when building from source. This
+opens up a wide variety of benefits from trivial performance improvements
+by reusing non-modified bits to the very serious security properties of
+being able to independently verify the build, like the Tor Browser project
+does.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/Weapons_of_the_Geek.webm">Weapons of the
+Geek</a>
+by Biella Coleman: a very interesting view into Anonymous workings,
+evolition and psyche.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/debci_and_the_Debian_Continuous_Integration_project.webm">debci and the Debian Continuous Integration
+project</a>
+by Antonio Terceiro: debci runs tests against installed binaries if and
+when they or any of their dependencies change. Integrating this properly
+into a maintainer’s workflow should reduce FTBFS counts and provide a way
+to run autopkgtests regularily.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/dgit_treat_the_archive_as_a_git_remote.webm">dgit: treat the archive as a git
+remote</a>
+by Ian Jackson: A two-way gateway between the Debian archive and git. <code class="language-plaintext highlighter-rouge">dgit
+clone</code> fetches the source and all available git history from the archive
+and <code class="language-plaintext highlighter-rouge">dgit push</code> uploads a compiled package to incoming. Very neat and
+useful. I’m looking forward to the time when this is usable for non-DDs.
+Also Ian still needs to solve a bunch of integration issues to catch up in
+patch management functionality with other workflows, especially around
+quilty packages.</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/debdry_Debian_Dont_Repeat_Yourself.webm">debdry: Debian Dont Repeat
+Yourself</a>
+by Enrico Zini: A new approach to reduce packaging overhead. I like it!</li>
+  <li><a href="http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/QA_with_Linus_Torvalds.webm">Q&amp;A with Linus
+Torvalds</a>:
+A very interesting session. Obviously Linux feels at home and often talks
+about “us” programmers. His views about the lack of binary compatibility
+guarantees of distros and the problems this generates for application
+developers sound very sensible. His exaple of subsurface is a mixed bag
+though as its current version is already packaged in Debian. Looking at the
+debci talk, and other activities DDs do, I still think that distros can
+bring value to the table, and - indeed - have to bring to stay relevant.
+Ever since unit tests and friends have entered the stage, I’m chased by the
+feeling that distros should be much more involved in upstream development.
+Why can’t I have an automatically up-to-date SCM snapshot of all
+development versions in experimental (or a new suite)?</li>
+</ul>
+
+  </div><a class="u-url" href="/log/posts/2014-09-21-debcon14-review/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tiny Puppet Experiments | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Tiny Puppet Experiments" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tiny Puppet Experiments" />
+<meta property="og:description" content="Tiny Puppet Experiments" />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2014-08-01-tiny-puppet-experiments/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2014-08-01-tiny-puppet-experiments/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-08-01T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Tiny Puppet Experiments","headline":"Tiny Puppet Experiments","dateModified":"2014-08-01T00:00:00+00:00","datePublished":"2014-08-01T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2014-08-01-tiny-puppet-experiments/"},"url":"https://club.black.co.at/log/posts/2014-08-01-tiny-puppet-experiments/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tiny Puppet Experiments</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2014-08-01T00:00:00+00:00" itemprop="datePublished">Aug 1, 2014
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="tiny-puppet-experiments"><a href="https://github.com/example42/puppet-tp">Tiny Puppet</a> Experiments</h1>
+
+<p>Tiny puppet is a new idea by <a href="https://github.com/example42">Alessandro
+Franceschi</a> to provide a simple skeleton for
+basic puppet modules. The intention is to provide a Proper Opinion on core
+parameters. Alessandro talked to me about how there is still no totally
+satisfying solution to defining the module data in TP.</p>
+
+<p>Today I’ll take a look at doing so.</p>
+
+<p>Start with activating <a href="https://travis-ci.org/DavidS/puppet-tp">travis support</a>.
+And immediately <a href="https://github.com/DavidS/puppet-tp/commit/1417b56c113d751193805567cccc1bb26d0a27de">upgrading all
+gems</a>.
+Now actually only a single spec
+<a href="https://travis-ci.org/DavidS/puppet-tp/jobs/31401305">fails</a>. Progress! This
+seems to be exactly the core problem Alessandro’s been talking about.</p>
+
+<p>To get a broader view on the problem space, I read R.I.Pienaar’s
+<a href="https://github.com/ripienaar/puppet-module-data">module-data</a> module, and try
+to ingest the potential capabilities of the <a href="https://github.com/example42/puppet-tp/blob/master/lib/puppet/face/tp.rb">tp
+face</a>
+and everything else in the module.</p>
+
+<p>One problem I see is how tp tries to shoehorn everything through the <code class="language-plaintext highlighter-rouge">tp::</code>
+namespace, leading to twofold problems:</p>
+
+<ol>
+  <li>Complex lookup logic (not yet implemented). This deviates from the lookup
+structure popularized by hiera. Breaking away from this means that hiera
+customizations cannot be re-used with this structure and users have to
+learn new rules.</li>
+  <li>
+    <p>On the code side, this leads to definitions like</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tp::conf { 'redis::red.conf': ...
+</code></pre></div>    </div>
+
+    <p>which should better read</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis::conf { 'red.conf': ...
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Keeping with common hiera patterns for #1 would require some kind of
+translation of actual arguments into the tp world. Since Alessandro’s <a href="http://www.example42.com/2013/06/15/the-handy-grail-of-modules-standards/">Handy
+Grail</a>
+post from last year, I was toying around with a convention-over-configuration
+based approach to the issues laid out there. Maybe these ideas could be
+combined here. Having a one-liner to pass arguments to a core tp define would
+also make #2 easier.</p>
+
+<p>To reality-check my experiment, I’m looking over
+<a href="https://github.com/puppetlabs/puppetlabs-mysql">puppetlabs-mysql</a> to get a
+realistic view on the feasibility of converting the module to a tp core.</p>
+
+<h2 id="puppetlabs-mysql-notes">puppetlabs-mysql notes</h2>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">mysql::params</code> looks like the seventh circle of Dante’s hell. Luckily, the
+defaults are well factored, so converting to module-data should not be
+complex. Only tedious. There’s only a single occurrence of a none
+parameter-default reference into <code class="language-plaintext highlighter-rouge">mysql::params</code>, so there’re no other
+dependencies.</p>
+  </li>
+  <li>
+    <p>Core mysql parameters are managed via a generic <code class="language-plaintext highlighter-rouge">$override_options</code> hash,
+that is merged into defaults. These options are partly supplied by other
+params variables as they are distro-specific.</p>
+  </li>
+  <li>
+    <p>some parameters are deprecated, requiring a <code class="language-plaintext highlighter-rouge">$real_</code> variable. I can think
+of some hacks to workaround this by breaking into the databinding code and
+fixing things up there. I’m not sure that is implementable (or sensible)
+though.</p>
+
+    <p><em>TODO:</em> It’s a general problem and thus should be addressed somehow.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">mysql::server::install</code> optionally creates the initial datadir. On the one
+hand this is laudable, since some distros choose to deliver mysql in a
+non-functioning state. On the other hand, this functionality is buried in a
+secondary class under a very strange conditional, mixing checks of the
+merged options with checks on the user-specified options. The former is
+annoying as it is not usable for multi-instance installations, the latter
+looks like a bug to me. Perhaps the original author wanted to avoid
+creating the datadir when the default location was used?</p>
+  </li>
+</ul>
+
+<p>PS: Now Playing: <a href="https://www.youtube.com/watch?v=Q2SIoikPsBM&amp;list=PLXnEiZMPaaLwvGvSZpc8ACea7vXD51ksC">New Electro &amp; House 2013 Chart Mix</a></p>
+
+  </div><a class="u-url" href="/log/posts/2014-08-01-tiny-puppet-experiments/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

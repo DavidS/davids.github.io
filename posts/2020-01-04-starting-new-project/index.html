@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jekyll Gallery Hosting pt1: Preface | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Jekyll Gallery Hosting pt1: Preface" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The Wife is running a WordPress site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try." />
+<meta property="og:description" content="The Wife is running a WordPress site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2020-01-04-starting-new-project/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2020-01-04-starting-new-project/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-04T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"The Wife is running a WordPress site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try.","headline":"Jekyll Gallery Hosting pt1: Preface","dateModified":"2020-01-04T00:00:00+00:00","datePublished":"2020-01-04T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2020-01-04-starting-new-project/"},"url":"https://club.black.co.at/log/posts/2020-01-04-starting-new-project/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Jekyll Gallery Hosting pt1: Preface</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-01-04T00:00:00+00:00" itemprop="datePublished">Jan 4, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><a href="http://www.cheesy.at">The Wife</a> is running a <a href="https://en-gb.wordpress.org/">WordPress</a> site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try.</p>
+
+<p>Over the holidays I did a lot of research and experimentation, and now I’m finalising the plan to do so:</p>
+
+<ul>
+  <li>
+    <p>Use the <a href="http://import.jekyllrb.com/docs/wordpress/">jekyll&lt;-WordPress</a> importer to download all posts from the old site. This is working OK and generates markdown files for each blog post and page. One issue to address is that the importer is confused about where to clean up HTML entities and where not. While this might need manual intervention before the switch-over, it’ll be a one-time global search&amp;replace operation, so I’m not overly concerned.</p>
+  </li>
+  <li>
+    <p>Port the theme over. This will be a wholly manual process. Since the original site already is styled and there is no interest in changing the theme, this will be rather straight-forward (famous last words). Lift&amp;shift into sass and git will hopefully mean an easier time maintaining it going forward - as opposed to the web-based theme editor of wordpress with no version control.</p>
+  </li>
+  <li>
+    <p>Keep everything in version control. For the base posts and pages, I’ll use git. For the image data, I’m planning on using <a href="https://git-annex.branchable.com/">git-annex</a> to keep the repo size manageable.</p>
+  </li>
+  <li>
+    <p>Find a solution for the galleries. This one as it turned out was a lot more complicated than I initially thought, as Christine’s galleries far exceed the capabilities of any existing solution.</p>
+  </li>
+  <li>
+    <p>Add a server-side push hook to build and deploy the website when a new revision is uploaded. I could use this for my own blog too, as I’m still manually building and rsyncing from my workstation :-D</p>
+  </li>
+</ul>
+
+<p>This post is a rough summary of my research until now and a sketch of a solution for the galleries. I’ll follow up with more posts as I progress through development.</p>
+
+<h1 id="existing-jekyll-gallery-solutions">Existing Jekyll Gallery Solutions</h1>
+
+<p>Recommendations from a <a href="https://talk.jekyllrb.com/t/jekyll-photo-gallery/1499">jekyll forum thread</a>:</p>
+<ul>
+  <li><a href="https://learn.cloudcannon.com/jekyll/photo-gallery/">CloudCannon gallery</a>:</li>
+  <li><a href="https://github.com/ggreer/jekyll-gallery-generator">ggreer/jekyll-gallery-generator</a></li>
+  <li><a href="https://github.com/aerobless/jekyll-photo-gallery">aerobless/jekyll-photo-gallery</a></li>
+  <li><a href="https://github.com/alexivkin/Jekyll-Art-Gallery-Plugin">alexivkin/Jekyll-Art-Gallery-Plugin</a></li>
+</ul>
+
+<p>That thread has a few other recommendations that look even less appealing than these.</p>
+
+<p>Other projects I’ve looked at:</p>
+<ul>
+  <li><a href="https://github.com/rbuchberger/jekyll_picture_tag">rbuchberger/jekyll_picture_tag</a></li>
+</ul>
+
+<p>As far as I can tell after investigating those projects, they all fall flat on one or more of the following points:</p>
+
+<ul>
+  <li>Can handle only a single gallery - Christine has hundreds of folders of pictures</li>
+  <li>Needs manual data entry do add pictures to galleries - Christine has the pictures sorted into folders already</li>
+  <li>Pictures are not optimized on build - Christine is using pictures from a DSLR, and even mobile phone cameras today can produce quite hefty images</li>
+  <li>Optimized picture cache is not handled properly - Projects either have no cache or do not expire the cache. Both unacceptable given the size of the site</li>
+  <li>Unmaintained crap</li>
+</ul>
+
+<h1 id="other-static-site-generators">Other static site generators</h1>
+
+<ul>
+  <li>
+    <p><a href="https://gohugo.io">HUGO</a>: while claiming to have a lot of built-in functionality, it does not provide a gallery. The <a href="https://github.com/liwenyip/hugo-easy-gallery">only external plugin I could find</a> is currently looking for help with maintenance.</p>
+  </li>
+  <li>
+    <p><a href="https://www.gatsbyjs.org/">Gatsby.js</a>: while claiming to have loads of plugins, it only has one gallery plugin which seems to be suffering from the same issues plaguing the jekyll plugins.</p>
+  </li>
+</ul>
+
+<h1 id="jekyll-architecture">Jekyll Architecture</h1>
+
+<p>jekyll itself is a wrapper around the Liquid templating language. Being two separate projects might be nice from a maintainability standpoint (liquid is a shopify project, jekyll a github.com project), but this split is not great for extensibility and understanding the architecture.</p>
+
+<p>tl;dr: During each site build, jekyll loads all data into a memory structure (a <a href="https://github.com/jekyll/jekyll/blob/master/lib/jekyll/site.rb"><code class="language-plaintext highlighter-rouge">Jekyll::Site</code></a> instance) with <a href="https://github.com/jekyll/jekyll/blob/master/lib/jekyll/page.rb"><code class="language-plaintext highlighter-rouge">Jekyll::Page</code></a> entries for every markdown file and <a href="https://github.com/jekyll/jekyll/blob/master/lib/jekyll/static_file.rb"><code class="language-plaintext highlighter-rouge">Jekyll::StaticFile</code>s</a> for everything else. Additional data gets loaded into <a href="https://jekyllrb.com/docs/collections/">collections</a>, which will be available in the <a href="https://jekyllrb.com/docs/structure/">layouts</a> through the <code class="language-plaintext highlighter-rouge">site</code> object.</p>
+
+<p><a href="https://jekyllrb.com/docs/plugins/generators/">Generators</a> act on the built <code class="language-plaintext highlighter-rouge">site</code> data structure before it is rendered to the target directory. <a href="https://jekyllrb.com/docs/plugins/tags/">Tags</a> extend the liquid templating language.</p>
+
+<h1 id="first-wrap-up">First Wrap-up</h1>
+
+<p>Looking back at all that, I think the various projects’ shortcomings can all be directly traced to those architectural choices:</p>
+
+<ul>
+  <li>
+    <p>rbuchberger/jekyll_picture_tag: this is only a liquid tag that does all the picture crunching during the render stage. Therefore it can’t change the <code class="language-plaintext highlighter-rouge">site</code> structure anymore and is outside the caching/incremental build support jekyll provides. It also means there is no way to theme the output of the tag, as there is also no connection to jekyll’s layout system.</p>
+  </li>
+  <li>
+    <p>alexivkin/Jekyll-Art-Gallery-Plugin: looks like an unmaintained 2016 rip-off of ggreer’s plugin to me. hard pass.</p>
+  </li>
+  <li>
+    <p>aerobless/jekyll-photo-gallery: requires adding each gallery to the site config, then renders from that information</p>
+  </li>
+  <li>
+    <p>ggreer/jekyll-gallery-generator: replaces some entries in the <code class="language-plaintext highlighter-rouge">site</code> object with custom instances that add gallery functionality. For some unknown-to-me reason the plugin does not support nested galleries and does write out the site pages while adding new <code class="language-plaintext highlighter-rouge">GalleryPage</code> objects to the <code class="language-plaintext highlighter-rouge">site</code>. I tried to add nested galleries, but soon floundered on the details as nothing in the plugin’s structure is prepared for that.</p>
+  </li>
+</ul>
+
+<h1 id="the-plan">The Plan</h1>
+
+<p>After a good two or three days of research I therefore resign myself to the fact that I want to implement a jekyll gallery plugin myself:</p>
+
+<ul>
+  <li>
+    <p>Create a new gallery by adding a folder of pictures.</p>
+  </li>
+  <li>Support a nested folder/gallery structure.
+    <ul>
+      <li>Find nested galleries.</li>
+      <li>Build a page tree to navigate through galleries.</li>
+      <li>Custom thumbnail for each gallery.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Optimize picture files for multiple display sizes.</p>
+  </li>
+  <li>
+    <p>Allow mixing in some text into the gallery index pages.</p>
+  </li>
+  <li>
+    <p>Expose everything through jekyll’s layout system.</p>
+  </li>
+  <li>
+    <p>Allow easy linking to specific pictures from any page across the site.</p>
+  </li>
+  <li>Provide the same tools for individual pictures attached to pages (rather than being hosted in a full gallery).</li>
+</ul>
+
+<h1 id="resources">Resources</h1>
+
+<p>All the other links:</p>
+
+<ul>
+  <li><a href="https://jekyllrb.com/">Jekyll</a></li>
+  <li><a href="https://github.com/jekyll/jekyll">Jekyll Repo</a></li>
+  <li><a href="https://sass-lang.com/guide">SASS</a></li>
+  <li><a href="https://shopify.github.io/liquid/">Liquid</a> ; <a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers">for programmers</a></li>
+  <li><a href="https://html.spec.whatwg.org/multipage/">HTML spec</a></li>
+  <li><a href="http://schema.org/">data schemas</a></li>
+  <li><a href="https://www.w3schools.com/css/default.asp">CSS Reference</a></li>
+</ul>
+
+  </div><a class="u-url" href="/log/posts/2020-01-04-starting-new-project/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

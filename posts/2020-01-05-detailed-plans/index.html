@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jekyll Gallery Hosting pt2: Technical Planning | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Jekyll Gallery Hosting pt2: Technical Planning" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post contains the more detailed technical planning and how successfull those ideas were." />
+<meta property="og:description" content="This post contains the more detailed technical planning and how successfull those ideas were." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2020-01-05-detailed-plans/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2020-01-05-detailed-plans/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-05T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"This post contains the more detailed technical planning and how successfull those ideas were.","headline":"Jekyll Gallery Hosting pt2: Technical Planning","dateModified":"2020-01-05T00:00:00+00:00","datePublished":"2020-01-05T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2020-01-05-detailed-plans/"},"url":"https://club.black.co.at/log/posts/2020-01-05-detailed-plans/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Jekyll Gallery Hosting pt2: Technical Planning</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-01-05T00:00:00+00:00" itemprop="datePublished">Jan 5, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This post contains the more detailed technical planning and how successfull those ideas were.</p>
+
+<h1 id="the-plan">The Plan</h1>
+
+<p>These are the points from the <a href="../2020-01-04-starting-new-project">last post</a> that I want to hit with my implementation:</p>
+
+<ul>
+  <li>
+    <p>Create a new gallery by adding a folder of pictures.</p>
+  </li>
+  <li>Support a nested folder/gallery structure.
+    <ul>
+      <li>Find nested galleries.</li>
+      <li>Build a page tree to navigate through galleries.</li>
+      <li>Custom thumbnail for each gallery.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Optimize picture files for multiple display sizes.</p>
+  </li>
+  <li>
+    <p>Allow mixing in some text into the gallery index pages.</p>
+  </li>
+  <li>
+    <p>Expose everything through jekyll’s layout system.</p>
+  </li>
+  <li>
+    <p>Allow easy linking to specific pictures from any page across the site.</p>
+  </li>
+  <li>Provide the same tools for individual pictures attached to pages (rather than being hosted in a full gallery).</li>
+</ul>
+
+<h1 id="implementation-map">Implementation Map</h1>
+
+<p>Following the insights from my work leading the <a href="2020-01-04-starting-new-project">last post</a>, this is how I expect the new plugin to work:</p>
+
+<ul>
+  <li>setup: a <code class="language-plaintext highlighter-rouge">_galleries</code> folder hosting all pictures</li>
+  <li>generator: load that folder into the <code class="language-plaintext highlighter-rouge">site</code> object</li>
+  <li>generator: build a <code class="language-plaintext highlighter-rouge">page</code> tree referencing each of the folders/galleries</li>
+  <li>code: have a <code class="language-plaintext highlighter-rouge">StaticFile</code> equivalent for managing picture rendering on <code class="language-plaintext highlighter-rouge">write</code></li>
+  <li>generator: add such image file instances for each picture</li>
+  <li>layout: provide page templates for a gallery and a picture page</li>
+  <li>let jekyll render everything</li>
+  <li>???</li>
+  <li>profit!</li>
+</ul>
+
+<h1 id="project-start-up">Project Start Up</h1>
+
+<ul>
+  <li>
+    <p>created a new github repo for <a href="https://github.com/DavidS/cheesy-gallery">cheesy-gallery</a> and set up a new gem, <a href="https://travis-ci.org/DavidS/cheesy-gallery">travis</a>, <a href="https://codecov.io/gh/DavidS/cheesy-gallery">codecov</a>, rubocop and <a href="https://app.dependabot.com/accounts/DavidS/repos/231789729">dependabot</a> (<a href="https://dependabot.com/">homepage</a>).</p>
+  </li>
+  <li>
+    <p>created a new project for cheesy-gallery to capture the even more detailed planning: <a href="https://github.com/DavidS/cheesy-gallery/projects/1">https://github.com/DavidS/cheesy-gallery/projects/1</a></p>
+  </li>
+  <li>
+    <p>Started on building a simple integration test setup with a <a href="https://github.com/DavidS/cheesy-gallery/tree/master/spec/fixtures/test_site">test site</a> and a quick <a href="https://github.com/DavidS/cheesy-gallery/blob/d39a44cf33bea0ea3909b51016c64168e34c211b/.travis.yml#L13-L20">build step</a> on travis.</p>
+  </li>
+  <li>
+    <p>Managed to knock out the <a href="https://github.com/DavidS/cheesy-gallery/projects/1#card-31178444">first programming step</a> on the board, even though I was severly distracted by watching TV :-D</p>
+  </li>
+</ul>
+
+<h1 id="current-status">Current status</h1>
+
+<p>So the plugin already can correctly recreate the directory structure of the <code class="language-plaintext highlighter-rouge">_galleries</code> input folder and use a provided layout. Given my current architectural understanding of jekyll, I’m pretty chuffed to get this done in a (very relaxed) weekend.</p>
+
+<p>The most important insight of this work was realising that - and understanding why - jekyll plugins can’t supply layouts. Initially my expectation was that I could add <code class="language-plaintext highlighter-rouge">GalleryPage</code> instances, declare/request a <code class="language-plaintext highlighter-rouge">gallery</code> layout and provide a <code class="language-plaintext highlighter-rouge">_layouts/gallery.html</code> liquid template in the gem. As it turns out, jekyll has no provisions for this. The key limitation, I believe, is that the <code class="language-plaintext highlighter-rouge">gallery.html</code> liquid template would have to link up the the <code class="language-plaintext highlighter-rouge">default.html</code> layout from the theme. Since between the user and the theme there is no true “main” template that this could link up to. Is it a <code class="language-plaintext highlighter-rouge">page</code> or a <code class="language-plaintext highlighter-rouge">default</code> or maybe something completely else? My next though now is that I’ll manually design a layout to render a gallery and a picture page and provide that as an example. At the same time it might be nice to have a set of liquid tags that render a default view and reduce the maintenance amount for site owners. This would also reduce the API surface that I’d need to maintain.</p>
+
+<h1 id="next-steps">Next steps</h1>
+
+<p>As next steps, I’ve planned out <a href="https://github.com/DavidS/cheesy-gallery/projects/1#card-31200100">list and show images in gallery page
+</a> and <a href="https://github.com/DavidS/cheesy-gallery/projects/1#card-31178448">Page Tree Nav</a> with more details of expected implementation.</p>
+
+  </div><a class="u-url" href="/log/posts/2020-01-05-detailed-plans/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-08-28T11:07:40+00:00</updated><id>https://club.black.co.at/log/feed.xml</id><title type="html">DavidS’ log</title><author><name>David Schmitt</name></author><entry><title type="html">My New Life As Streamer</title><link href="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html" rel="alternate" type="text/html" title="My New Life As Streamer" /><published>2020-03-22T00:00:00+00:00</published><updated>2020-03-22T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/my-new-life-as-streamer</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html">&lt;p&gt;title: “My new life as a streamer”
+category: streaming
+tags: programming sharing linux twitch
+—&lt;/p&gt;
+
+&lt;p&gt;Over the last couple of months I’ve been slowly building out my home office.
+Between that and the push to even more home office over the next months and &lt;a href=&quot;https://puppet.com&quot;&gt;Puppet&lt;/a&gt; instructing folks to take their chairs and monitors home,
+I’ve considerably upgraded my working situation at home.
+This post describes the current statue of the setup,
+and what works and doesn’t work.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2020-03-22-streaming/home-office.jpg&quot; alt=&quot;my home office setup&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
+
+&lt;p&gt;This workstation is based on my old development PC from &lt;a href=&quot;https://dasz.at&quot;&gt;my previous company, dasz.at&lt;/a&gt;.
+Over the years I did upgrade it a bit here and there,
+but the core is still the old PC from &lt;a href=&quot;https://www.ditech.at/&quot;&gt;ditech&lt;/a&gt;.
+Here are the specs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz&lt;/li&gt;
+  &lt;li&gt;16 GB RAM&lt;/li&gt;
+  &lt;li&gt;750GB SSD (Crucial_CT750MX300SSD1)&lt;/li&gt;
+  &lt;li&gt;GeForce GTX 1050 Ti (a recent addition)&lt;/li&gt;
+  &lt;li&gt;2x Dell UH2715H (27”, 2560x1440, very nice, on loan from Puppet)&lt;/li&gt;
+  &lt;li&gt;1x Samsung SyncMaster 2443BW (24”, 1920x1200, not quite as nice with a TN panel)&lt;/li&gt;
+  &lt;li&gt;1x Philips 170S (17”, VGA, 1280x1024)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;the “silent” option of midi cases from ditech - which is really quiet&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;HP Deluxe Webcam KQ246AA (1280x1024, on top of the 17” monitor on the shelf for a whole-office overview)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A4 TECH HD PC Camera (FullHD, but really strong compression to pipe it over USB2)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Blue Yeti Microphone&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;the crappiest Logitech USB speakers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Microsoft Natural Ergonomic Keyboard 4000 v1.0&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Logitech M500 Corded Mouse&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;AmazonBasics Dual Side-by-Side Monitor Display Mounting Arm&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;HumanScale single monitor mounting arm (on loan from Puppet))&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;HumanScale chair (a lot more comfortable than the IKEA chair, on loan from Puppet)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For the greenscreen and proper lighting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;3x 45W LED bars (6000K)&lt;/li&gt;
+  &lt;li&gt;11’ green fabric&lt;/li&gt;
+  &lt;li&gt;sturdy spring-loaded curtain rod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(I guess as a streamer,
+I should add affiliate links to all those things;
+luckily I don’t have to live off of it)&lt;/p&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+
+&lt;p&gt;This will be the longer, and hopefully more interesting section. Thanks to the greenscreen and a virtual webcam I can add various flourishes to “boring” meetings.&lt;/p&gt;
+
+&lt;p&gt;The entire setup hinges on the &lt;a href=&quot;https://obsproject.com/&quot;&gt;OBS Studio&lt;/a&gt;. This is a commonly used open source software for streaming and it can ingest, transcode and transmit from a variety of sources to a variety of outputs.&lt;/p&gt;
+
+&lt;h3 id=&quot;inputs&quot;&gt;Inputs&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Top Cam:&lt;/strong&gt; this camera is perched at the top of the 17” monitor up on the shelf.
+Calls where I use this camera also go on the 17” monitor,
+so I look at the camera when I look at the call.
+It provides a good overview of my working situation and I like to use this for one-on-ones.
+Because of the position of the camera and screen I do not “look at the computer” when using it,
+because I turn away from my main working setup.
+For casual group hangouts it is useful to show where I currently pay attention by looking at the camera or my monitors.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2020-03-22-streaming/top-cam.png&quot; alt=&quot;top cam: watching from above, showing myself, my desk, the window behind me and the monitors (from the side, not showing their contents)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Face Cam:&lt;/strong&gt; This is a more “regular” angle for things like streaming or team-meetings.
+Thanks to the greenscreen behind me, I can have all kinds of shenanigans going on behind me.&lt;/p&gt;
+
+&lt;p&gt;My current favourite is &lt;a href=&quot;https://www.youtube.com/watch?v=bXlQ3Mw4uGc&quot;&gt;Flowers - Video Background HD 1080p&lt;/a&gt;. It has been incredibly invigorating seeing time and time again, folks reacting with joy and disbelief when I use it in a call.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/log/assets/2020-03-22-streaming/face-cam.jpg&quot; alt=&quot;face cam: full frontal shot of my face in front of the PC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Media Files:&lt;/strong&gt; Searching for “fullhd background” on youtube brings a big range of royalty-free (and some paid) backgrounds to put there.
+Desktop wallpapers are another good source of backgrounds.
+Of course I also snapped a picture from my webcam without me,
+so that I can have my regular office background without having to handle the greenscreen.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Applications:&lt;/strong&gt; Finally OBS can capture applications or entire screens.
+This is useful to share what I’m working on.&lt;/p&gt;
+
+&lt;h3 id=&quot;arrangement&quot;&gt;Arrangement&lt;/h3&gt;
+
+&lt;p&gt;OBS uses the concept of “Scenes” to arrange multiple inputs into a final rendering.
+I mainly use three scenes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Office Overview:&lt;/strong&gt; is just the Top Cam.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Presenter Mode:&lt;/strong&gt; is the Face Cam in full size plastered over a background of my choice.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Screen Cast:&lt;/strong&gt; is the common streaming setup of my face cam in the bottom right corner over the contents of my center screen.
+This way I can share what I’m working on without being too much in the way but still showing up.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;outputs&quot;&gt;Outputs&lt;/h3&gt;
+
+&lt;p&gt;Depending on the situation I use two different outputs.
+For calls, the “V4L2 Video Output” (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v4l2sink&lt;/code&gt;) plugin provides a virtual webcam that can be used in bluejeans (Puppet’s video conferencing software of choice).
+For &lt;a href=&quot;https://twitch.tv/dev_el_ops&quot;&gt;my brand new twitch channel&lt;/a&gt;, I use OBS built-in twitch client.
+The latter is surely the more common use-case for OBS in general.&lt;/p&gt;
+
+&lt;p&gt;As I’m streaming myself writing this post, OBS is currently upwards of two and a half cores, which is not great.
+I’ve looked into hardware acceleration, and - in principle - OBS does support that.
+As it turns out though, there is &lt;a href=&quot;https://obsproject.com/forum/threads/ffmpeg-vaapi-ignores-bitrate.116627/&quot;&gt;a bug regarding the bitrate setting on the H/W encoder&lt;/a&gt; where any user settings are ignored.
+This leads to a unusably high-bitrate stream that is rejected by twitch.&lt;/p&gt;
+
+&lt;p&gt;I’ve also tried using this setup with skypeforlinux.
+Microsoft did a fantastic job of absolutely botching their v4l2 implementation.
+Skype does only accept a single resolution and encoding from the webcam.
+If the webcam does not provide that, it is not usable in Skype.
+Loopback devices in V4L2 (which is what the v4l2sink plugin uses under the hood) do not support any mode negotiation or transcoding.
+Changing the output resolution in OBS is possible, but tedious.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-the-plugins&quot;&gt;Installing the Plugins&lt;/h2&gt;
+
+&lt;p&gt;The v4l2loopback kernel module and the OBS v42lsink plugin are not regularly available in Linux distributions.
+On Debian at least there is v4l2loopback-dkms, which worked fine for me.
+For everything else, &lt;a href=&quot;https://twitter.com/spotrh/&quot;&gt;Tom Callaway&lt;/a&gt; has a great writeup of how to compile and install at his “&lt;a href=&quot;https://spot.livejournal.com/327990.html&quot;&gt;Hacking the video stream for BlueJeans on Linux&lt;/a&gt;” over on lifejournal.
+Thanks to &lt;a href=&quot;https://twitter.com/zhenech&quot;&gt;Evgeni Golov&lt;/a&gt; for making the connection.&lt;/p&gt;
+
+&lt;h2 id=&quot;encoding-pitfall&quot;&gt;Encoding Pitfall&lt;/h2&gt;
+
+&lt;p&gt;One of the things that OBS (and V4L2) do badly is choosing default video formats on webcams.
+The default is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YUYV (4:2:2)&lt;/code&gt; which is a uncompressed pixelformat that takes up a lot of processing power and limits the framerate of the devices.
+I’ve switched all inputs and the virtual webcam to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YU12 (Emulated)&lt;/code&gt; (or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YUV420&lt;/code&gt;, which seems to be the same), which leads to a slight loss in color accuracy but allows devices to run at their full resolution and framerate.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://packages.debian.org/qv4l2&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;qv4l2&lt;/code&gt;&lt;/a&gt; was very helpful to inspect the state of the cameras depending on the settings used in OBS.&lt;/p&gt;
+
+&lt;h2 id=&quot;multi-cam-pitfall&quot;&gt;Multi-Cam Pitfall&lt;/h2&gt;
+
+&lt;p&gt;One of the gotchas of this setup is that Firefox, Chrome and OBS basically index webcams by activation order (that is, when it was plugged in).
+This is usually not an issue, as &lt;em&gt;normal&lt;/em&gt; people only have a single webcam, which will always be “the first”.
+As explained above, my workstation has three webcams.
+Which get loaded all at the same time when it boots.
+Which basically means they come up in a random order.
+Which leads to all the programs being very confused about which webcam is which.
+On top of that, bluejeans in the browser always wants to use the first webcam by default, and goes into a reload loop if it doesn’t get permissions to use it.&lt;/p&gt;
+
+&lt;p&gt;To avoid all of those issues, I wrote a short script that forces loading the webcams in the right order:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ex&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# wait for all cameras to come online&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /dev/video&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;wc&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-lt&lt;/span&gt; 5 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /dev/video&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done
+
+function &lt;/span&gt;manufacturer&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; udevadm info &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;manufacturer | &lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n1&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;usbname&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;basename&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;udevadm trigger &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--attr-match&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;manufacturer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;manufacturer &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;unbind&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /sys/bus/usb/drivers/usb/unbind&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /sys/bus/usb/drivers/usb/bind&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+rmmod v4l2loopback
+
+&lt;span class=&quot;nv&quot;&gt;devices&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /dev/video&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;usbname &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sort&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$devices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;unbind &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done
+
+&lt;/span&gt;modprobe v4l2loopback
+
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$devices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bind&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This makes use of relatively harsh unbind/bind cycle which disconnects the devices from the system at the bus level in the kernel.
+Better than manually unplugging!&lt;/p&gt;
+
+&lt;p&gt;After the script has run (I’ve put it into my startup scripts) the webcams are where they are expected and everyone is happy.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: the script relies on the USB devices coming up on the same ports, and being able to match based on manufacturer.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;conclusion-and-remaining-tasks&quot;&gt;Conclusion and remaining Tasks&lt;/h2&gt;
+
+&lt;p&gt;It took me a while, but I’m pretty pleased with how it turned out, if I may say so myself.
+I did not expect folks to react so positively to having a weird background on a video call, but it definitely sweetens the deal.&lt;/p&gt;
+
+&lt;p&gt;As next steps I still need to properly hang the lights, rather than having them propped up on a shelf. I also hope that this will resolve the final small shadow behind me, that is affecting the greenscreen.&lt;/p&gt;
+
+&lt;p&gt;Getting a better webcam for the facecam is also on my wishlist.
+Proper FullHD USB 3 cameras are not cheap though.
+And on top of that, it is hard to understand from afar which cameras are actually good.
+For example, the one A4 one is also advertised as FullHD (and to be fair does return 1920x1080 frames), but really does not come close to actually having that resolution in the picture.
+You can judge from the screenshot above yourself.&lt;/p&gt;</content><author><name>David Schmitt</name></author><summary type="html">title: “My new life as a streamer” category: streaming tags: programming sharing linux twitch —</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt5: git-annex</title><link href="https://club.black.co.at/log/posts/2020-01-19-git-annex/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt5: git-annex" /><published>2020-01-19T00:00:00+00:00</published><updated>2020-01-19T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-01-19-git-annex/git-annex</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-01-19-git-annex/index.html">&lt;p&gt;Today, a change of pace: getting 52GB of image files synced with &lt;a href=&quot;https://git-annex.branchable.com/&quot;&gt;git-annex&lt;/a&gt; in a way that still provides for a nice editing/publishing workflow and keeps history for blogposts around.&lt;/p&gt;
+
+&lt;h1 id=&quot;goals&quot;&gt;Goals&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;hands-off file synchronisation&lt;/li&gt;
+  &lt;li&gt;keep history of posts and pages&lt;/li&gt;
+  &lt;li&gt;automatic server-side jekyll rendering&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;results&quot;&gt;Results&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using the assistant through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git annex webapp&lt;/code&gt; on linux and the dmg on MacOS allows hands off syncing of git commits of blogs posts and annexed image files&lt;/li&gt;
+  &lt;li&gt;git retains all the history. With a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;backup&lt;/code&gt; remote in annex image data can also be archived&lt;/li&gt;
+  &lt;li&gt;I likely can hook into the regular post-receive hooks on the server to launch processing, but need to be cognizant of the extra branches annex is maintaining for state.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I’ve now got a git-annex’d repo on my server, my workstation and my wife’s workstation happily keeping 52GB of images (in 27k files) in sync.&lt;/p&gt;
+
+&lt;h1 id=&quot;insights&quot;&gt;Insights&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;27k files in a repository make git-annex assitant slow to start up (it’s rather annoying too to see only 10% of your SSD bandwidth and 12% CPU being used)&lt;/li&gt;
+  &lt;li&gt;stopping syncing in the git-annex web ui works to stop it from autocommitting and syncing half-finished work&lt;/li&gt;
+  &lt;li&gt;for big changes the CLI is &lt;strong&gt;a lot&lt;/strong&gt; better than the assistant, as the CLI can batch and parallelise. The assistant would upload each file individually&lt;/li&gt;
+  &lt;li&gt;I would have saved a lot of time (and bandwidth) had I done the initial ingestion on the server instead of over the network&lt;/li&gt;
+  &lt;li&gt;my devolo ‘dLAN 500 AVplus’ loses connection due to overheating after hours of full load&lt;/li&gt;
+  &lt;li&gt;some weekends are less productive than others&lt;/li&gt;
+  &lt;li&gt;don’t kill the assistant with ^C on the terminal&lt;/li&gt;
+  &lt;li&gt;People are seriously &lt;a href=&quot;https://heiko-sieger.info/running-windows-10-on-linux-using-kvm-with-vga-passthrough/&quot;&gt;running Windows 10 in KVM&lt;/a&gt; with their GPU on PCI pass-through for gaming.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>David Schmitt</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><category term="git" /><summary type="html">Today, a change of pace: getting 52GB of image files synced with git-annex in a way that still provides for a nice editing/publishing workflow and keeps history for blogposts around.</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt4: Small Steps</title><link href="https://club.black.co.at/log/posts/2020-01-15-small-steps/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt4: Small Steps" /><published>2020-01-15T00:00:00+00:00</published><updated>2020-01-15T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-01-15-small-steps/small-steps</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-01-15-small-steps/index.html">&lt;p&gt;Following up on &lt;a href=&quot;../2020-01-11-plans-of-mice-and-persons&quot;&gt;the last post&lt;/a&gt;, today I’m catching up on reporting my latest activities.&lt;/p&gt;
+
+&lt;h1 id=&quot;current-status&quot;&gt;Current Status&lt;/h1&gt;
+
+&lt;p&gt;Last weekend was pretty annoying insights and also good research success. On Moday I could &lt;a href=&quot;https://twitter.com/dev_el_ops/status/1216807365787496453&quot;&gt;add another evening of work&lt;/a&gt; and got some things done:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/Projects/cheesy-gallery$ git log --oneline
+e014c6c (HEAD -&amp;gt; master, origin/master) link up sub-pages for tree navigation; add links to gallery.html
+13e2379 apply default layout to empty index galleries
+5baa3ea Let rubocop sort out my laziness
+9e23612 fix bug where main gallery was not correctly identified
+210ccdb avoid wrecking parent relationships with additional pages
+de23b14 whitespace fixes
+e9f7c08 add 'parent' to each gallery; add parent link to gallery.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With these changes in place, the gallery pages now get proper tree navigation where you can jump from any index to its parent, and all sub-pages.&lt;/p&gt;
+
+&lt;h1 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h1&gt;
+
+&lt;p&gt;With the new confidence, I did some planning and rearranging on &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1&quot;&gt;the board&lt;/a&gt;. The next thing will be a bigger jump with &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1#card-31583024&quot;&gt;“render thumbnails for pictures”&lt;/a&gt;. This will make the gallery more presentable and start approaching something that actually works. I’m planning on following other project’s lead and use rmagic for the image manipulation. The goal is for each image in a gallery render out a square thumbnail in a (configurable??) size and attach enough information about that thumbnail to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;images&lt;/code&gt; information so that the layout can use the thumbnail as link to the actual picture. This should end up very similar to how the &lt;a href=&quot;http://www.cheesy.at/fotos/leben-in-belfast/2019-2/sonniger-und-frostiger-letzter-tag-im-jahr/&quot;&gt;current gallery&lt;/a&gt; looks like.&lt;/p&gt;
+
+&lt;p&gt;While I’m now confident about the basics, I’m wondering how the thumbnail rendering will fit into the incremental rendering. I’ve stumbled over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Drops&lt;/code&gt; while browsing through the object tree, which seem to represent the target file before it is written? Tune in on the weekend to see me figure it out, or fail hilariously!&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><summary type="html">Following up on the last post, today I’m catching up on reporting my latest activities.</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt3: The best laid plans, of mice and persons …</title><link href="https://club.black.co.at/log/posts/2020-01-11-plans-of-mice-and-persons/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt3: The best laid plans, of mice and persons …" /><published>2020-01-11T00:00:00+00:00</published><updated>2020-01-11T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-01-11-plans-of-mice-and-persons/plans-of-mice-and-persons</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-01-11-plans-of-mice-and-persons/index.html">&lt;p&gt;Following up on &lt;a href=&quot;../2020-01-05-detailed-plans&quot;&gt;last week’s post&lt;/a&gt;, today I’m gonna talk about the latest insights, hurdles and developments.&lt;/p&gt;
+
+&lt;h1 id=&quot;current-status&quot;&gt;Current Status&lt;/h1&gt;
+
+&lt;p&gt;Last week I left off after getting some basic rendering working and linking up the newly generated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GalleryPage&lt;/code&gt; instances into the jekyll &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt;. After posting the write-up I did investigate a bit further, as I was having troubles getting the paths between the source and destination sorted out. Eventually I found that jekyll has a separate &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/654d3810395f2247a699b3aa3f828bc6d1ef30f6/lib/jekyll/document.rb&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt;&lt;/a&gt; class that takes care of entries in &lt;a href=&quot;https://jekyllrb.com/docs/collections/&quot;&gt;collections&lt;/a&gt;, which does handle path handling when the source is a underscore-directory, but duplicates/re-implements a lot of the remaining functionality, but differently.&lt;/p&gt;
+
+&lt;p&gt;To stay as close as possible to the original plan, I’ll substitute and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Page&lt;/code&gt; for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt; and see whether that fixes the path-translation issues I’ve been encountering when building the site. If that doesn’t work out, I’ll have to go back and modify the design and workflow of the generator. Maybe putting the entire &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_galleries&lt;/code&gt; folder content instead directly into the site and only go back and patch-up already instantiated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pages&lt;/code&gt; also works? This might even give more flexibility in the long-run, as any layout/page could access the new data for any images in that page/tree. Decision anxiety is a thing :-(, I’ve been on-and-off mulling over this for the last few days and both approaches have their merit. I’ll need to build (at least some of) both to test my assumptions.&lt;/p&gt;
+
+&lt;h1 id=&quot;progress&quot;&gt;Progress&lt;/h1&gt;
+
+&lt;p&gt;I’ll start with replacing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Page&lt;/code&gt;s with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt;s. This seems to be the smaller operation and will give me a better understanding of the feasibility of this and what else is there in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/docs/collections/&quot;&gt;Collections&lt;/a&gt; are configured by adding an entry in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;collections:
+  - galleries
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;doing so already creates an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll::Collection&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site.collections['galleries']&lt;/code&gt; that has entries for every file in the directory tree:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[7] pry(#&amp;lt;Jekyll::Collection&amp;gt;):1&amp;gt; entries
+=&amp;gt; [&quot;.&quot;,
+ &quot;first&quot;,
+ &quot;first/.&quot;,
+ &quot;first/Halloween13-39.jpg&quot;,
+ &quot;first/2012-07-29-Eingeschlafen.jpg&quot;,
+ &quot;first/index.html&quot;,
+ &quot;second&quot;,
+ &quot;second/.&quot;,
+ &quot;second/Frostig-001.jpg&quot;,
+ &quot;second/Frostig-003.jpg&quot;,
+ &quot;second/third&quot;,
+ &quot;second/third/.&quot;,
+ &quot;second/third/Morgenspaziergang-2.jpg&quot;,
+ &quot;second/third/Morgenspaziergang-3.jpg&quot;]
+[8] pry(#&amp;lt;Jekyll::Collection&amp;gt;):1&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;but there is no rendering of anything happening, as the documentation helpfully points out. To change that we need to set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;output: true&lt;/code&gt; on the collection:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;collections:
+  galleries:
+    output: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and lo and behold, the index is rendered without any functionality in the cheesy-generator:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/Projects/cheesy-gallery/spec/fixtures/test_site$ cat _galleries/first/index.html
+---
+x_layout: gallery
+title: &quot;The first Gallery&quot;
+---
+This is a test gallery. The first of its kind.
+david@zion:~/Projects/cheesy-gallery/spec/fixtures/test_site$ cat _site/galleries/first/index.html
+This is a test gallery. The first of its kind.
+david@zion:~/Projects/cheesy-gallery/spec/fixtures/test_site$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I’ve disabled layouting with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x_&lt;/code&gt; prefix there to avoid a lot of irrelevant HTML, but enabling it does do the right thing and applies the layout tree through Liquid.&lt;/p&gt;
+
+&lt;p&gt;Image data, of course, is passed through unmodified.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docs&lt;/code&gt; attribute on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&lt;/code&gt; contains all &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt; instances. There is one for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;first/index.html&lt;/code&gt;, but none for the image-only directories. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;files&lt;/code&gt; attribute contains all &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StaticFile&lt;/code&gt; instances.&lt;/p&gt;
+
+&lt;p&gt;Another annoying quirk is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;entries&lt;/code&gt; is a flat array. The documentation explains how to iterate over that in Liquid.&lt;/p&gt;
+
+&lt;p&gt;The documentation enumerates a few other attributes a collection entry (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt;) can have. None of them specifically useful to the nested gallery usecase.&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/commit/d95692f21c25fb677b7748a350afca55e6dcd584&quot;&gt;this commit&lt;/a&gt; I implement all that I thought I had last weekend, but didn’t work, in a really nice and clean fashion:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def generate(site)
+  @site = site
+  collection = site.collections['galleries']
+
+  # all galleries in the site
+  galleries = Set[*collection.entries.map { |e| File.dirname(e) }]
+
+  # all galleries with an index.html
+  galleries_with_index = Set[*collection.entries.find_all { |e| e.end_with?('/index.html') }.map { |e| File.dirname(e) }]
+
+  # fill in Documents for galleries that don't have an index.html
+  (galleries - galleries_with_index).each do |e|
+    doc = CheesyGallery::GalleryIndex.new(File.join('_galleries', e, 'index.html'), site: site, collection: collection)
+    doc.read
+    collection.docs &amp;lt;&amp;lt; doc if site.unpublished || doc.published?
+  end
+
+  files_by_dirname = {}
+  collection.files.each { |e| (files_by_dirname[File.dirname(e.relative_path)] ||= []) &amp;lt;&amp;lt; e }
+
+  collection.docs.each do |doc|
+    # attach images
+    doc.data['images'] = files_by_dirname[File.dirname(doc.relative_path)]
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;First, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;galleries&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;galleries_with_index&lt;/code&gt; are calculated to be able to create new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CheesyGallery::GalleryIndex&lt;/code&gt; instances for galleries that do not have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.html&lt;/code&gt;. Then, the new Documents get created to fill in the blanks. Since jekyll maintains everything in flat lists, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;files_by_dirname&lt;/code&gt; is used to make the image linking easier. Finally, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;images&lt;/code&gt; attribute is filled with all files belonging to a specific document.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gallery.html&lt;/code&gt;, I make some changes to show the images as an example how it can be used. For the next time I get around to this, I update the &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1&quot;&gt;project on github&lt;/a&gt; with what I managed today and enhance the description of what to do next, as well as a couple of ideas for going forward.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><summary type="html">Following up on last week’s post, today I’m gonna talk about the latest insights, hurdles and developments.</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt2: Technical Planning</title><link href="https://club.black.co.at/log/posts/2020-01-05-detailed-plans/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt2: Technical Planning" /><published>2020-01-05T00:00:00+00:00</published><updated>2020-01-05T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-01-05-detailed-plans/detailed-plans</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-01-05-detailed-plans/index.html">&lt;p&gt;This post contains the more detailed technical planning and how successfull those ideas were.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-plan&quot;&gt;The Plan&lt;/h1&gt;
+
+&lt;p&gt;These are the points from the &lt;a href=&quot;../2020-01-04-starting-new-project&quot;&gt;last post&lt;/a&gt; that I want to hit with my implementation:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new gallery by adding a folder of pictures.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Support a nested folder/gallery structure.
+    &lt;ul&gt;
+      &lt;li&gt;Find nested galleries.&lt;/li&gt;
+      &lt;li&gt;Build a page tree to navigate through galleries.&lt;/li&gt;
+      &lt;li&gt;Custom thumbnail for each gallery.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Optimize picture files for multiple display sizes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Allow mixing in some text into the gallery index pages.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose everything through jekyll’s layout system.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Allow easy linking to specific pictures from any page across the site.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Provide the same tools for individual pictures attached to pages (rather than being hosted in a full gallery).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;implementation-map&quot;&gt;Implementation Map&lt;/h1&gt;
+
+&lt;p&gt;Following the insights from my work leading the &lt;a href=&quot;2020-01-04-starting-new-project&quot;&gt;last post&lt;/a&gt;, this is how I expect the new plugin to work:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;setup: a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_galleries&lt;/code&gt; folder hosting all pictures&lt;/li&gt;
+  &lt;li&gt;generator: load that folder into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt; object&lt;/li&gt;
+  &lt;li&gt;generator: build a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt; tree referencing each of the folders/galleries&lt;/li&gt;
+  &lt;li&gt;code: have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StaticFile&lt;/code&gt; equivalent for managing picture rendering on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;write&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;generator: add such image file instances for each picture&lt;/li&gt;
+  &lt;li&gt;layout: provide page templates for a gallery and a picture page&lt;/li&gt;
+  &lt;li&gt;let jekyll render everything&lt;/li&gt;
+  &lt;li&gt;???&lt;/li&gt;
+  &lt;li&gt;profit!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;project-start-up&quot;&gt;Project Start Up&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;created a new github repo for &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery&quot;&gt;cheesy-gallery&lt;/a&gt; and set up a new gem, &lt;a href=&quot;https://travis-ci.org/DavidS/cheesy-gallery&quot;&gt;travis&lt;/a&gt;, &lt;a href=&quot;https://codecov.io/gh/DavidS/cheesy-gallery&quot;&gt;codecov&lt;/a&gt;, rubocop and &lt;a href=&quot;https://app.dependabot.com/accounts/DavidS/repos/231789729&quot;&gt;dependabot&lt;/a&gt; (&lt;a href=&quot;https://dependabot.com/&quot;&gt;homepage&lt;/a&gt;).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;created a new project for cheesy-gallery to capture the even more detailed planning: &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1&quot;&gt;https://github.com/DavidS/cheesy-gallery/projects/1&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Started on building a simple integration test setup with a &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/tree/master/spec/fixtures/test_site&quot;&gt;test site&lt;/a&gt; and a quick &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/blob/d39a44cf33bea0ea3909b51016c64168e34c211b/.travis.yml#L13-L20&quot;&gt;build step&lt;/a&gt; on travis.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Managed to knock out the &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1#card-31178444&quot;&gt;first programming step&lt;/a&gt; on the board, even though I was severly distracted by watching TV :-D&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;current-status&quot;&gt;Current status&lt;/h1&gt;
+
+&lt;p&gt;So the plugin already can correctly recreate the directory structure of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_galleries&lt;/code&gt; input folder and use a provided layout. Given my current architectural understanding of jekyll, I’m pretty chuffed to get this done in a (very relaxed) weekend.&lt;/p&gt;
+
+&lt;p&gt;The most important insight of this work was realising that - and understanding why - jekyll plugins can’t supply layouts. Initially my expectation was that I could add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GalleryPage&lt;/code&gt; instances, declare/request a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gallery&lt;/code&gt; layout and provide a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts/gallery.html&lt;/code&gt; liquid template in the gem. As it turns out, jekyll has no provisions for this. The key limitation, I believe, is that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gallery.html&lt;/code&gt; liquid template would have to link up the the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;default.html&lt;/code&gt; layout from the theme. Since between the user and the theme there is no true “main” template that this could link up to. Is it a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page&lt;/code&gt; or a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;default&lt;/code&gt; or maybe something completely else? My next though now is that I’ll manually design a layout to render a gallery and a picture page and provide that as an example. At the same time it might be nice to have a set of liquid tags that render a default view and reduce the maintenance amount for site owners. This would also reduce the API surface that I’d need to maintain.&lt;/p&gt;
+
+&lt;h1 id=&quot;next-steps&quot;&gt;Next steps&lt;/h1&gt;
+
+&lt;p&gt;As next steps, I’ve planned out &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1#card-31200100&quot;&gt;list and show images in gallery page
+&lt;/a&gt; and &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects/1#card-31178448&quot;&gt;Page Tree Nav&lt;/a&gt; with more details of expected implementation.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><summary type="html">This post contains the more detailed technical planning and how successfull those ideas were.</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt1: Preface</title><link href="https://club.black.co.at/log/posts/2020-01-04-starting-new-project/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt1: Preface" /><published>2020-01-04T00:00:00+00:00</published><updated>2020-01-04T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-01-04-starting-new-project/starting-new-project</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-01-04-starting-new-project/index.html">&lt;p&gt;&lt;a href=&quot;http://www.cheesy.at&quot;&gt;The Wife&lt;/a&gt; is running a &lt;a href=&quot;https://en-gb.wordpress.org/&quot;&gt;WordPress&lt;/a&gt; site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try.&lt;/p&gt;
+
+&lt;p&gt;Over the holidays I did a lot of research and experimentation, and now I’m finalising the plan to do so:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use the &lt;a href=&quot;http://import.jekyllrb.com/docs/wordpress/&quot;&gt;jekyll&amp;lt;-WordPress&lt;/a&gt; importer to download all posts from the old site. This is working OK and generates markdown files for each blog post and page. One issue to address is that the importer is confused about where to clean up HTML entities and where not. While this might need manual intervention before the switch-over, it’ll be a one-time global search&amp;amp;replace operation, so I’m not overly concerned.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Port the theme over. This will be a wholly manual process. Since the original site already is styled and there is no interest in changing the theme, this will be rather straight-forward (famous last words). Lift&amp;amp;shift into sass and git will hopefully mean an easier time maintaining it going forward - as opposed to the web-based theme editor of wordpress with no version control.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Keep everything in version control. For the base posts and pages, I’ll use git. For the image data, I’m planning on using &lt;a href=&quot;https://git-annex.branchable.com/&quot;&gt;git-annex&lt;/a&gt; to keep the repo size manageable.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Find a solution for the galleries. This one as it turned out was a lot more complicated than I initially thought, as Christine’s galleries far exceed the capabilities of any existing solution.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add a server-side push hook to build and deploy the website when a new revision is uploaded. I could use this for my own blog too, as I’m still manually building and rsyncing from my workstation :-D&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This post is a rough summary of my research until now and a sketch of a solution for the galleries. I’ll follow up with more posts as I progress through development.&lt;/p&gt;
+
+&lt;h1 id=&quot;existing-jekyll-gallery-solutions&quot;&gt;Existing Jekyll Gallery Solutions&lt;/h1&gt;
+
+&lt;p&gt;Recommendations from a &lt;a href=&quot;https://talk.jekyllrb.com/t/jekyll-photo-gallery/1499&quot;&gt;jekyll forum thread&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://learn.cloudcannon.com/jekyll/photo-gallery/&quot;&gt;CloudCannon gallery&lt;/a&gt;:&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ggreer/jekyll-gallery-generator&quot;&gt;ggreer/jekyll-gallery-generator&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/aerobless/jekyll-photo-gallery&quot;&gt;aerobless/jekyll-photo-gallery&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/alexivkin/Jekyll-Art-Gallery-Plugin&quot;&gt;alexivkin/Jekyll-Art-Gallery-Plugin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That thread has a few other recommendations that look even less appealing than these.&lt;/p&gt;
+
+&lt;p&gt;Other projects I’ve looked at:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rbuchberger/jekyll_picture_tag&quot;&gt;rbuchberger/jekyll_picture_tag&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As far as I can tell after investigating those projects, they all fall flat on one or more of the following points:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Can handle only a single gallery - Christine has hundreds of folders of pictures&lt;/li&gt;
+  &lt;li&gt;Needs manual data entry do add pictures to galleries - Christine has the pictures sorted into folders already&lt;/li&gt;
+  &lt;li&gt;Pictures are not optimized on build - Christine is using pictures from a DSLR, and even mobile phone cameras today can produce quite hefty images&lt;/li&gt;
+  &lt;li&gt;Optimized picture cache is not handled properly - Projects either have no cache or do not expire the cache. Both unacceptable given the size of the site&lt;/li&gt;
+  &lt;li&gt;Unmaintained crap&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;other-static-site-generators&quot;&gt;Other static site generators&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://gohugo.io&quot;&gt;HUGO&lt;/a&gt;: while claiming to have a lot of built-in functionality, it does not provide a gallery. The &lt;a href=&quot;https://github.com/liwenyip/hugo-easy-gallery&quot;&gt;only external plugin I could find&lt;/a&gt; is currently looking for help with maintenance.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.gatsbyjs.org/&quot;&gt;Gatsby.js&lt;/a&gt;: while claiming to have loads of plugins, it only has one gallery plugin which seems to be suffering from the same issues plaguing the jekyll plugins.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;jekyll-architecture&quot;&gt;Jekyll Architecture&lt;/h1&gt;
+
+&lt;p&gt;jekyll itself is a wrapper around the Liquid templating language. Being two separate projects might be nice from a maintainability standpoint (liquid is a shopify project, jekyll a github.com project), but this split is not great for extensibility and understanding the architecture.&lt;/p&gt;
+
+&lt;p&gt;tl;dr: During each site build, jekyll loads all data into a memory structure (a &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/master/lib/jekyll/site.rb&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll::Site&lt;/code&gt;&lt;/a&gt; instance) with &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/master/lib/jekyll/page.rb&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll::Page&lt;/code&gt;&lt;/a&gt; entries for every markdown file and &lt;a href=&quot;https://github.com/jekyll/jekyll/blob/master/lib/jekyll/static_file.rb&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll::StaticFile&lt;/code&gt;s&lt;/a&gt; for everything else. Additional data gets loaded into &lt;a href=&quot;https://jekyllrb.com/docs/collections/&quot;&gt;collections&lt;/a&gt;, which will be available in the &lt;a href=&quot;https://jekyllrb.com/docs/structure/&quot;&gt;layouts&lt;/a&gt; through the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/docs/plugins/generators/&quot;&gt;Generators&lt;/a&gt; act on the built &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt; data structure before it is rendered to the target directory. &lt;a href=&quot;https://jekyllrb.com/docs/plugins/tags/&quot;&gt;Tags&lt;/a&gt; extend the liquid templating language.&lt;/p&gt;
+
+&lt;h1 id=&quot;first-wrap-up&quot;&gt;First Wrap-up&lt;/h1&gt;
+
+&lt;p&gt;Looking back at all that, I think the various projects’ shortcomings can all be directly traced to those architectural choices:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;rbuchberger/jekyll_picture_tag: this is only a liquid tag that does all the picture crunching during the render stage. Therefore it can’t change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt; structure anymore and is outside the caching/incremental build support jekyll provides. It also means there is no way to theme the output of the tag, as there is also no connection to jekyll’s layout system.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;alexivkin/Jekyll-Art-Gallery-Plugin: looks like an unmaintained 2016 rip-off of ggreer’s plugin to me. hard pass.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;aerobless/jekyll-photo-gallery: requires adding each gallery to the site config, then renders from that information&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ggreer/jekyll-gallery-generator: replaces some entries in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt; object with custom instances that add gallery functionality. For some unknown-to-me reason the plugin does not support nested galleries and does write out the site pages while adding new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GalleryPage&lt;/code&gt; objects to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;site&lt;/code&gt;. I tried to add nested galleries, but soon floundered on the details as nothing in the plugin’s structure is prepared for that.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-plan&quot;&gt;The Plan&lt;/h1&gt;
+
+&lt;p&gt;After a good two or three days of research I therefore resign myself to the fact that I want to implement a jekyll gallery plugin myself:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new gallery by adding a folder of pictures.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Support a nested folder/gallery structure.
+    &lt;ul&gt;
+      &lt;li&gt;Find nested galleries.&lt;/li&gt;
+      &lt;li&gt;Build a page tree to navigate through galleries.&lt;/li&gt;
+      &lt;li&gt;Custom thumbnail for each gallery.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Optimize picture files for multiple display sizes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Allow mixing in some text into the gallery index pages.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose everything through jekyll’s layout system.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Allow easy linking to specific pictures from any page across the site.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Provide the same tools for individual pictures attached to pages (rather than being hosted in a full gallery).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;resources&quot;&gt;Resources&lt;/h1&gt;
+
+&lt;p&gt;All the other links:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll Repo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sass-lang.com/guide&quot;&gt;SASS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://shopify.github.io/liquid/&quot;&gt;Liquid&lt;/a&gt; ; &lt;a href=&quot;https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers&quot;&gt;for programmers&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://html.spec.whatwg.org/multipage/&quot;&gt;HTML spec&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://schema.org/&quot;&gt;data schemas&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.w3schools.com/css/default.asp&quot;&gt;CSS Reference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>David Schmitt</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><summary type="html">The Wife is running a WordPress site with over 700 blog posts, recipies and galleries containing over 50GB of pictures on my old hosting server. Between WordPress complaining about PHP being too old to upgrade and myself wanting to get that site off the old infrastructure, I’ve started looking into migrating her page to a less resource-hungry, easier to maintain solution. Since this blog here is running on jekyll, I thought I’ll give it a try.</summary></entry><entry><title type="html">Application lifecycle (with containers)</title><link href="https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/index.html" rel="alternate" type="text/html" title="Application lifecycle (with containers)" /><published>2019-07-18T00:00:00+00:00</published><updated>2019-07-18T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/container-app-lifecycle</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-07-18-container-app-lifecycle/index.html">&lt;p&gt;A few days ago, I posted &lt;a href=&quot;https://twitter.com/dev_el_ops/status/1151432006879862784&quot;&gt;a random thought on twitter&lt;/a&gt;. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this.&lt;/p&gt;
+
+&lt;p&gt;Currently with docker-compose, my implementation for these is as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Install: locate a compose yaml, clone or init a git repo with the file and surrounding scripts to your host.&lt;/li&gt;
+  &lt;li&gt;Configure: analyse the compose file and used docker images to identify the injection points (usually environment variables) and set the desired values in te &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; file.&lt;/li&gt;
+  &lt;li&gt;Publish: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt;, except that you need some custom nginx configuration to hook it up to your frontend nginx and there are 100 ways this could go wrong. Don’t get me started on SSL termination and authentication proxying.&lt;/li&gt;
+  &lt;li&gt;Backup: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/lib/docker/volumes&lt;/code&gt; contains neatly named directories with all data of your application. Except for those images that were using internal volumes, which do not have a name, and instead are just a large hex string. Oh, and of course except all your database images, because backing up the binary files doesn’t mean that you can restore from it, because who knows in what state the DB is while you’re copying it away. So I’m just making a copy of those files and hope for the best.&lt;/li&gt;
+  &lt;li&gt;Restore: See above, but with more fingers crossed when copying the files back.&lt;/li&gt;
+  &lt;li&gt;Inspect: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker ps&lt;/code&gt; shows me running configs. By god, I hope I remember where I put the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt;. This is less of an issue on my production host, since there I’ve got everything in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root&lt;/code&gt; (I was young and needed the money), but on my dev workstation I’ve already found an abandoned project running in the background wasting a CPU core, where I’m pretty sure the compose file and directory already had been deleted.&lt;/li&gt;
+  &lt;li&gt;Update: See &lt;a href=&quot;/log/posts/2019-04-27-docker-compose/&quot;&gt;my previous post&lt;/a&gt; on the topic. It is not very transparent to me. I just hope that new versions of the containers can deal with existing data versions and run upgrade migrations as required. It also requires updating the compose and config to deal with whatever changes happened upstream since the last update. There are no notifications that something needs to be updated.&lt;/li&gt;
+  &lt;li&gt;Patch: Sometimes, you need “just this one patch”. with compose files, you can easily switch up an image for a locally built version that comes from a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dockerfile&lt;/code&gt; specifying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FROM &quot;original&quot;&lt;/code&gt;. Such images get automatically built on deploy, if required.&lt;/li&gt;
+  &lt;li&gt;Migrate: Luckily, I haven’t required that yet, but with volumes and config being nicely separated, I hope that’ll be rather straight-forward.&lt;/li&gt;
+  &lt;li&gt;Decommission: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose kill&lt;/code&gt; the running processes. Then there is some incantation to also get rid of the volumes. Then I can clean up/remove the config directory. Not awful as a process, but easy to forget a step. Don’t ask me how I know O:-)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While this process is &lt;em&gt;basically&lt;/em&gt; working, it is tedious, error-prone, full of one-offs and workarounds, requires understanding the diverse individual image’s workings to wire everything together. Only some projects provide working compose files, and some docker images are unexpectedly unwieldy to use and/or contain bugs that make configuring them hard. Especially mapping applications into my public webserver is a world of pain, since existing compose files usually assume &lt;em&gt;no&lt;/em&gt; shared frontend server and bring their own frontend webserver. While I understand the motivation behind it (providing a one-stop deployment solution), the consequences are that SSL termination and co-hosting of multiple apps is incredibly frustrating.&lt;/p&gt;
+
+&lt;p&gt;I’m currently working as root on my production host because I didn’t know better at the start. Later I also realised that even when running as non-root, the containers still run processes with whatever uid was baked into the image, and the volumes, will expose files using those uids. For local development this is quite inconvenient. For production use this is seems risky, as having a user on the host means that it is easy to accidentally gain access to some files from a running container. Currently I work around this by not granting anyone but me access on the host.&lt;/p&gt;
+
+&lt;h1 id=&quot;scope-definition&quot;&gt;Scope Definition&lt;/h1&gt;
+
+&lt;p&gt;A lot of the confusion and complexity described above is because app developers want their images to be the be-all-end-all for everyone, while not really having the bandwidth to actually solve the problems that would need solving to make that happen. Instead issues are either haphazardly addressed by individuals covering their particular special case, or hoisted on the end-users by providing working but unusable example configurations.&lt;/p&gt;
+
+&lt;p&gt;Some thoughts on how this situation could be better. The only way I found working to make a project tractable for me is to radically reduce scope. The only projects I’ve been successful at were the ones where I was my own customer zero. The scope I’m choosing therefore is “artisanal web application self-hosting”. Let me expand on this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;low traffic / no scaling requirements&lt;/li&gt;
+  &lt;li&gt;single hobbyist/part-time admin&lt;/li&gt;
+  &lt;li&gt;single node / no distributed system&lt;/li&gt;
+  &lt;li&gt;a handful of applications&lt;/li&gt;
+  &lt;li&gt;“flexible” availability requirements&lt;/li&gt;
+  &lt;li&gt;more time than money&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This covers a lot of folks I’ve met over the years, from small sites like my own vanity domain hosting this blog to clubs and NGOs who are hosted by volunteers with little or no resources for SaaS offerings.&lt;/p&gt;
+
+&lt;h1 id=&quot;vision&quot;&gt;Vision&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Install: Like apt, yum or brew, but for compositions. I can query a directory for applications. After selecting an application, the tooling downloads the bits for me. From the directory I can understand who is responsible for the packaging, and where I can contribute changes.&lt;/li&gt;
+  &lt;li&gt;Configure: From the applications selected, I can create independent instances each with its own private configuration. The configuration file format is easy to write, and the schema easily maps to upstream’s documentation. There are common basic configuration directives for repeating information that I can learn once and use often.&lt;/li&gt;
+  &lt;li&gt;Publish: I define a single route to expose an application at a specific point in my public web namespace (domain names and paths). I can manage my SSL certs in a single place and all applications pick up that they’re protected.&lt;/li&gt;
+  &lt;li&gt;Backup: There is a single command to create a consistent backup for an application. The backup contains, configuration, and all metadata required to fully recover the application as it is running just now.&lt;/li&gt;
+  &lt;li&gt;Restore: Given a backup from the previous step, I can restore the application to exactly that state on a completely new host.&lt;/li&gt;
+  &lt;li&gt;Inspect: There is a list of running instances that can be queried. For each instance I can see the current service, diagnostic and access logs. The current configuration is accessible, and I can inspect historical changes to remind me of what I did last summer. I can see which applications are out of date with respect to upstream versions, and which have security issues that I need to address. The tooling knows about all bits on disk and in memory relating to an application instance: Configuration, runtime bits, keys, volumes, backups.&lt;/li&gt;
+  &lt;li&gt;Update: When I have to install a security update, or want to consume a new feature from upstream, I can run a single command to update a running instance to the newer version.&lt;/li&gt;
+  &lt;li&gt;Patch: Sometimes I need just that one change to the base-image of something. I can side-load a changed image into the tooling to carry that forward until the change has made it through upstream.&lt;/li&gt;
+  &lt;li&gt;Migrate: Since Backup/Restore works, I can move the backup to a new machine, restore there and be up-and-running as fast as I can transfer the file.&lt;/li&gt;
+  &lt;li&gt;Decommision: Since the tooling has working knowledge of all the bits making up an instance, I can delete those bits as necessary when shutting down a service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;non-functional-requirements&quot;&gt;Non-functional Requirements&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Security: It’s easy to throw up a few containers and have them run wordpress. It’s less straight-forward to do so with the confidence that
+    &lt;ul&gt;
+      &lt;li&gt;your mysqld is not listening on a globally accessible port with default credentials,&lt;/li&gt;
+      &lt;li&gt;your private gallery is not accessible to that rogue script in cousin Ted’s hacked up instance, and&lt;/li&gt;
+      &lt;li&gt;you’re not unintentionally leaking unencrypted BasicAuth credentials through a confused redirect to port 80. Don’t ask me how I know :-(&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Resource usage: the applications will run on a single node that usually is resource constrained and overcommitted. To make this viable, there should be a minimal number of processes running to make the applications tick. For example, there should be one front-end webserver for routing and SSL termination, and one php-fpm instance per PHP application, instead of multiple apaches running that load PHP as cgi-bin.&lt;/p&gt;
+
+    &lt;p&gt;Instances also need to be conscientious with their on-disk footprint: use shared base-images, collapse intermediate build layers, strip unused files, keep logfiles under control.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;why-and-how-i-think-this-can-be-successful&quot;&gt;Why and how I think this can be successful&lt;/h1&gt;
+
+&lt;p&gt;I don’t believe that the problems listed above can be fixed at the image or compose level of individual projects. Looking at the solutions our problems of the 90’s, like autoconf/automake, Debian, debhelper, I can extrapolate some properties of successful solutions to this for the future:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;usable by mere mortals. autoconf/automake is absolute balls if you ever need to look under the hood, but developers don’t need to. Day-to-day usage is cargo-culting a few dependency statements in your config, and running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./configure&lt;/code&gt;. This leads to my next point:&lt;/li&gt;
+  &lt;li&gt;uniformity. providing a standardised interface buffers the day-to-day users from the nasty under-belly of hacks and work-arounds. See how &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dh&lt;/code&gt; has benefitted over the years from building on top of a common stable interface and has risen in popularity for many of the same reasons.&lt;/li&gt;
+  &lt;li&gt;approachable. while autoconf is a cess-pool of M4 under the hood, that doesn’t mean you can’t &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grep&lt;/code&gt; for the thing you’re staring at and bang on it in the source with a big hammer for a while to get it to do what you need. Similarily for debhelper: as a complete system, its million little helpers seem to be a mess, but adding one or modifying an existing one is a tractable task. This is crucial for growing the pool of contributors, and evolving its capabilities moving forward.&lt;/li&gt;
+  &lt;li&gt;community around open source. Paying for optimizing the common case by making a back-end work more complicated is a win in my eyes. To reap those fruits there need to be users though.&lt;/li&gt;
+  &lt;li&gt;content content content. automake/autoconf were big improvement over the contemporal experience of building software. So much that within a few years enough people felt that it was less painful to add it to the project they were building than to carry on as they were. A broad base of projects using it in turn meant that any core improvement amortised over tens of thousands of developers and millions of users. Compare this to other build systems like cmake, which did not provide such a huge step forward, did not see an aggressive push to convert everything, and never gained the same universal adoption.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h1&gt;
+
+&lt;p&gt;Follow along planning at &lt;a href=&quot;https://github.com/DavidS/fluffy-chainsaw&quot;&gt;github://DavidS/fluffy-chainsaw&lt;/a&gt;.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="devops" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="containers" /><category term="docker" /><category term="docker-compose" /><summary type="html">A few days ago, I posted a random thought on twitter. I got surprisingly positive feedback, and some thoughtful conversations about details. This post is a follow-up where I’m expanding on this.</summary></entry><entry><title type="html">First Steps with Bolt</title><link href="https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/index.html" rel="alternate" type="text/html" title="First Steps with Bolt" /><published>2019-06-09T00:00:00+00:00</published><updated>2019-06-09T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/first-steps-with-bolt</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-06-09-first-steps-with-bolt/index.html">&lt;p&gt;For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo&lt;/code&gt; onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~$ ssh puppetmaster.example.net -p 2200
+Linux puppetmaster 3.2.0-6-amd64 #1 SMP Debian 3.2.102-1 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+You have new mail.
+Last login: Sat May 25 12:15:46 2019 from example.net
+david@puppetmaster:~$ sudo -i
+root@puppetmaster:~# cd /srv/puppet/secrets/ &amp;amp;&amp;amp; git pull --ff-only &amp;amp;&amp;amp; cd /srv/puppet/configuration/ &amp;amp;&amp;amp; git pull --ff-only &amp;amp;&amp;amp; git submodule update --init --recursive &amp;amp;&amp;amp; systemctl restart puppetmaster.service &amp;amp;&amp;amp; sleep 1
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;While totally servicable, I never felt particularily good about having such a crucial step not recorded in some kind of git repo. Today, finally I got with the times and wrapped this up in a task. Here you can see it in action, deploying itself:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;david@zion:~/git/dasz-configuration$ bolt task run site::puppet_deploy --modulepath ./modules --run-as root -n puppetmaster.example.net:2200
+Started on puppetmaster.example.net...
+Finished on puppetmaster.example.net:
+  Already up-to-date.
+  Updating e74a140..d7975aa
+  Fast-forward
+   modules/site/.gitattributes           |    5 ++
+   modules/site/.gitignore               |   27 ++++++++
+   modules/site/.pdkignore               |   42 ++++++++++++
+   modules/site/.puppet-lint.rc          |    1 +
+   modules/site/.rspec                   |    2 +
+   modules/site/.rubocop.yml             |  122 +++++++++++++++++++++++++++++++++
+   modules/site/.sync.yml                |    5 ++
+   modules/site/.travis.yml              |   54 +++++++++++++++
+   modules/site/.yardopts                |    1 +
+   modules/site/Gemfile                  |   71 +++++++++++++++++++
+   modules/site/Modulefile               |    9 ---
+   modules/site/Rakefile                 |   76 +++++++++++++++++++-
+   modules/site/manifests/init.pp        |   15 ----
+   modules/site/spec/default_facts.yml   |    7 ++
+   modules/site/spec/spec_helper.rb      |   47 ++++++++++++-
+   modules/site/tasks/puppet_deploy.json |    7 ++
+   modules/site/tasks/puppet_deploy.sh   |   17 +++++
+   17 files changed, 482 insertions(+), 26 deletions(-)
+   create mode 100644 modules/site/.gitattributes
+   create mode 100644 modules/site/.gitignore
+   create mode 100644 modules/site/.pdkignore
+   create mode 100644 modules/site/.puppet-lint.rc
+   create mode 100644 modules/site/.rspec
+   create mode 100644 modules/site/.rubocop.yml
+   create mode 100644 modules/site/.sync.yml
+   create mode 100644 modules/site/.travis.yml
+   create mode 100644 modules/site/.yardopts
+   create mode 100644 modules/site/Gemfile
+   delete mode 100644 modules/site/Modulefile
+   delete mode 100644 modules/site/manifests/init.pp
+   create mode 100644 modules/site/spec/default_facts.yml
+   create mode 100644 modules/site/tasks/puppet_deploy.json
+   create mode 100644 modules/site/tasks/puppet_deploy.sh
+  Submodule 'modules/apache' () registered for path 'modules/apache'
+  Submodule 'modules/apt' () registered for path 'modules/apt'
+  Submodule 'modules/bind' () registered for path 'modules/bind'
+  Submodule 'modules/chocolatey' () registered for path 'modules/chocolatey'
+  Submodule 'modules/concat' () registered for path 'modules/concat'
+  Submodule 'modules/dhcpd' () registered for path 'modules/dhcpd'
+  Submodule 'modules/dovecot' () registered for path 'modules/dovecot'
+  Submodule 'modules/exim' () registered for path 'modules/exim'
+  Submodule 'modules/exiscan' () registered for path 'modules/exiscan'
+  Submodule 'modules/firewall' () registered for path 'modules/firewall'
+  Submodule 'modules/foreman' () registered for path 'modules/foreman'
+  Submodule 'modules/icinga' () registered for path 'modules/icinga'
+  Submodule 'modules/inittab' () registered for path 'modules/inittab'
+  Submodule 'modules/iptables' () registered for path 'modules/iptables'
+  Submodule 'modules/libvirt' () registered for path 'modules/libvirt'
+  Submodule 'modules/monitor' () registered for path 'modules/monitor'
+  Submodule 'modules/munin' () registered for path 'modules/munin'
+  Submodule 'modules/mysql' () registered for path 'modules/mysql'
+  Submodule 'modules/nginx' () registered for path 'modules/nginx'
+  Submodule 'modules/nrpe' () registered for path 'modules/nrpe'
+  Submodule 'modules/ntp' () registered for path 'modules/ntp'
+  Submodule 'modules/nullmailer' () registered for path 'modules/nullmailer'
+  Submodule 'modules/openssh' () registered for path 'modules/openssh'
+  Submodule 'modules/openvpn' () registered for path 'modules/openvpn'
+  Submodule 'modules/postgresql' () registered for path 'modules/postgresql'
+  Submodule 'modules/puppet' () registered for path 'modules/puppet'
+  Submodule 'modules/puppetdb' () registered for path 'modules/puppetdb'
+  Submodule 'modules/puppi' () registered for path 'modules/puppi'
+  Submodule 'modules/registry' () registered for path 'modules/registry'
+  Submodule 'modules/roundcube' () registered for path 'modules/roundcube'
+  Submodule 'modules/rsyslog' () registered for path 'modules/rsyslog'
+  Submodule 'modules/stdlib' () registered for path 'modules/stdlib'
+  Submodule 'modules/sudo' () registered for path 'modules/sudo'
+  Submodule 'modules/tftp' () registered for path 'modules/tftp'
+  Submodule 'modules/timezone' () registered for path 'modules/timezone'
+  Submodule 'modules/vcsrepo' () registered for path 'modules/vcsrepo'
+  Submodule 'modules/xinetd' () registered for path 'modules/xinetd'
+  Submodule 'vagrant/veewee' () registered for path 'vagrant/veewee'
+  {
+  }
+Successful on 1 node: puppetmaster.example.net:2200
+Ran on 1 node in 9.47 seconds
+david@zion:~/git/dasz-configuration$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908&quot;&gt;this commit&lt;/a&gt; for the rather trivial implementation details.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="puppet" /><category term="puppet" /><category term="bolt" /><category term="hosting" /><category term="deployment" /><summary type="html">For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would ssh and sudo onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:</summary></entry><entry><title type="html">Simple Docker Compose Protection</title><link href="https://club.black.co.at/log/posts/2019-05-06-docker-protect/index.html" rel="alternate" type="text/html" title="Simple Docker Compose Protection" /><published>2019-05-06T00:00:00+00:00</published><updated>2019-05-06T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-05-06-docker-protect/docker-protect</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-05-06-docker-protect/index.html">&lt;p&gt;A follow-up to &lt;a href=&quot;/log/posts/2019-04-27-docker-compose/&quot;&gt;last week’s docker-compose post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;updating-the-containers&quot;&gt;Updating the containers&lt;/h1&gt;
+
+&lt;p&gt;Contrary to my assertion last week, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt; happily restarts service containers:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose up -d
+Recreating owncloudserver_db_1    ... done
+Recreating owncloudserver_redis_1 ... done
+Recreating owncloudserver_owncloud_1 ... done
+~/owncloudserver # git show
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Because, of course, why wouldn’t it?&lt;/p&gt;
+
+&lt;h1 id=&quot;protecting-the-network&quot;&gt;Protecting the network&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://nitech.slack.com/team/U94ASMRL7&quot;&gt;lskillen&lt;/a&gt; from the &lt;a href=&quot;https://nitech.slack.com&quot;&gt;NI Tech Slack&lt;/a&gt; pointed out that I can also specify a IP address in the compose file:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;diff --git a/docker-compose.yml b/docker-compose.yml
+index ffbd51b..dd5d8a8 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -15,7 +15,7 @@ services:
+     image: owncloud/server:${OWNCLOUD_VERSION}
+     restart: always
+     ports:
+-      - ${HTTP_PORT}:8080
++      - &quot;127.0.0.1:${HTTP_PORT}:8080&quot;
+     depends_on:
+       - db
+       - redis
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now the unencrypted backend port is not accessible from the outside anymore, and I didn’t have to fiddle around with firewall rules.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # netstat -ant
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+[...]
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>David Schmitt</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="hosting" /><category term="security" /><summary type="html">A follow-up to last week’s docker-compose post.</summary></entry><entry><title type="html">Docker Compose for OwnCloud</title><link href="https://club.black.co.at/log/posts/2019-04-27-docker-compose/index.html" rel="alternate" type="text/html" title="Docker Compose for OwnCloud" /><published>2019-04-27T00:00:00+00:00</published><updated>2019-04-27T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-04-27-docker-compose/docker-compose</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-04-27-docker-compose/index.html">&lt;p&gt;I’m running a private owncloud server - because, why wouldn’t I? To get rid of my old KVM=based virtualisation solution, I’ve recently switched to &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker-compose&lt;/a&gt; - “a tool for defining and running multi-container Docker applications”.&lt;/p&gt;
+
+&lt;p&gt;While in general docker-compose is really nice to work with, and can get you quick wins, this post will detail a few of the day 2 pitfalls and the solutions I found.&lt;/p&gt;
+
+&lt;h1 id=&quot;shutting-down-the-service&quot;&gt;Shutting down the service&lt;/h1&gt;
+
+&lt;p&gt;If, for whatever reason, you want to have the services &lt;em&gt;not&lt;/em&gt; running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose down&lt;/code&gt; is your go-to command. Do not get (overly) scared by the synopsis of the command removing “containers, networks, volumes, and images”. While it &lt;em&gt;can&lt;/em&gt; do that, by default it only removes running state, that is containers, and networks, but leaves persistent state like volumes and images alone.&lt;/p&gt;
+
+&lt;h1 id=&quot;updating-the-containers&quot;&gt;Updating the containers&lt;/h1&gt;
+
+&lt;p&gt;After ascertaining that a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;down&lt;/code&gt; does not nuke away all my data, I tried updating the containers using the default turn-off-turn-on cycle. I also tried to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--foce-rebuild&lt;/code&gt; command line option. Although &lt;em&gt;something&lt;/em&gt; was happening, it turned out that no new upstream container images where retrieved.&lt;/p&gt;
+
+&lt;p&gt;There is a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose pull&lt;/code&gt; command to do so:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose pull
+Pulling db       ... done
+Pulling redis    ... done
+Pulling owncloud ... done
+~/owncloudserver #
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After this, a restart of the service will start the new containers based on the new images. Of course by “restart”, I mean&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose down
+Stopping owncloudserver_owncloud_1 ... done
+Stopping owncloudserver_db_1       ... done
+Stopping owncloudserver_redis_1    ... done
+Removing owncloudserver_owncloud_1 ... done
+Removing owncloudserver_db_1       ... done
+Removing owncloudserver_redis_1    ... done
+Removing network owncloudserver_default
+~/owncloudserver # docker-compose up
+Creating network &quot;owncloudserver_default&quot; with the default driver
+Creating owncloudserver_db_1    ... done
+Creating owncloudserver_redis_1 ... done
+Creating owncloudserver_owncloud_1 ... done
+~/owncloudserver #
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;protecting-the-network&quot;&gt;Protecting the network&lt;/h1&gt;
+
+&lt;p&gt;The owncloud compose file exports a single port to access the webserver. I’m proxying this port through the host’s nginx for SSL termination. Sadly enough, docker-compose seems to know only internal ports (defined as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expose:&lt;/code&gt; in the YAML) which are only accessible from other containers) and external ports (defined as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ports:&lt;/code&gt; in the YAML) which are accessible from &lt;em&gt;everywhere&lt;/em&gt;. See this &lt;a href=&quot;https://stackoverflow.com/a/40801773/4918&quot;&gt;stackoverflow answer&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I really “appreciate” the subtle trap of having the &lt;em&gt;exposed&lt;/em&gt; ports being protected, while the regular &lt;em&gt;ports&lt;/em&gt; are globally exposed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;To make sure that the unencrypted port is not used, I should add a firewall rule to deny access from outside. Watch this space to see my cry about having forgotten that rule in a year’s time, when I don’t understand why something is not working.&lt;/p&gt;
+
+&lt;p&gt;I probably should also add something like &lt;a href=&quot;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&quot;&gt;HSTS&lt;/a&gt; to make sure that no redirect escapes from the underlying owncloud and induces someone to send their username/password in the clear. More fun.&lt;/p&gt;
+
+&lt;h1 id=&quot;random-redirects&quot;&gt;“Random” redirects&lt;/h1&gt;
+
+&lt;p&gt;For some reason the owncloud instance would redirect some requests to it’s internal port (8080, see above), which would cause all sorts of problems. I played around with quite a few things, but the only thing that stuck was adding hardcoded redirect rules into the nginx proxy itself to avoid that problem from reaching owncloud:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rewrite /.well-known/caldav https://oc.black.co.at/remote.php/dav;
+rewrite /.well-known/carddav https://oc.black.co.at/remote.php/dav;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;random-notes&quot;&gt;Random notes&lt;/h1&gt;
+
+&lt;h2 id=&quot;container-content-conundrum&quot;&gt;container content conundrum&lt;/h2&gt;
+
+&lt;p&gt;It’s very weird to me how the containers have kernel-related tools like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/sbin/installkernel&lt;/code&gt; and filesystem utilities like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/sbin/badblocks&lt;/code&gt; both of which I can’t find a use for in a container, but is lacking network tools like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ip&lt;/code&gt; which could be helpful in understanding the container’s configuration from the inside.&lt;/p&gt;</content><author><name>David Schmitt</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="owncloud" /><category term="hosting" /><summary type="html">I’m running a private owncloud server - because, why wouldn’t I? To get rid of my old KVM=based virtualisation solution, I’ve recently switched to docker-compose - “a tool for defining and running multi-container Docker applications”.</summary></entry></feed>

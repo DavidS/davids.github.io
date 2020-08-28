@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Puppet Tricks - static resource dispatch | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Puppet Tricks - static resource dispatch" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Static Resource Dispatch" />
+<meta property="og:description" content="Static Resource Dispatch" />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2015-01-21-puppet-tricks-static-resource-dispatch/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2015-01-21-puppet-tricks-static-resource-dispatch/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-01-21T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Static Resource Dispatch","headline":"Puppet Tricks - static resource dispatch","dateModified":"2015-01-21T00:00:00+00:00","datePublished":"2015-01-21T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2015-01-21-puppet-tricks-static-resource-dispatch/"},"url":"https://club.black.co.at/log/posts/2015-01-21-puppet-tricks-static-resource-dispatch/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Puppet Tricks - static resource dispatch</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2015-01-21T00:00:00+00:00" itemprop="datePublished">Jan 21, 2015
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="static-resource-dispatch">Static Resource Dispatch</h2>
+
+<p>Something I’ve already used to good effect is putting data for <code class="language-plaintext highlighter-rouge">create_resources</code>
+into hiera to configure customer stuff. My prime example is this <a href="https://github.com/DavidS/dasz-configuration/blob/master/modules/hosting/">hosting
+module</a>.
+On the host where tihs is running, I’m <a href="https://github.com/DavidS/dasz-configuration/blob/master/manifests/nodes/hosting3.edv-bus.at.pp#L30">loading the data from a YAML
+file</a>
+and pass it on the the <a href="https://github.com/DavidS/dasz-configuration/blob/master/modules/hosting/manifests/customer.pp">customer
+define</a>.
+This allows me to configure a customer’s domains, databasesr, P.O. boxes and
+other stuff from a private yaml like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+customers:
+  dasz:
+    type: owner
+    admin_user: david-dasz
+    admin_fullname: "David Schmitt"
+    db_password: geheim1
+    domains:
+      dasz.at:
+        serial: 2014021900
+        additional_rrs:
+          - "office.dasz.at.  A 88.198.141.234"
+    users:
+      david-dasz:
+        comment: David Schmitt
+    mysql_databases:
+      dasz_wordpress:
+        password: geheim1
+    pg_databases:
+      dasz_owncloud:
+        password: geheim1
+</code></pre></div></div>
+
+<p>This way I can keep the private data private while still publishing my modules
+on github without remorse.</p>
+
+<h2 id="dynamic-resource-dispatch">Dynamic Resource Dispatch</h2>
+
+<p>One thing that bugged me about the above setup is that the
+<a href="https://github.com/DavidS/dasz-configuration/blob/master/modules/hosting/manifests/customer.pp">hosting::customer</a>
+is a bit verbose in checking for hash-ness and passing the right type name to
+create_resources. To rectify this, I’ve had this idea of doing a dynamic
+dispatch resource, that takes the data from yaml and builds resources without
+having to repeat boilerplate code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$data = {
+  'file' =&gt; {
+    'args' =&gt; {
+      '/home/david/tmp' =&gt; {
+        'ensure' =&gt; 'directory'
+      },
+      '/home/david/tmp2' =&gt; {
+        'ensure' =&gt; 'directory'
+      },
+    },
+  },
+  'notify' =&gt; {
+    'args' =&gt; {
+      'msg1' =&gt; {
+        'message' =&gt; 'hello'
+      },
+      'msg2' =&gt; {
+        'message' =&gt; 'world'
+      },
+    },
+  },
+}
+
+create_resources('drd', $data)
+
+define drd($args) {
+  if (is_hash($args)) {
+    create_resources($name, $args)
+  }
+}
+</code></pre></div></div>
+
+<p>This is just a sketch how this could work. The <code class="language-plaintext highlighter-rouge">drd</code> define will transform any
+data from the hash into proper resources. This currently has a few downsides:</p>
+
+<ul>
+  <li>the additional <code class="language-plaintext highlighter-rouge">$args</code> level required</li>
+  <li>there can only be one <code class="language-plaintext highlighter-rouge">Drd[file]</code> in the catalog</li>
+</ul>
+
+<p>On the positive side, you can have a <code class="language-plaintext highlighter-rouge">drd</code> for each use-case you’re having and
+add customization like a little transformation to the type name to clean up the
+input data:</p>
+
+<p>define hosting::drd($args) {
+    create_resources(“hosting::${name}”, $args)
+  }</p>
+
+<h2 id="automatic-password-rollover">Automatic Password Rollover</h2>
+
+<p>The final one really demonstrates the power of automation. At a client’s site
+the current enterprise security rat race is ensuring that all app’s database
+passwords are rotated once a year. While most databases in our group are
+<a href="http://www.postgresql.org/">PostgreSQL</a> where the apps are authenticaed on the
+Unix socket and therefore do not need a password (yay!),
+<a href="https://docs.puppetlabs.com/puppetdb/">PuppetDB</a> is only able to use
+<a href="https://twitter.com/dev_el_ops/status/557193105502654464">TCP</a> to connect to
+its database. Using the <code class="language-plaintext highlighter-rouge">cache_data</code> and <code class="language-plaintext highlighter-rouge">random_password</code> functions from
+<a href="https://github.com/theforeman/puppet-foreman/tree/master/lib/puppet/parser/functions">foreman’s puppet
+module</a>
+and <code class="language-plaintext highlighter-rouge">stdlib</code>’s strftime, the following call will create a password that changes
+once a week:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cache_data(strftime('puppetdb_%Y_%W'), random_password(32))
+</code></pre></div></div>
+
+<p>Using this, the puppetdb database now gets a new password every monday morning
+and the Information Protection Officer is officially “Happiest Person Of The
+Day”. Problem solved!</p>
+
+  </div><a class="u-url" href="/log/posts/2015-01-21-puppet-tricks-static-resource-dispatch/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

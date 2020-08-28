@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Containing Docker | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Containing Docker" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<meta property="og:description" content="Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2016-04-03-containing-docker/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2016-04-03-containing-docker/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-04-03T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.","headline":"Containing Docker","dateModified":"2016-04-03T00:00:00+00:00","datePublished":"2016-04-03T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2016-04-03-containing-docker/"},"url":"https://club.black.co.at/log/posts/2016-04-03-containing-docker/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Containing Docker</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2016-04-03T00:00:00+00:00" itemprop="datePublished">Apr 3, 2016
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <blockquote>
+  <p>Please note that this post is a linear and unedited brain dump of what I did. Many things might have changed meanwhile, and I may have learned how to do things better. This is an experiment in progress.</p>
+</blockquote>
+
+<table>
+  <tbody>
+    <tr>
+      <td>This is a continuation of [[lass week’s post</td>
+      <td>/posts/2016-03-28-cooperating-with-travisci.mdwn]], refreshing my <a href="https://github.com/DavidS/puppet-exiscan">exiscan module</a> using <a href="https://github.com/nwops/puppet-retrospec">retrospec-puppet</a>. In the last installment I managed to get the full-system tests running in docker. Yay! It turns out that the SUT from within the docker “container” changes my sound settings and causes weird interactions with my desktop environment. Boo! Isolating myself from the contents of the container will be the goal for today. Since it’s the 15th anniversary of finding my significant other, I’ll <a href="http://www.cheesy.at/fotos/events/holi-festival-belfast/">spend most of the day</a> at the <a href="http://www.artsekta.org.uk/festivals/festival-of-colours">Festival of Colours</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="isolating-the-container">Isolating the “container”</h2>
+
+<p>Of course, I am aware that I’m using docker not in the way it was designed for: I’m booting a “complete” system(d), instead of just “the one process” of the application. On the other hand, the security story of “do not run things that will do unspeakable things to your kernel”, is not very convincing.</p>
+
+<p>Beaker as hypervisor manager doesn’t allow passing arbitrary options to docker, so any of the possibilities of enabling seccomp profiles or disabling capabilities are impossible to use without patching beaker. Additionally it would mean to handcraft a policy that disallows futzing with my desktop (plausible for the audio, a unknown for the colord issue, and who knows what else?). Alternatively, I could just run docker within a VM (yay vagrant) and get proper containment of the system running in docker.</p>
+
+<p>Here’s the relevant vagrant provision command to setup a <code class="language-plaintext highlighter-rouge">puppetlabs/debian-8.2-64-nocm</code> box to be able to run beaker in docker on that VM. This has also the advantage, that anyone following along at home gets a pristine, knwon-good environment to run all of this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config.vm.provision "shell", inline: &lt;&lt;-SHELL
+  # do not use dash's built-in echo, which doesn't understand -e
+  /bin/echo -e "en_US.UTF-8 UTF-8\nde_AT.UTF-8 UTF-8" &gt; /etc/locale.gen
+  locale-gen
+
+  apt-get update
+  apt-get install -y apt-transport-https ca-certificates
+
+  echo deb https://apt.dockerproject.org/repo debian-jessie main &gt; /etc/apt/sources.list.d/docker.list
+  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+  apt-get update
+  apt-get install -y docker-engine ruby-dev ruby bundler build-essential libxml2-dev zlib1g-dev
+
+  systemctl enable docker
+  systemctl start docker
+
+  adduser vagrant docker
+
+  su - vagrant -c 'echo "cd /vagrant" &gt;&gt; /home/vagrant/.bashrc;
+    echo "exec sudo -i" &gt;&gt; /home/vagrant/.bash_history;
+    echo "BEAKER_provision=no BEAKER_destroy=no PUPPET_INSTALL_TYPE=agent BEAKER_set=docker/debian-8 bundle exec rake beaker" &gt;&gt; /home/vagrant/.bash_history;
+    cd /vagrant;
+    bundle install --path=/tmp/bundle;
+    PUPPET_INSTALL_TYPE=agent BEAKER_set=docker/debian-8 bundle exec rake beaker'
+SHELL
+</code></pre></div></div>
+
+<p>I used <code class="language-plaintext highlighter-rouge">vagrant init puppetlabs/debian-8.2-64-nocm</code> in a temporary directory and added the above commands to the generated <code class="language-plaintext highlighter-rouge">Vagrantfile</code> to get a box that had all the necessary software installed. In the end I added a few commands to the bash history and installed the required gems, so I have them ready when the machine is finalized.</p>
+
+<p>Waiting for gems to compile, I figured adding a little bit more oomph to the box would help too. Researching the exact incantation I also found the linked_clone option, which should help when recycling the box.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config.vm.provider "virtualbox" do |vb|
+  vb.cpus = 4
+  vb.memory = "2048"
+  vb.linked_clone = true
+end
+</code></pre></div></div>
+
+<p>While the gems were compiling (the next time after adding more -dev packages) I considered storing the compiled gems in a persistent folder outside of the box. Turns out this is as easy as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config.vm.synced_folder "/tmp/vbox_gems", "/tmp/bundle"
+</code></pre></div></div>
+
+<p>Depending on your system setup, <code class="language-plaintext highlighter-rouge">/tmp</code> might be a ram disk. In that case you might want to use a different place.</p>
+
+<p>All of this together means that I can run the beaker tests with <code class="language-plaintext highlighter-rouge">vagrant ssh</code>, enter, up, enter. Building the initial docker file also takes a bit of time, so I add a initial beaker run to the vagrant provision step. (See above, there <strong>are</strong> limits to my no-editing/braindump rule)</p>
+
+<p>Preparing the docker image also takes its time. I guess I’ll mount <code class="language-plaintext highlighter-rouge">/var/lib/docker</code> for persisting the docker images.</p>
+
+<p>The first full run failed on</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>==&gt; default:   Error: Evaluation Error: Error while evaluating a Resource Statement, Could not find declared class exiscan at /tmp/apply_manifest.pp.ndZ2Lh:1:7 on node debian-8-x64
+</code></pre></div></div>
+
+<p>after 20 minutes.</p>
+
+<p>To debug this, look at <code class="language-plaintext highlighter-rouge">docker ps</code> output and connect to that port with ssh. The default password setup by beaker is <code class="language-plaintext highlighter-rouge">root</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant@localhost:/vagrant$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                   NAMES
+069b9b964ede        3e3ff809749a        "/sbin/init"        2 minutes ago       Up 2 minutes        0.0.0.0:32769-&gt;22/tcp   nauseous_hopper
+vagrant@localhost:/vagrant$ ssh root@localhost -p 32769
+The authenticity of host '[localhost]:32769 ([::1]:32769)' can't be established.
+ECDSA key fingerprint is 81:ff:c9:01:3f:4d:7b:93:a7:a1:e2:af:3c:4f:ef:a9.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[localhost]:32769' (ECDSA) to the list of known hosts.
+root@localhost's password:
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+root@debian-8-x64:~#
+</code></pre></div></div>
+
+<p>One thing that is always annoying with the stripped down systems, like docker images, is missing locales. I thought I had already fixed that by installing the <code class="language-plaintext highlighter-rouge">locales</code> package and genning the data for the en_US.UTF-8 locale, but there is something more going on, keeping the locale data missing, even after reinstalling the locales package. A divert perhaps? Nope:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@debian-8-x64:~# dpkg-divert --list
+local diversion of /sbin/initctl to /sbin/initctl.distrib
+diversion of /usr/share/man/man1/sh.1.gz to /usr/share/man/man1/sh.distrib.1.gz by dash
+diversion of /bin/sh to /bin/sh.distrib by dash
+root@debian-8-x64:~#
+</code></pre></div></div>
+
+<p>It turns out that I was completely confused about the actual syntax of the <code class="language-plaintext highlighter-rouge">locale.gen</code> (already fixed above). Leave me alone in my shame!</p>
+
+<p>Back to the original problem of the exiscan class not being found. This does not look healthy.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@debian-8-x64:/etc/puppetlabs/code/modules# ls
+exiscan			       vagrantfilesdefaultconf.dretry	   vagrantfilesgreylistexim4conf.dmain	vagrantfilesspamassassinpostgres
+tp			       vagrantfilesdefaultconf.drewrite    vagrantfilesgreylistpostgres		vagrantjunit
+vagrantfiles		       vagrantfilesdefaultconf.drouter	   vagrantfilesscanner			vagrantjunitdebian-8
+vagrantfilesdefault	       vagrantfilesdefaultconf.dtransport  vagrantfilesscanneracls		vagrantjunitdefault
+vagrantfilesdefaultconf.d      vagrantfilesgreylist		   vagrantfilesscannerconf.d		vagrantmanifests
+vagrantfilesdefaultconf.dacl   vagrantfilesgreylistexim4	   vagrantfilesscannerconf.dacl		vagranttemplates
+vagrantfilesdefaultconf.dauth  vagrantfilesgreylistexim4conf.d	   vagrantfilesscannerconf.dmain
+vagrantfilesdefaultconf.dmain  vagrantfilesgreylistexim4conf.dacl  vagrantfilesspamassassin
+root@debian-8-x64:/etc/puppetlabs/code/modules#
+</code></pre></div></div>
+
+<p>It does appear to be a weird issue with copying the module into the docker container. The weird thing is how apparently all the slashes seem to be missing from the filenames, e.g. <code class="language-plaintext highlighter-rouge">vagrantfilesgreylistexim4conf.dmain</code> should be <code class="language-plaintext highlighter-rouge">/vagrant/files/greylist/exim4/conf.d/main</code>. Looking at that, even more suspicious is that these are only the directories, and none of the contained files. Maybe beaker or scp gets confused by copying from /vagrant? I’ll run an experiment from  <code class="language-plaintext highlighter-rouge">/tmp/foo/bar</code>.</p>
+
+<p>On the performance side, the next thing I’d need to look into is having a local mirrors of debian, puppetlabs, and rubygems. But that may be a problem for another weekend, meanwhile I’ll bask in the speed of my home cable downlink. Thinking more about this, replacing the puppetlabs’ repo will be a pain, since the list file is installed by beaker internals. ngngngng.</p>
+
+<p>Meanwhile the testrun where I copied the module to <code class="language-plaintext highlighter-rouge">/tmp/foo/bar</code> finished successfully. Let’s see if there is anything “obvious” in <a href="https://github.com/puppetlabs/beaker">beaker’s source</a>. The <a href="https://github.com/puppetlabs/beaker/blob/master/lib/beaker/ssh_connection.rb#L265-L287"><code class="language-plaintext highlighter-rouge">scp_to</code></a> function looks straight forward enough. <code class="language-plaintext highlighter-rouge">@ssh</code> is a <code class="language-plaintext highlighter-rouge">Net::SSH</code> object, but the <a href="https://net-ssh.github.io/net-ssh/index.html">documentation</a> doesn’t seem to contain any references to scp. Looking into the <a href="https://github.com/puppetlabs/beaker/blob/master/beaker.gemspec#L37-L38">gemspec</a> I realize that there is a separate <a href="https://github.com/net-ssh/net-scp">net-scp</a> gem. (“this project is in maintenance mode”) Helpfully, there is a progress block attached to beaker’s call of the scp. Its output is stored in the usual beaker result object, so let’s check that output in our setup code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>result = copy_module_to(host, :source =&gt; proj_root, :module_name =&gt; 'exiscan')
+puts result.stdout
+</code></pre></div></div>
+
+<p>Again I run afoul of my unfounded optimism. Looking at the <a href="https://github.com/puppetlabs/beaker/blob/6975e329ed1d9c7481aed1136c59b57a50db63c8/lib/beaker/dsl/install_utils/module_utils.rb#L134-L135"><code class="language-plaintext highlighter-rouge">copy_module_to</code> source</a>, the scp_to result is not passed up the call chain. In these cases I usually start modifying the installed gem source that is used by bundler. Having a separate install dir for the vbox makes that not as terrible as it sounds at first. Having that directory persistent across boxes is both a boon and an annoyance: I don’t lose my local changes, but when I forget to clean up, I’ll confuse the heck out of <em>future-me</em>. Except that the retrospec templates install beaker from git, which puts it <strong>somewhere else</strong>. I remove the git references, since the recent releases are just fine anyways. Trying again.</p>
+
+<p>The debug output is not very helpful:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>copying /vagrant/Gemfile.lock:          0/8562
+copying /vagrant/Gemfile.lock:       8562/8562
+SCP'ed file /vagrant/Gemfile.lock to debian-8-x64:/etc/puppetlabs/code/modules/vagrant
+</code></pre></div></div>
+
+<p>Yes. that’s all. Maybe the chunk size of the ssh connection is interfering? I spy a rsync transfer protocol implementation in the same method, so I try that out before continuing down the scp rabbit hole.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>copy_module_to(host, source: proj_root, module_name: 'exiscan', protocol: 'rsync')
+</code></pre></div></div>
+
+<p>411 kB/s is not enough download speed for the debian packages. :-(</p>
+
+<p>rsync requires manual password entry, and then fails, because the target container doesn’t have rsync installed.</p>
+
+<p>Another dead end. Instead of further fighting these demons, I simply switch out the mount on /vagrant to /tmp/exiscan. I bet you it’ll turn out that some weirdness of the vboxsf, and not the path, was the issue when copying. -.-</p>
+
+<p>I’ve also cleaned out the bundler cache to revert my changes to beaker. I’ll not wait for another 20 minutes until this box has built. There is literally not enough time in this day left: it’s after 23:00.</p>
+
+<p>Good night.</p>
+
+<h2 id="update">Update</h2>
+
+<p>Rebuilding the box suddenly failed with docker complaining about:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Apr 03 15:18:56 localhost docker[29239]: time="2016-04-03T15:18:56.491483351-07:00" level=fatal msg="Error starting daemon: Error initializing network controller: error obtaining controller instance: failed to get bridge network configurations from store: error while populating kmap: invalid argument"
+</code></pre></div></div>
+
+<p>Why do I even bother??</p>
+
+  </div><a class="u-url" href="/log/posts/2016-04-03-containing-docker/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

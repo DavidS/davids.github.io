@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Ansible and Salt | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Ansible and Salt" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Motivated by Florian Haas I’ve looked into Ansible and Salt Stack. After spending most of the day reading the docs, I’ve achieved a certain grasp of the functionality of both systems. Here’s my summary." />
+<meta property="og:description" content="Motivated by Florian Haas I’ve looked into Ansible and Salt Stack. After spending most of the day reading the docs, I’ve achieved a certain grasp of the functionality of both systems. Here’s my summary." />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2014-10-13-progress-monday-2/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2014-10-13-progress-monday-2/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-10-13T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Motivated by Florian Haas I’ve looked into Ansible and Salt Stack. After spending most of the day reading the docs, I’ve achieved a certain grasp of the functionality of both systems. Here’s my summary.","headline":"Ansible and Salt","dateModified":"2014-10-13T00:00:00+00:00","datePublished":"2014-10-13T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2014-10-13-progress-monday-2/"},"url":"https://club.black.co.at/log/posts/2014-10-13-progress-monday-2/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Ansible and Salt</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2014-10-13T00:00:00+00:00" itemprop="datePublished">Oct 13, 2014
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Motivated by <a href="https://plus.google.com/110443614427234590648/posts/629TDFGcCjt">Florian
+Haas</a> I’ve
+looked into <a href="http://docs.ansible.com/">Ansible</a> and <a href="http://docs.saltstack.com/en/latest/">Salt
+Stack</a>. After spending most of the day
+reading the docs, I’ve achieved a certain grasp of the functionality of both
+systems. Here’s my summary.</p>
+
+<h2 id="commonalities">Commonalities</h2>
+
+<blockquote>
+  <p>Ansible and Salt use some common concepts and share a surprising number of
+technical details that I’ve put them up here, to be able to concentrate on
+the unique features below.</p>
+</blockquote>
+
+<ul>
+  <li>Implementation language: implemented in python.</li>
+  <li>Syntax and templating: YAML files and the Jinja templating language are
+used as basic building blocks for their instructions. The underlying data
+model is totally different though.</li>
+  <li>Abstraction layer: A library of modules provides target environment
+independent commands to manage resources like services and packages. This
+is equivalent to puppet’s resource abstraction layer.</li>
+  <li>Execution: Both provide central and decentral execution modes similar to
+puppet’s agent and apply faces.</li>
+  <li>Ad-hoc commands: Contrary to puppet, both allow arbitrary commands to be
+executed immediately on the managed hosts. Both can use their respective
+command language to build these commands.</li>
+  <li>Facts Discovery/Inventory: Both provide ways to collect and use information
+from the managed systems.</li>
+  <li>Homogeneous Systems: Both documents focus on the homogeneous system
+use-case. Surely both do have the possibility to react to differences of
+the underlying system via facts and conditionals, but are light on the
+topic of actually implementing this. Given this is my first reading, I
+might just have missed it.</li>
+</ul>
+
+<h2 id="ansible">Ansible</h2>
+
+<p>Ansible implements a scripting based approach. Every <em>task</em> is a series of
+steps that have target-specific implementations. For example, there is a
+<code class="language-plaintext highlighter-rouge">service</code> task, which has similar functionality to the <code class="language-plaintext highlighter-rouge">service</code> type of
+Puppet. Contrary to Puppet, Ansible’s <em>Playbooks</em> are evaluated top-to-bottom
+and executed in order, except for so-called <em>handlers</em> which can be triggered
+by certain events in the execution. They have the same purpose as
+<code class="language-plaintext highlighter-rouge">notify</code>/<code class="language-plaintext highlighter-rouge">subscribe</code> in Puppet.</p>
+
+<p>Ansible executions are always triggered from a central server and require only
+a ssh connection to, and a python installation on the target hosts. I guess
+local-only executions are possible too, but would not make use of Ansible’s
+power. Ansible can use arbitrary users to connect to hosts and use sudo as
+required to affect the managed host. Together with the possibility to input
+passphrases during the Ansible run, this could possibly used to manage
+certified, audited, or qualified systems where Ansible is not covered by the
+certification process, while still fulfilling the auditing requirements. That
+makes my head spin. Also I’d question the sanity of
+organizations/certifications who require such hoop-jumping, but I digress!</p>
+
+<p>Playbooks can be modularized and parameterize easily. Puppet’s (artificial?)
+distinction between classes and defines is not required as the complete
+playbook is executed serially and can intentionally modify the same resource
+many times. <em>Task include files</em> in particular have the role of defines. They
+can have parameters and be included multiple times with different arguments on
+the same host. This leads nicely to something puppet modules (and, no, I do not
+think that’s a language issue, just something I noticed that the Ansible docs
+introduce as a “normal” use case) are notoriously bad at, namely multi-instance
+installations.</p>
+
+<p>Finally, something that is really nifty, is Ansible’s <em>delegations</em>. Each task
+can individually be executed not on the current target host, but delegated to
+some other host. For example, a Wordpress task running on the php backend host
+could delegate the database setup to a mysql host and configure SSL offload on
+a http frontend server. The whole process would still be a unified
+top-to-bottom task description. Perhaps some includes, but nevertheless a
+single flow, executed and sequenced properly.</p>
+
+<p>The documentation is well organized and has a good flow to it. Reading it
+cover-to-cover went smoothly from introductory material to advanced topics.</p>
+
+<h2 id="salt">Salt</h2>
+
+<blockquote>
+  <p>Salt has the severe disadvantage of having to contend against the very solid
+impression Ansible’s docs made earlier. Also, leading the reader astray from
+the documentation frontpage with a string of “Getting Started” and “Continue
+reading here” links that leave you stranded in the middle of the
+documentation while skipping some basic material, didn’t help my reception of
+the content.</p>
+  <blockquote>
+    <p>Did I mention that there is a link to the Table of Contents in the
+navigation sidebar that is not always available?
+<a href="https://www.youtube.com/watch?v=70uTOoEzBJk">What?</a></p>
+  </blockquote>
+</blockquote>
+
+<p>Salt has an agent (<em>minion</em> is a great name for that) running on each managed
+host. Communication happens over a ZeroMQ messagebroker hosted in the central
+master process. Contrary to Ansible this causes a whole chapter about properly
+firewalling the various Salt parts. On the other hand, it presumably reduces
+communications overhead by orders of magnitude.</p>
+
+<p>Salt lets you define states (<em>SLS</em>) which can then be applied as necessary.
+This feels much more puppet-like than Ansible’s sequential execution model.
+Since this is state based and not execution based, the same dependency
+management as puppet is required.</p>
+
+<p>Configuring multiple instances of the same thing is explicitly implemented by
+using jinja templating and loops over arguments or other data.</p>
+
+<p>Cross-node configurations are implemented by querying the various datastores
+implemented in salt, which feed from the inventorised data, external inputs and
+applied states.</p>
+
+<h2 id="conclusions-and-personal-opinion">Conclusions and personal opinion</h2>
+
+<p>This can only be a very shallow review, as I was only reading the official docs
+of both projects. Still, I think it already shows the fundamental differences
+between the systems.</p>
+
+<p>Personally, I like Ansible’s documentation, syntax, and execution model better.</p>
+
+  </div><a class="u-url" href="/log/posts/2014-10-13-progress-monday-2/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

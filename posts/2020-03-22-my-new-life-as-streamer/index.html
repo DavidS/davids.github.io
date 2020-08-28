@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>My New Life As Streamer | DavidS’ log</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="My New Life As Streamer" />
+<meta name="author" content="David Schmitt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="title: “My new life as a streamer” category: streaming tags: programming sharing linux twitch —" />
+<meta property="og:description" content="title: “My new life as a streamer” category: streaming tags: programming sharing linux twitch —" />
+<link rel="canonical" href="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/" />
+<meta property="og:url" content="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/" />
+<meta property="og:site_name" content="DavidS’ log" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-22T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"title: “My new life as a streamer” category: streaming tags: programming sharing linux twitch —","headline":"My New Life As Streamer","dateModified":"2020-03-22T00:00:00+00:00","datePublished":"2020-03-22T00:00:00+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/"},"url":"https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/","author":{"@type":"Person","name":"David Schmitt"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/log/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://club.black.co.at/log/feed.xml" title="DavidS' log" />
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-155086367-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/log/">DavidS&#39; log</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/log/cv/index.html">DavidS&#39; CV</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">My New Life As Streamer</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-03-22T00:00:00+00:00" itemprop="datePublished">Mar 22, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    
+<p>title: “My new life as a streamer”
+category: streaming
+tags: programming sharing linux twitch
+—</p>
+
+<p>Over the last couple of months I’ve been slowly building out my home office.
+Between that and the push to even more home office over the next months and <a href="https://puppet.com">Puppet</a> instructing folks to take their chairs and monitors home,
+I’ve considerably upgraded my working situation at home.
+This post describes the current statue of the setup,
+and what works and doesn’t work.</p>
+
+<p><img src="/log/assets/2020-03-22-streaming/home-office.jpg" alt="my home office setup" /></p>
+
+<h2 id="hardware">Hardware</h2>
+
+<p>This workstation is based on my old development PC from <a href="https://dasz.at">my previous company, dasz.at</a>.
+Over the years I did upgrade it a bit here and there,
+but the core is still the old PC from <a href="https://www.ditech.at/">ditech</a>.
+Here are the specs:</p>
+
+<ul>
+  <li>Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</li>
+  <li>16 GB RAM</li>
+  <li>750GB SSD (Crucial_CT750MX300SSD1)</li>
+  <li>GeForce GTX 1050 Ti (a recent addition)</li>
+  <li>2x Dell UH2715H (27”, 2560x1440, very nice, on loan from Puppet)</li>
+  <li>1x Samsung SyncMaster 2443BW (24”, 1920x1200, not quite as nice with a TN panel)</li>
+  <li>1x Philips 170S (17”, VGA, 1280x1024)</li>
+  <li>
+    <p>the “silent” option of midi cases from ditech - which is really quiet</p>
+  </li>
+  <li>HP Deluxe Webcam KQ246AA (1280x1024, on top of the 17” monitor on the shelf for a whole-office overview)</li>
+  <li>
+    <p>A4 TECH HD PC Camera (FullHD, but really strong compression to pipe it over USB2)</p>
+  </li>
+  <li>Blue Yeti Microphone</li>
+  <li>
+    <p>the crappiest Logitech USB speakers</p>
+  </li>
+  <li>Microsoft Natural Ergonomic Keyboard 4000 v1.0</li>
+  <li>
+    <p>Logitech M500 Corded Mouse</p>
+  </li>
+  <li>AmazonBasics Dual Side-by-Side Monitor Display Mounting Arm</li>
+  <li>
+    <p>HumanScale single monitor mounting arm (on loan from Puppet))</p>
+  </li>
+  <li>HumanScale chair (a lot more comfortable than the IKEA chair, on loan from Puppet)</li>
+</ul>
+
+<p>For the greenscreen and proper lighting:</p>
+
+<ul>
+  <li>3x 45W LED bars (6000K)</li>
+  <li>11’ green fabric</li>
+  <li>sturdy spring-loaded curtain rod</li>
+</ul>
+
+<p>(I guess as a streamer,
+I should add affiliate links to all those things;
+luckily I don’t have to live off of it)</p>
+
+<h2 id="software">Software</h2>
+
+<p>This will be the longer, and hopefully more interesting section. Thanks to the greenscreen and a virtual webcam I can add various flourishes to “boring” meetings.</p>
+
+<p>The entire setup hinges on the <a href="https://obsproject.com/">OBS Studio</a>. This is a commonly used open source software for streaming and it can ingest, transcode and transmit from a variety of sources to a variety of outputs.</p>
+
+<h3 id="inputs">Inputs</h3>
+
+<p><strong>Top Cam:</strong> this camera is perched at the top of the 17” monitor up on the shelf.
+Calls where I use this camera also go on the 17” monitor,
+so I look at the camera when I look at the call.
+It provides a good overview of my working situation and I like to use this for one-on-ones.
+Because of the position of the camera and screen I do not “look at the computer” when using it,
+because I turn away from my main working setup.
+For casual group hangouts it is useful to show where I currently pay attention by looking at the camera or my monitors.</p>
+
+<p><img src="/log/assets/2020-03-22-streaming/top-cam.png" alt="top cam: watching from above, showing myself, my desk, the window behind me and the monitors (from the side, not showing their contents)" /></p>
+
+<p><strong>Face Cam:</strong> This is a more “regular” angle for things like streaming or team-meetings.
+Thanks to the greenscreen behind me, I can have all kinds of shenanigans going on behind me.</p>
+
+<p>My current favourite is <a href="https://www.youtube.com/watch?v=bXlQ3Mw4uGc">Flowers - Video Background HD 1080p</a>. It has been incredibly invigorating seeing time and time again, folks reacting with joy and disbelief when I use it in a call.</p>
+
+<p><img src="/log/assets/2020-03-22-streaming/face-cam.jpg" alt="face cam: full frontal shot of my face in front of the PC" /></p>
+
+<p><strong>Media Files:</strong> Searching for “fullhd background” on youtube brings a big range of royalty-free (and some paid) backgrounds to put there.
+Desktop wallpapers are another good source of backgrounds.
+Of course I also snapped a picture from my webcam without me,
+so that I can have my regular office background without having to handle the greenscreen.</p>
+
+<p><strong>Applications:</strong> Finally OBS can capture applications or entire screens.
+This is useful to share what I’m working on.</p>
+
+<h3 id="arrangement">Arrangement</h3>
+
+<p>OBS uses the concept of “Scenes” to arrange multiple inputs into a final rendering.
+I mainly use three scenes:</p>
+
+<ul>
+  <li><strong>Office Overview:</strong> is just the Top Cam.</li>
+  <li><strong>Presenter Mode:</strong> is the Face Cam in full size plastered over a background of my choice.</li>
+  <li><strong>Screen Cast:</strong> is the common streaming setup of my face cam in the bottom right corner over the contents of my center screen.
+This way I can share what I’m working on without being too much in the way but still showing up.</li>
+</ul>
+
+<h3 id="outputs">Outputs</h3>
+
+<p>Depending on the situation I use two different outputs.
+For calls, the “V4L2 Video Output” (<code class="language-plaintext highlighter-rouge">v4l2sink</code>) plugin provides a virtual webcam that can be used in bluejeans (Puppet’s video conferencing software of choice).
+For <a href="https://twitch.tv/dev_el_ops">my brand new twitch channel</a>, I use OBS built-in twitch client.
+The latter is surely the more common use-case for OBS in general.</p>
+
+<p>As I’m streaming myself writing this post, OBS is currently upwards of two and a half cores, which is not great.
+I’ve looked into hardware acceleration, and - in principle - OBS does support that.
+As it turns out though, there is <a href="https://obsproject.com/forum/threads/ffmpeg-vaapi-ignores-bitrate.116627/">a bug regarding the bitrate setting on the H/W encoder</a> where any user settings are ignored.
+This leads to a unusably high-bitrate stream that is rejected by twitch.</p>
+
+<p>I’ve also tried using this setup with skypeforlinux.
+Microsoft did a fantastic job of absolutely botching their v4l2 implementation.
+Skype does only accept a single resolution and encoding from the webcam.
+If the webcam does not provide that, it is not usable in Skype.
+Loopback devices in V4L2 (which is what the v4l2sink plugin uses under the hood) do not support any mode negotiation or transcoding.
+Changing the output resolution in OBS is possible, but tedious.</p>
+
+<h2 id="installing-the-plugins">Installing the Plugins</h2>
+
+<p>The v4l2loopback kernel module and the OBS v42lsink plugin are not regularly available in Linux distributions.
+On Debian at least there is v4l2loopback-dkms, which worked fine for me.
+For everything else, <a href="https://twitter.com/spotrh/">Tom Callaway</a> has a great writeup of how to compile and install at his “<a href="https://spot.livejournal.com/327990.html">Hacking the video stream for BlueJeans on Linux</a>” over on lifejournal.
+Thanks to <a href="https://twitter.com/zhenech">Evgeni Golov</a> for making the connection.</p>
+
+<h2 id="encoding-pitfall">Encoding Pitfall</h2>
+
+<p>One of the things that OBS (and V4L2) do badly is choosing default video formats on webcams.
+The default is <code class="language-plaintext highlighter-rouge">YUYV (4:2:2)</code> which is a uncompressed pixelformat that takes up a lot of processing power and limits the framerate of the devices.
+I’ve switched all inputs and the virtual webcam to <code class="language-plaintext highlighter-rouge">YU12 (Emulated)</code> (or <code class="language-plaintext highlighter-rouge">YUV420</code>, which seems to be the same), which leads to a slight loss in color accuracy but allows devices to run at their full resolution and framerate.</p>
+
+<p><a href="https://packages.debian.org/qv4l2"><code class="language-plaintext highlighter-rouge">qv4l2</code></a> was very helpful to inspect the state of the cameras depending on the settings used in OBS.</p>
+
+<h2 id="multi-cam-pitfall">Multi-Cam Pitfall</h2>
+
+<p>One of the gotchas of this setup is that Firefox, Chrome and OBS basically index webcams by activation order (that is, when it was plugged in).
+This is usually not an issue, as <em>normal</em> people only have a single webcam, which will always be “the first”.
+As explained above, my workstation has three webcams.
+Which get loaded all at the same time when it boots.
+Which basically means they come up in a random order.
+Which leads to all the programs being very confused about which webcam is which.
+On top of that, bluejeans in the browser always wants to use the first webcam by default, and goes into a reload loop if it doesn’t get permissions to use it.</p>
+
+<p>To avoid all of those issues, I wrote a short script that forces loading the webcams in the right order:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">set</span> <span class="nt">-ex</span>
+
+<span class="c"># wait for all cameras to come online</span>
+<span class="k">while</span> <span class="o">[</span> <span class="si">$(</span><span class="nb">ls</span> /dev/video<span class="k">*</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span> <span class="nt">-lt</span> 5 <span class="o">]</span><span class="p">;</span> <span class="k">do </span><span class="nb">ls</span> /dev/video<span class="k">*</span><span class="p">;</span> <span class="nb">sleep </span>1<span class="p">;</span> <span class="k">done
+
+function </span>manufacturer<span class="o">()</span> <span class="o">{</span> udevadm info <span class="nt">-a</span> <span class="nt">-n</span> <span class="nv">$1</span> | <span class="nb">grep </span>manufacturer | <span class="nb">head</span> <span class="nt">-n1</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="se">\"</span> <span class="nt">-f2</span><span class="p">;</span> <span class="o">}</span>
+<span class="k">function </span>usbname<span class="o">()</span> <span class="o">{</span> <span class="nb">basename</span> <span class="si">$(</span>udevadm trigger <span class="nt">-n</span> <span class="nt">-v</span> <span class="nt">--attr-match</span><span class="o">=</span><span class="nv">manufacturer</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>manufacturer <span class="nv">$1</span><span class="si">)</span><span class="s2">"</span><span class="si">)</span><span class="p">;</span> <span class="o">}</span>
+<span class="k">function </span>unbind<span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="nv">$1</span> <span class="o">&gt;</span> /sys/bus/usb/drivers/usb/unbind<span class="p">;</span> <span class="o">}</span>
+<span class="k">function </span><span class="nb">bind</span><span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="nv">$1</span> <span class="o">&gt;</span> /sys/bus/usb/drivers/usb/bind<span class="p">;</span> <span class="o">}</span>
+
+rmmod v4l2loopback
+
+<span class="nv">devices</span><span class="o">=</span><span class="si">$(</span><span class="k">for </span>i <span class="k">in</span> /dev/video<span class="k">*</span> <span class="p">;</span> <span class="k">do </span>usbname <span class="nv">$i</span><span class="p">;</span> <span class="k">done</span> | <span class="nb">sort</span> <span class="nt">-u</span><span class="si">)</span>
+
+<span class="k">for </span>i <span class="k">in</span> <span class="nv">$devices</span><span class="p">;</span> <span class="k">do </span>unbind <span class="nv">$i</span><span class="p">;</span> <span class="k">done
+
+</span>modprobe v4l2loopback
+
+<span class="k">for </span>i <span class="k">in</span> <span class="nv">$devices</span><span class="p">;</span> <span class="k">do </span><span class="nb">bind</span> <span class="nv">$i</span><span class="p">;</span> <span class="nb">sleep </span>1<span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>This makes use of relatively harsh unbind/bind cycle which disconnects the devices from the system at the bus level in the kernel.
+Better than manually unplugging!</p>
+
+<p>After the script has run (I’ve put it into my startup scripts) the webcams are where they are expected and everyone is happy.</p>
+
+<blockquote>
+  <p>Note: the script relies on the USB devices coming up on the same ports, and being able to match based on manufacturer.</p>
+</blockquote>
+
+<h2 id="conclusion-and-remaining-tasks">Conclusion and remaining Tasks</h2>
+
+<p>It took me a while, but I’m pretty pleased with how it turned out, if I may say so myself.
+I did not expect folks to react so positively to having a weird background on a video call, but it definitely sweetens the deal.</p>
+
+<p>As next steps I still need to properly hang the lights, rather than having them propped up on a shelf. I also hope that this will resolve the final small shadow behind me, that is affecting the greenscreen.</p>
+
+<p>Getting a better webcam for the facecam is also on my wishlist.
+Proper FullHD USB 3 cameras are not cheap though.
+And on top of that, it is hard to understand from afar which cameras are actually good.
+For example, the one A4 one is also advertised as FullHD (and to be fair does return 1920x1080 frames), but really does not come close to actually having that resolution in the picture.
+You can judge from the screenshot above yourself.</p>
+
+  </div><a class="u-url" href="/log/posts/2020-03-22-my-new-life-as-streamer/index.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/log/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">DavidS&#39; log</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">David Schmitt</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
