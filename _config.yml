@@ -34,3 +34,7 @@ jekyll_analytics:
   GoogleAnalytics:
     id: UA-155086367-1
     anonymizeIp: true
+
+twitter:
+  username: dev_el_ops
+  card: summary
