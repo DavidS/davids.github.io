@@ -12,6 +12,7 @@ author: 'David Schmitt'
 plugins:
   - jekyll-analytics
   - jekyll-feed
+  - jekyll-seo-tag
   - jekyll-sitemap
 
 feed:
