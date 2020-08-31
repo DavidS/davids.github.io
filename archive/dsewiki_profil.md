@@ -31,7 +31,7 @@ English Version can be found at [MeatBall:DavidSchmitt](http://meatballwiki.org/
 * [privates Blog](http://www.cheesy.at/)
 * [Bilder auf flickr](http://www.flickr.com/photos/cheesy42/)
 
-![](http://www.edv-bus.at/david.jpg)
+<!-- ![](http://www.edv-bus.at/david.jpg) -->
 
 Sowohl beruflich als auch in meiner Freizeit arbeite ich viel mit [DebianGNULinux](http://www.wikiservice.at/dse/wiki.cgi?DebianGNULinux). Debian ist ein nach einem [FreeSoftware](http://www.wikiservice.at/dse/wiki.cgi?FreeSoftware) Modell entwickeltes Betriebssystem, das sich vor allem durch ihre Qualität und das reichhaltige Angebot an Zusatzsoftware auszeichnet.
 
