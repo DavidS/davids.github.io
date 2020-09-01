@@ -1,4 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-09-01T02:13:57+00:00</updated><id>https://club.black.co.at/log/feed.xml</id><title type="html">DavidS’ log</title><author><name>David Schmitt</name></author><entry><title type="html">My new life as a streamer</title><link href="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html" rel="alternate" type="text/html" title="My new life as a streamer" /><published>2020-03-22T00:00:00+00:00</published><updated>2020-03-22T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/my-new-life-as-streamer</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html">&lt;p&gt;Over the last couple of months I’ve been slowly building out my home office.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-09-01T17:18:05+00:00</updated><id>https://club.black.co.at/log/feed.xml</id><title type="html">DavidS’ log</title><author><name>David Schmitt</name></author><entry><title type="html">Jekyll Gallery Hosting pt6: revisiting cheesy-gallery</title><link href="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt6: revisiting cheesy-gallery" /><published>2020-09-01T00:00:00+00:00</published><updated>2020-09-01T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/revisiting-cheesy-gallery</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html">&lt;p&gt;Picking up &lt;a href=&quot;{ link _posts/2020-01-19-git-annex.md }&quot;&gt;where I left off almost 8 months ago&lt;/a&gt;,
+I started working with the cheesy-gallery source today.
+Over the last couple of days I’ve mostly updated and cleaned up the Gemfile and travis-ci configuration while re-familiarising me with the &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects&quot;&gt;project&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To reserve the name and put a line in the sand,
+I’ve released &lt;a href=&quot;https://rubygems.org/gems/cheesy-gallery&quot;&gt;cheesy-gallery v0.5.0&lt;/a&gt; to rubygems.&lt;/p&gt;
+
+&lt;p&gt;The biggest success was integrating a lightbox into the new cheesy.at prototype templates.
+This turned out to be a lot easier than I expected.
+I went with &lt;a href=&quot;https://biati-digital.github.io/glightbox/&quot;&gt;glightbox&lt;/a&gt; which was quick to integrate and worked out of the box with minimal fussing.
+The biggest issue was fixing the various examples I copied from to actually link up the selectors and run the code at the point in time during the page load where it’d actually do something.&lt;/p&gt;
+
+&lt;p&gt;I also implemented and reverted a mtime-based cache.
+It turns out if I specify &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--incremental&lt;/code&gt;,
+jekyll does the right thing (not regenerate unchanged images) on its own!&lt;/p&gt;
+
+&lt;p&gt;The last two(?) hours I spent trying to get git-annex to work on a non-bare repo on the main host to avoid a double checkout and the associated costs (2x50GB diskspace).
+It turns out that my current hosting server has neither ruby 2.6 nor the most recent git-annex version.
+I built a docker-compose container to deploy a debian testing image that has all the necessary modern bits installed,
+has access to the git repo and can deploy the site
+AND allows access using my ssh key without anyone noticing.
+The deployment went well,
+but git-annex was still very confused.
+After all the various changes and tests and upgrades I did,
+I probably need to start over and heed the lessons from &lt;a href=&quot;{ link _posts/2020-01-19-git-annex.md }&quot;&gt;pt5&lt;/a&gt; not using the assistant webapp to do the inital sync (and while testing not sync everything).&lt;/p&gt;
+
+&lt;p&gt;I might need to publish the cheesy.at git repo with all the attendant scripts for archival reasons.&lt;/p&gt;
+
+&lt;p&gt;You can see most of the work also in the &lt;a href=&quot;https://www.twitch.tv/videos/728001517&quot;&gt;twitch archive&lt;/a&gt;,
+which will be available for another two weeks.&lt;/p&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><category term="git" /><summary type="html">Picking up where I left off almost 8 months ago, I started working with the cheesy-gallery source today. Over the last couple of days I’ve mostly updated and cleaned up the Gemfile and travis-ci configuration while re-familiarising me with the project.</summary></entry><entry><title type="html">My new life as a streamer</title><link href="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html" rel="alternate" type="text/html" title="My new life as a streamer" /><published>2020-03-22T00:00:00+00:00</published><updated>2020-03-22T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/my-new-life-as-streamer</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-03-22-my-new-life-as-streamer/index.html">&lt;p&gt;Over the last couple of months I’ve been slowly building out my home office.
 Between that and the push to even more home office over the next months and &lt;a href=&quot;https://puppet.com&quot;&gt;Puppet&lt;/a&gt; instructing folks to take their chairs and monitors home,
 I’ve considerably upgraded my working situation at home.
 This post describes the current statue of the setup,
@@ -211,7 +240,7 @@ You can judge from the screenshot above yourself.&lt;/p&gt;</content><author><na
 &lt;h1 id=&quot;insights&quot;&gt;Insights&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;27k files in a repository make git-annex assitant slow to start up (it’s rather annoying too to see only 10% of your SSD bandwidth and 12% CPU being used)&lt;/li&gt;
+  &lt;li&gt;27k files in a repository make git-annex assistant slow to start up (it’s rather annoying too to see only 10% of your SSD bandwidth and 12% CPU being used)&lt;/li&gt;
   &lt;li&gt;stopping syncing in the git-annex web ui works to stop it from autocommitting and syncing half-finished work&lt;/li&gt;
   &lt;li&gt;for big changes the CLI is &lt;strong&gt;a lot&lt;/strong&gt; better than the assistant, as the CLI can batch and parallelise. The assistant would upload each file individually&lt;/li&gt;
   &lt;li&gt;I would have saved a lot of time (and bandwidth) had I done the initial ingestion on the server instead of over the network&lt;/li&gt;
@@ -775,67 +804,4 @@ Proto Recv-Q Send-Q Local Address           Foreign Address         State
 [...]
 tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN
 [...]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="hosting" /><category term="security" /><summary type="html">A follow-up to last week’s docker-compose post.</summary></entry><entry><title type="html">Docker Compose for OwnCloud</title><link href="https://club.black.co.at/log/posts/2019-04-27-docker-compose/index.html" rel="alternate" type="text/html" title="Docker Compose for OwnCloud" /><published>2019-04-27T00:00:00+00:00</published><updated>2019-04-27T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-04-27-docker-compose/docker-compose</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-04-27-docker-compose/index.html">&lt;p&gt;I’m running a private owncloud server - because, why wouldn’t I? To get rid of my old KVM=based virtualisation solution, I’ve recently switched to &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker-compose&lt;/a&gt; - “a tool for defining and running multi-container Docker applications”.&lt;/p&gt;
-
-&lt;p&gt;While in general docker-compose is really nice to work with, and can get you quick wins, this post will detail a few of the day 2 pitfalls and the solutions I found.&lt;/p&gt;
-
-&lt;h1 id=&quot;shutting-down-the-service&quot;&gt;Shutting down the service&lt;/h1&gt;
-
-&lt;p&gt;If, for whatever reason, you want to have the services &lt;em&gt;not&lt;/em&gt; running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose down&lt;/code&gt; is your go-to command. Do not get (overly) scared by the synopsis of the command removing “containers, networks, volumes, and images”. While it &lt;em&gt;can&lt;/em&gt; do that, by default it only removes running state, that is containers, and networks, but leaves persistent state like volumes and images alone.&lt;/p&gt;
-
-&lt;h1 id=&quot;updating-the-containers&quot;&gt;Updating the containers&lt;/h1&gt;
-
-&lt;p&gt;After ascertaining that a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;down&lt;/code&gt; does not nuke away all my data, I tried updating the containers using the default turn-off-turn-on cycle. I also tried to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--foce-rebuild&lt;/code&gt; command line option. Although &lt;em&gt;something&lt;/em&gt; was happening, it turned out that no new upstream container images where retrieved.&lt;/p&gt;
-
-&lt;p&gt;There is a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose pull&lt;/code&gt; command to do so:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose pull
-Pulling db       ... done
-Pulling redis    ... done
-Pulling owncloud ... done
-~/owncloudserver #
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;After this, a restart of the service will start the new containers based on the new images. Of course by “restart”, I mean&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose down
-Stopping owncloudserver_owncloud_1 ... done
-Stopping owncloudserver_db_1       ... done
-Stopping owncloudserver_redis_1    ... done
-Removing owncloudserver_owncloud_1 ... done
-Removing owncloudserver_db_1       ... done
-Removing owncloudserver_redis_1    ... done
-Removing network owncloudserver_default
-~/owncloudserver # docker-compose up
-Creating network &quot;owncloudserver_default&quot; with the default driver
-Creating owncloudserver_db_1    ... done
-Creating owncloudserver_redis_1 ... done
-Creating owncloudserver_owncloud_1 ... done
-~/owncloudserver #
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;protecting-the-network&quot;&gt;Protecting the network&lt;/h1&gt;
-
-&lt;p&gt;The owncloud compose file exports a single port to access the webserver. I’m proxying this port through the host’s nginx for SSL termination. Sadly enough, docker-compose seems to know only internal ports (defined as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;expose:&lt;/code&gt; in the YAML) which are only accessible from other containers) and external ports (defined as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ports:&lt;/code&gt; in the YAML) which are accessible from &lt;em&gt;everywhere&lt;/em&gt;. See this &lt;a href=&quot;https://stackoverflow.com/a/40801773/4918&quot;&gt;stackoverflow answer&lt;/a&gt; for details.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I really “appreciate” the subtle trap of having the &lt;em&gt;exposed&lt;/em&gt; ports being protected, while the regular &lt;em&gt;ports&lt;/em&gt; are globally exposed.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;To make sure that the unencrypted port is not used, I should add a firewall rule to deny access from outside. Watch this space to see my cry about having forgotten that rule in a year’s time, when I don’t understand why something is not working.&lt;/p&gt;
-
-&lt;p&gt;I probably should also add something like &lt;a href=&quot;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&quot;&gt;HSTS&lt;/a&gt; to make sure that no redirect escapes from the underlying owncloud and induces someone to send their username/password in the clear. More fun.&lt;/p&gt;
-
-&lt;h1 id=&quot;random-redirects&quot;&gt;“Random” redirects&lt;/h1&gt;
-
-&lt;p&gt;For some reason the owncloud instance would redirect some requests to it’s internal port (8080, see above), which would cause all sorts of problems. I played around with quite a few things, but the only thing that stuck was adding hardcoded redirect rules into the nginx proxy itself to avoid that problem from reaching owncloud:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rewrite /.well-known/caldav https://oc.black.co.at/remote.php/dav;
-rewrite /.well-known/carddav https://oc.black.co.at/remote.php/dav;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;random-notes&quot;&gt;Random notes&lt;/h1&gt;
-
-&lt;h2 id=&quot;container-content-conundrum&quot;&gt;container content conundrum&lt;/h2&gt;
-
-&lt;p&gt;It’s very weird to me how the containers have kernel-related tools like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/sbin/installkernel&lt;/code&gt; and filesystem utilities like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/sbin/badblocks&lt;/code&gt; both of which I can’t find a use for in a container, but is lacking network tools like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ip&lt;/code&gt; which could be helpful in understanding the container’s configuration from the inside.&lt;/p&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="owncloud" /><category term="hosting" /><summary type="html">I’m running a private owncloud server - because, why wouldn’t I? To get rid of my old KVM=based virtualisation solution, I’ve recently switched to docker-compose - “a tool for defining and running multi-container Docker applications”.</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="hosting" /><category term="security" /><summary type="html">A follow-up to last week’s docker-compose post.</summary></entry></feed>
