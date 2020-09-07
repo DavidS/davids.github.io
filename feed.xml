@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-09-07T02:15:00+00:00</updated><id>https://club.black.co.at/log/feed.xml</id><title type="html">DavidS’ log</title><author><name>David Schmitt</name></author><entry><title type="html">Jekyll Gallery Hosting pt6: revisiting cheesy-gallery</title><link href="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt6: revisiting cheesy-gallery" /><published>2020-09-01T00:00:00+00:00</published><updated>2020-09-01T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/revisiting-cheesy-gallery</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html">&lt;p&gt;Picking up &lt;a href=&quot;{ link _posts/2020-01-19-git-annex.md }&quot;&gt;where I left off almost 8 months ago&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://club.black.co.at/log/feed.xml" rel="self" type="application/atom+xml" /><link href="https://club.black.co.at/log/" rel="alternate" type="text/html" /><updated>2020-09-07T15:39:23+00:00</updated><id>https://club.black.co.at/log/feed.xml</id><title type="html">DavidS’ log</title><author><name>David Schmitt</name></author><entry><title type="html">Jekyll Gallery Hosting pt7: automated sync and deploy with git-annex</title><link href="https://club.black.co.at/log/posts/2020-09-07-git-annex-sync-deploy/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt7: automated sync and deploy with git-annex" /><published>2020-09-07T00:00:00+00:00</published><updated>2020-09-07T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-09-07-git-annex-sync-deploy/git-annex-sync-deploy</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-09-07-git-annex-sync-deploy/index.html">&lt;p&gt;After last week’s &lt;a href=&quot;/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html&quot;&gt;reintroduction&lt;/a&gt; to the plugin,
+today was focused on getting the data to and from the server.&lt;/p&gt;
+
+&lt;p&gt;In the morning session a complete re-init of the cheesy.at repo lead to great success using the git-annex webapp assistant to sync data to the repo on the server and update the checkout there.&lt;/p&gt;
+
+&lt;p&gt;In the afternoon session I worked on two major points: &lt;a href=&quot;https://github.com/jekyll/jekyll/pull/8376&quot;&gt;fixing the symlink handling of jekyll&lt;/a&gt;
+and getting the docker container for deployment up to scratch to the point where I can now build the site.&lt;/p&gt;
+
+&lt;p&gt;The latter required a few additional build dependencies so the native extensions can build.
+Now the site builds correctly on the hosting server:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@33bb570ae200:/srv/cheesy.at/git# JEKYLL_ENV=production bundle exec jekyll build --strict --trace --incremental --destination ../site
+Configuration file: /srv/cheesy.at/git/_config.yml
+            Source: /srv/cheesy.at/git
+       Destination: /srv/cheesy.at/site
+ Incremental build: enabled
+      Generating...
+/var/lib/gems/2.7.0/gems/sorbet-runtime-0.5.5891/lib/types/private/methods/call_validation.rb:126: warning: Passing the keyword argument as the last hash parameter is deprecated
+/var/lib/gems/2.7.0/gems/cheesy-gallery-0.5.0/lib/cheesy-gallery/gallery_index.rb:11: warning: The called method `read_content' is defined here
+       Jekyll Feed: Generating feed for posts
+     Build Warning: Layout 'nav_menu_item' requested in _posts/2014-04-25-21024.html does not exist.
+     Build Warning: Layout 'nav_menu_item' requested in _posts/2014-04-25-21025.html does not exist.
+     Build Warning: Layout 'nav_menu_item' requested in _posts/2014-04-25-21026.html does not exist.
+     Build Warning: Layout 'nav_menu_item' requested in _posts/2014-04-25-21027.html does not exist.
+     Build Warning: Layout 'nav_menu_item' requested in _posts/2014-04-25-home.html does not exist.
+     Build Warning: Layout 'ecwd_event' requested in _posts/2015-11-05-rock-in-vienna.html does not exist.
+     Build Warning: Layout 'ecwd_calendar' requested in _posts/2015-11-05-cd.html does not exist.
+     Build Warning: Layout 'ecwd_event' requested in _posts/2015-11-05-u2.html does not exist.
+     Build Warning: Layout 'ecwd_event' requested in _posts/2015-11-05-the-prodigy.html does not exist.
+     Build Warning: Layout 'ecwd_event' requested in _posts/2015-11-05-bryan-adams.html does not exist.
+          Conflict: The URL '/srv/cheesy.at/site/about/index.html' is the destination for the following pages: about.md, about/index.html
+                    done in 13.425 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.
+root@33bb570ae200:/srv/cheesy.at/git# rm -Rf _site/
+root@33bb570ae200:/srv/cheesy.at/git# ls ../site/
+2006  2009  2012  2015	2018	  about      feed.xml	 index.html
+2007  2010  2013  2016	2019	  assets     fotos
+2008  2011  2014  2017	404.html  export.rb  gaestebuch
+root@33bb570ae200:/srv/cheesy.at/git#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Clearly there is still a lot to do.
+This still needs to be automated on push,
+and the generated site is not actually available online.
+Configuring a test host will likely be my next step as this will allow me to show off the work already done.
+(I also expect it to be pretty easy and give me a nice success boost.)
+The automation of build will happen in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;post-receive&lt;/code&gt; hook,
+which will need to be careful about which pushes trigger it (git-annex is a bit chatty there),
+whether all annexed content is already available,
+and to maintain correct permissions when content is being pushed by different users.
+Currently half of the site is owned by root, which is not great.&lt;/p&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="programming" /><category term="devops" /><category term="hosting" /><category term="deployment" /><category term="applications" /><category term="jekyll" /><category term="programming" /><category term="git" /><summary type="html">After last week’s reintroduction to the plugin, today was focused on getting the data to and from the server.</summary></entry><entry><title type="html">Jekyll Gallery Hosting pt6: revisiting cheesy-gallery</title><link href="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html" rel="alternate" type="text/html" title="Jekyll Gallery Hosting pt6: revisiting cheesy-gallery" /><published>2020-09-01T00:00:00+00:00</published><updated>2020-09-01T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/revisiting-cheesy-gallery</id><content type="html" xml:base="https://club.black.co.at/log/posts/2020-09-01-revisiting-cheesy-gallery/index.html">&lt;p&gt;Picking up &lt;a href=&quot;{ link _posts/2020-01-19-git-annex.md }&quot;&gt;where I left off almost 8 months ago&lt;/a&gt;,
 I started working with the cheesy-gallery source today.
 Over the last couple of days I’ve mostly updated and cleaned up the Gemfile and travis-ci configuration while re-familiarising me with the &lt;a href=&quot;https://github.com/DavidS/cheesy-gallery/projects&quot;&gt;project&lt;/a&gt;.&lt;/p&gt;
 
@@ -762,46 +812,4 @@ Ran on 1 node in 9.47 seconds
 david@zion:~/git/dasz-configuration$
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;See &lt;a href=&quot;https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908&quot;&gt;this commit&lt;/a&gt; for the rather trivial implementation details.&lt;/p&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="puppet" /><category term="puppet" /><category term="bolt" /><category term="hosting" /><category term="deployment" /><summary type="html">For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would ssh and sudo onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:</summary></entry><entry><title type="html">Simple Docker Compose Protection</title><link href="https://club.black.co.at/log/posts/2019-05-06-docker-protect/index.html" rel="alternate" type="text/html" title="Simple Docker Compose Protection" /><published>2019-05-06T00:00:00+00:00</published><updated>2019-05-06T00:00:00+00:00</updated><id>https://club.black.co.at/log/posts/2019-05-06-docker-protect/docker-protect</id><content type="html" xml:base="https://club.black.co.at/log/posts/2019-05-06-docker-protect/index.html">&lt;p&gt;A follow-up to &lt;a href=&quot;/log/posts/2019-04-27-docker-compose/&quot;&gt;last week’s docker-compose post&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;updating-the-containers&quot;&gt;Updating the containers&lt;/h1&gt;
-
-&lt;p&gt;Contrary to my assertion last week, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt; happily restarts service containers:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # docker-compose up -d
-Recreating owncloudserver_db_1    ... done
-Recreating owncloudserver_redis_1 ... done
-Recreating owncloudserver_owncloud_1 ... done
-~/owncloudserver # git show
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Because, of course, why wouldn’t it?&lt;/p&gt;
-
-&lt;h1 id=&quot;protecting-the-network&quot;&gt;Protecting the network&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://nitech.slack.com/team/U94ASMRL7&quot;&gt;lskillen&lt;/a&gt; from the &lt;a href=&quot;https://nitech.slack.com&quot;&gt;NI Tech Slack&lt;/a&gt; pointed out that I can also specify a IP address in the compose file:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;diff --git a/docker-compose.yml b/docker-compose.yml
-index ffbd51b..dd5d8a8 100644
---- a/docker-compose.yml
-+++ b/docker-compose.yml
-@@ -15,7 +15,7 @@ services:
-     image: owncloud/server:${OWNCLOUD_VERSION}
-     restart: always
-     ports:
--      - ${HTTP_PORT}:8080
-+      - &quot;127.0.0.1:${HTTP_PORT}:8080&quot;
-     depends_on:
-       - db
-       - redis
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now the unencrypted backend port is not accessible from the outside anymore, and I didn’t have to fiddle around with firewall rules.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/owncloudserver # netstat -ant
-Active Internet connections (servers and established)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State
-[...]
-tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN
-[...]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="hosting" /><category term="docker" /><category term="docker-compose" /><category term="hosting" /><category term="security" /><summary type="html">A follow-up to last week’s docker-compose post.</summary></entry></feed>
+&lt;p&gt;See &lt;a href=&quot;https://github.com/DavidS/dasz-configuration/commit/d7975aab3c73710b4609b9a493b7f36ea0af4908&quot;&gt;this commit&lt;/a&gt; for the rather trivial implementation details.&lt;/p&gt;</content><author><name>{&quot;twitter&quot;=&gt;&quot;dev_el_ops&quot;}</name></author><category term="puppet" /><category term="puppet" /><category term="bolt" /><category term="hosting" /><category term="deployment" /><summary type="html">For the longest time (like for the last six(!) years), everytime I pushed a change to my puppet repositories, I would ssh and sudo onto my puppetmaster and search in my shell history for the commands I used to deploy those changes the last time:</summary></entry></feed>
