@@ -31,6 +31,9 @@ defaults:
       permalink: /posts/:year-:month-:day-:title/index:output_ext
 
 jekyll_analytics:
+  Plausible:
+    domain: 'club.black.co.at'
+    source: 'https://plausible.black.co.at/js/plausible.js'
   GoogleAnalytics:
     id: UA-155086367-1
     anonymizeIp: true
