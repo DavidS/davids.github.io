@@ -11,12 +11,16 @@ Since the start of September, this traffic has evaporated without me doing anyth
 
 Here's browser stats from August:
 
-![]({% link assets/2020-10-10-google-analytics-changes/august.png %})
+![]({% link assets/2020-10-10-ga-changes/august.png %})
 
 and from September:
 
-![]({% link assets/2020-10-10-google-analytics-changes/september.png %})
+![]({% link assets/2020-10-10-ga-changes/september.png %})
 
 On a related topic, I've recently seen folks point out that a lot of browers are switching to auto-blocking google analytics and related cookies, to the point where GA is undercounting traffic by up to 50%.
 I don't have a lot of need for user-tracking, but I would like to know general and accurate stats and trends for how specific parts for my webpages are doing.
 If you have heard of or experience with a good product that can help with that, I'd be grateful if you clued me in!
+
+Case in point: uBlock Origin originally blocked the screenshots on this post as they were had the words `google-analytics` in the path:
+
+![]({% link assets/2020-10-10-ga-changes/blocked.png %})
