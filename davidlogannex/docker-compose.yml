@@ -1,0 +1,15 @@
+version: '2'
+services:
+  builder:
+    build: .
+    environment:
+      SRV_DIR: /srv/davidlog
+      SSH_PORT: 2224
+    privileged: true
+    ports:
+     - "2224:2224/tcp"
+    volumes:
+     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+     - /srv/davidlog:/srv/davidlog
+     - /home/david:/home/david:ro
+     - /home/cheesy:/home/cheesy:ro
